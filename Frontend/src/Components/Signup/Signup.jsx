@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "../auth.scss";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function Signup() {
   const [fname, setFname] = useState("");
@@ -12,16 +12,17 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [teamname, setTeamName] = useState("");
   const [isAgreed, setIsAgreed] = useState(false);
-  const [isSame,setIsSame]=useState(false);
+  const [isSame, setIsSame] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(password!==confirmPassword){
+  useEffect(() => {
+    setIsSame(false);
+    if (password !== confirmPassword) {
       setIsSame(false);
-    }else{
+    } else {
       setIsSame(true);
     }
-  },[confirmPassword,password])
+  }, [confirmPassword, password]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -51,7 +52,7 @@ export default function Signup() {
           <div className="auth-card">
             <div className="auth-header">
               <Link to="/" className="logo">
-                Fut<span>Hub</span>
+                Fut<span style={{ color: "lightgreen" }}>Hub</span>
               </Link>
               <h1>Create Your Account</h1>
               <p>Join the ultimate football management platform</p>
@@ -59,7 +60,7 @@ export default function Signup() {
 
             <div id="signup-alert" className="alert alert-success"></div>
 
-            <form id="signup-form" className="auth-form">
+            <form id="signup-form" className="auth-form"onSubmit={(e) => handleSubmit(e)} >
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="signup-firstname" className="form-label">
@@ -119,23 +120,6 @@ export default function Signup() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <div className="password-strength">
-                  <div
-                    id="password-strength-bar"
-                    className="password-strength-bar"
-                  ></div>
-                </div>
-                <div className="password-requirements">
-                  <div id="length-req" className="requirement">
-                    At least 8 characters
-                  </div>
-                  <div id="uppercase-req" className="requirement">
-                    One uppercase letter
-                  </div>
-                  <div id="number-req" className="requirement">
-                    One number
-                  </div>
-                </div>
               </div>
 
               <div className="form-group">
@@ -151,21 +135,41 @@ export default function Signup() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
-                <p style={{textAlign:"center",margin:"5px",color:"red"}}>{!isSame?"Password must be same!":""}</p>
+                <p style={{ textAlign: "center", margin: "5px", color: "red" }}>
+                  {!isSame ? "Password must be same!" : ""}
+                </p>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="signup-team" className="form-label">
-                  Team Name (Optional)
+              <div className="form-groups">
+                <label htmlFor="role" className="form-label">
+                  Signing up as:
                 </label>
-                <input
-                  type="text"
-                  id="signup-team"
-                  className="form-input"
-                  placeholder="Enter your team name"
-                  value={teamname}
-                  onChange={(e) => setTeamName(e.target.value)}
-                />
+                <div className="form-options" style={{ display: "flex" }}>
+                  <div className="left-owner">
+                    <input
+                      type="radio"
+                      id="role-owner"
+                      name="role"
+                      value="owner"
+                      className="form-input"
+                      style={{ fontSize: "20px" }}
+                      required
+                    />
+                    <label htmlFor="role-owner">Owner</label>
+                  </div>
+
+                  <div className="right-player">
+                    <input
+                      type="radio"
+                      id="role-player"
+                      name="role"
+                      value="player"
+                      className="form-input"
+                      required
+                    />
+                    <label htmlFor="role-player">Player</label>
+                  </div>
+                </div>
               </div>
 
               <div className="form-check">
@@ -191,7 +195,8 @@ export default function Signup() {
               <button
                 type="submit"
                 className="btn btn-secondary btn-auth"
-                onClick={(e) => handleSubmit(e)}
+                disabled={!isSame}
+                style={!isSame?{cursor:"not-allowed",backgroundColor:"grey"}:{cursor:"pointer",backgroundColor:"#ff6d00"}}
               >
                 Create Account
               </button>

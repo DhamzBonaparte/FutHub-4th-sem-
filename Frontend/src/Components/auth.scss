@@ -145,7 +145,7 @@
         border-radius: 6px;
         font-size: 1rem;
         font-weight: 600;
-        cursor: pointer;
+        cursor: pointer; 
         margin-top: 15px;
         transition: all 0.3s ease;
 
@@ -157,6 +157,7 @@
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(26, 115, 232, 0.4);
+
           }
         }
 
@@ -348,5 +349,32 @@
 
   .social-buttons {
     flex-direction: column;
+  }
+}
+
+.form-groups{
+  height: 40%;
+  display: flex;
+  margin-bottom: 10px;
+  padding: 10px;
+
+
+  .form-options{
+    display: flex;
+    justify-content: center;
+
+    .left-owner{
+      margin: 0px 20px;
+      input{
+        margin-right: 10px;
+      }
+    }
+
+    .right-player{
+      margin-right: 20px;
+      input{
+        margin-right: 10px;
+      }
+    }
   }
 }
