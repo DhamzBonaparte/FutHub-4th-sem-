@@ -12,6 +12,7 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [teamname, setTeamName] = useState("");
   const [isAgreed, setIsAgreed] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isSame, setIsSame] = useState(false);
   const navigate = useNavigate();
 
@@ -26,7 +27,7 @@ export default function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const submit = await axios.post("http://localhost:3000/api/v1/signup", {
         firstName: fname,
@@ -42,13 +43,17 @@ export default function Signup() {
       }
     } catch (err) {
       console.log(err);
+    }finally{
+      setLoading(false);
     }
   }
 
   return (
     <>
       <div className="all">
-        <div className="auth-container">
+        <div className="auth-container"
+        style={loading ? { filter: "blur(5px)" } : { filter: "blur(0px)" }}
+        >
           <div className="auth-card">
             <div className="auth-header">
               <Link to="/" className="logo">
@@ -213,6 +218,16 @@ export default function Signup() {
           </div>
         </div>
       </div>
+
+      {loading ? (
+        <div className="loading">
+          <div className="text">
+            <p>Loading...</p>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 }

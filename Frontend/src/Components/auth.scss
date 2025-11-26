@@ -25,6 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position:relative;
   padding: 20px;
 }
 
@@ -145,7 +146,7 @@
         border-radius: 6px;
         font-size: 1rem;
         font-weight: 600;
-        cursor: pointer; 
+        cursor: pointer;
         margin-top: 15px;
         transition: all 0.3s ease;
 
@@ -157,7 +158,6 @@
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(26, 115, 232, 0.4);
-
           }
         }
 
@@ -352,29 +352,82 @@
   }
 }
 
-.form-groups{
+.form-groups {
   height: 40%;
   display: flex;
   margin-bottom: 10px;
   padding: 10px;
 
-
-  .form-options{
+  .form-options {
     display: flex;
     justify-content: center;
 
-    .left-owner{
+    .left-owner {
       margin: 0px 20px;
-      input{
+      input {
         margin-right: 10px;
       }
     }
 
-    .right-player{
+    .right-player {
       margin-right: 20px;
-      input{
+      input {
         margin-right: 10px;
       }
     }
   }
+}
+
+
+@keyframes popupFadeScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(26, 41, 128, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(26, 41, 128, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(26, 41, 128, 0.4);
+  }
+}
+
+.loading {
+  height: 20vh;
+  width: 50vw;
+  position: absolute;
+  top: 10%;
+  left: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1a2980;
+  color: #f8f9fa;
+  border-radius: 12px;
+
+  /* layered shadow for depth */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25),
+              0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* entry animation */
+  animation: popupFadeScale 0.4s ease-out;
+}
+
+.loading p {
+  font-size: 1.6rem;
+}
+
+/* optional glowing effect while active */
+.loading.active {
+  animation: pulseGlow 1.5s infinite;
 }
