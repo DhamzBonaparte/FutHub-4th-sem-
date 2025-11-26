@@ -10,9 +10,9 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [teamname, setTeamName] = useState("");
   const [isAgreed, setIsAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
   const [isSame, setIsSame] = useState(false);
   const navigate = useNavigate();
 
@@ -34,7 +34,6 @@ export default function Signup() {
         lastName: lname,
         email: email,
         password: password,
-        teamName: teamname,
         agreedToTerms: isAgreed,
       });
 
@@ -42,8 +41,15 @@ export default function Signup() {
         navigate("/login");
       }
     } catch (err) {
+      if (err.response?.status === 400) {
+        setErr("Email Already Exists!");
+
+        setTimeout(()=>{
+          setErr("");
+        },2000)
+      }
       console.log(err);
-    }finally{
+    } finally {
       setLoading(false);
     }
   }
@@ -51,8 +57,9 @@ export default function Signup() {
   return (
     <>
       <div className="all">
-        <div className="auth-container"
-        style={loading ? { filter: "blur(5px)" } : { filter: "blur(0px)" }}
+        <div
+          className="auth-container"
+          style={loading ? { filter: "blur(5px)" } : { filter: "blur(0px)" }}
         >
           <div className="auth-card">
             <div className="auth-header">
@@ -65,7 +72,11 @@ export default function Signup() {
 
             <div id="signup-alert" className="alert alert-success"></div>
 
-            <form id="signup-form" className="auth-form"onSubmit={(e) => handleSubmit(e)} >
+            <form
+              id="signup-form"
+              className="auth-form"
+              onSubmit={(e) => handleSubmit(e)}
+            >
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="signup-firstname" className="form-label">
@@ -196,12 +207,17 @@ export default function Signup() {
                   </a>
                 </label>
               </div>
+              <p style={{textAlign:"center",color:"red"}}>{err}</p>
 
               <button
                 type="submit"
                 className="btn btn-secondary btn-auth"
                 disabled={!isSame}
-                style={!isSame?{cursor:"not-allowed",backgroundColor:"grey"}:{cursor:"pointer",backgroundColor:"#ff6d00"}}
+                style={
+                  !isSame
+                    ? { cursor: "not-allowed", backgroundColor: "grey" }
+                    : { cursor: "pointer", backgroundColor: "#ff6d00" }
+                }
               >
                 Create Account
               </button>
@@ -222,7 +238,7 @@ export default function Signup() {
       {loading ? (
         <div className="loading">
           <div className="text">
-            <p>Loading...</p>
+            <p>Hang Tight...</p>
           </div>
         </div>
       ) : (

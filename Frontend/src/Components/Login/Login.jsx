@@ -165,7 +165,7 @@ export default function Login() {
       {loading ? (
         <div className="loading">
           <div className="text">
-            <p>Loading...</p>
+            <p>Hang Tight...</p>
           </div>
         </div>
       ) : (

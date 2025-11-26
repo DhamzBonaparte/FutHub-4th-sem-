@@ -6,7 +6,7 @@ const getCredentials = async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log(req.body);
-    
+
     const approved = await signup.findOne({ email });
 
     if (!approved) {
@@ -37,7 +37,7 @@ const getCredentials = async (req, res) => {
     });
     console.log(correctPassword);
   } catch (err) {
-    res.status(400).json({
+    res.status(401).json({
       msg: "Username or Password is incorrect.",
       error: err.message,
       status: "Terminated",
@@ -49,6 +49,7 @@ const setCredentials = async (req, res) => {
   const { firstName, lastName, email, password, teamName, agreedToTerms } =
     req.body;
 
+  let isduplicate;
   const newPassword = await bcrypt.hash(password, 13);
 
   try {
