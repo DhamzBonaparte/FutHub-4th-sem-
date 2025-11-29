@@ -7,14 +7,9 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [data, setData] = useState("");
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -24,12 +19,16 @@ export default function Login() {
         email: email,
         password: pass,
       });
-      setData(login.data.data);
       setErr("");
-
-      if (login.status === 200) {
-        navigate("/dashboard");
+ 
+      if( login.data.data.role==="player"){
+        navigate("/player");
       }
+
+      if( login.data.data.role==="owner"){
+        navigate("/owner");
+      }
+
     } catch (err) {
       if (err.response?.status === 401 || err.response?.status === 404) {
         setErr("Invalid email or password.");

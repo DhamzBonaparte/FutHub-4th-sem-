@@ -14,6 +14,7 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [isSame, setIsSame] = useState(false);
+  const [roles,setRole]=useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function Signup() {
         email: email,
         password: password,
         agreedToTerms: isAgreed,
+        roles:roles
       });
 
       if (submit.status === 201) {
@@ -42,7 +44,7 @@ export default function Signup() {
       }
     } catch (err) {
       if (err.response?.status === 400) {
-        setErr("Email Already Exists!");
+        setErr("Email Already Used!");
 
         setTimeout(()=>{
           setErr("");
@@ -170,6 +172,7 @@ export default function Signup() {
                       className="form-input"
                       style={{ fontSize: "20px" }}
                       required
+                      onChange={(e)=>setRole(e.target.value)}
                     />
                     <label htmlFor="role-owner">Owner</label>
                   </div>
@@ -182,6 +185,7 @@ export default function Signup() {
                       value="player"
                       className="form-input"
                       required
+                      onChange={(e)=>setRole(e.target.value)}
                     />
                     <label htmlFor="role-player">Player</label>
                   </div>

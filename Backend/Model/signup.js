@@ -22,14 +22,18 @@ const Schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  teamName: {
-    type: String,
-    default: "",
-    trim: true,
+  roles:{
+    type:String,
+    required:true
   },
   agreedToTerms: {
     type: Boolean,
     required: true,
+  },
+  createdAt:{
+    type:Date,
+    default:Date.now,
+    required:true
   }
 });
 

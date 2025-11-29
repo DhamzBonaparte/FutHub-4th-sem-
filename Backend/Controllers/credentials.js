@@ -32,6 +32,7 @@ const getCredentials = async (req, res) => {
         email: approved.email,
         firstName: approved.firstName,
         lastName: approved.lastName,
+        role:approved.roles
       },
       status: "completed",
     });
@@ -46,10 +47,9 @@ const getCredentials = async (req, res) => {
 };
 
 const setCredentials = async (req, res) => {
-  const { firstName, lastName, email, password, teamName, agreedToTerms } =
+  const { firstName, lastName, email, password, agreedToTerms,roles } =
     req.body;
 
-  let isduplicate;
   const newPassword = await bcrypt.hash(password, 13);
 
   try {
@@ -58,7 +58,7 @@ const setCredentials = async (req, res) => {
       lastName,
       email,
       password: newPassword,
-      teamName,
+      roles,
       agreedToTerms,
     });
     res.status(201).json({
