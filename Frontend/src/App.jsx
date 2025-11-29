@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Signup from "./Components/Signup/Signup";
 import PDashboard from "./Pages/Dashboard/Player/PDashboard";
 import ODashboard from "./Pages/Dashboard/Owner/ODashboard";
+import Home from "./Pages/Home/Home";
 import TOC from "./Pages/TOC/TOC";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/player" element={<PDashboard/>}></Route>
         <Route path="/owner" element={<ODashboard/>}></Route>
         <Route path='/terms' element={<TOC/>}></Route>
+        <Route path="/" element={<Home/>}></Route>
       </Routes>
     </>
   );

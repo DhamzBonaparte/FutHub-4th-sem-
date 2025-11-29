@@ -28,6 +28,18 @@ export default function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    
+    const isValidFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if(!isValidFormat){
+      setErr("Not a valid email");
+
+      setTimeout(()=>{
+          setErr("");
+        },2000)
+      return;
+    }
+
     setLoading(true);
     try {
       const submit = await axios.post("http://localhost:3000/api/v1/signup", {
@@ -115,13 +127,15 @@ export default function Signup() {
                   Email Address
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   id="signup-email"
                   className="form-input"
                   placeholder="Enter your email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+
+                    setEmail(e.target.value)}}
                 />
               </div>
 
