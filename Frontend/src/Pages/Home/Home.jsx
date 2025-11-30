@@ -96,9 +96,11 @@ export default function Home() {
             Book futsal courts, find opponents and teammates, and join the
             futsal community in Nepal.
           </p>
-          <button className="cta-button">
-            <Link to="/login" style={{textDecoration:"none",color:"white"}}>Get Started</Link> <i className="fas fa-arrow-right"></i>
-          </button>
+          <Link to="/login" style={{ textDecoration: "none", color: "white" }}>
+            <button className="cta-button">
+              Get Started <i className="fas fa-arrow-right"></i>
+            </button>
+          </Link>
         </div>
         <div className="hero-image"></div>
       </section>
@@ -137,7 +139,14 @@ export default function Home() {
           <Carousel.Item interval={1000}>
             <img src={ktm} alt="Kathmandu_Futsal" />
             <Carousel.Caption>
-              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+              <h3
+                style={{
+                  color: "#F8F9FA",
+                  fontWeight: 700,
+                  backgroundColor: "#1B2626",
+                  borderRadius: "20px",
+                }}
+              >
                 Kathmandu Futsal
               </h3>
             </Carousel.Caption>
@@ -145,7 +154,14 @@ export default function Home() {
           <Carousel.Item interval={1000}>
             <img src={pok} alt="Pokhara_Futsal" />
             <Carousel.Caption>
-              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+              <h3
+                style={{
+                  color: "#F8F9FA",
+                  fontWeight: 700,
+                  backgroundColor: "#1B2626",
+                  borderRadius: "20px",
+                }}
+              >
                 Pokhara Futsal
               </h3>
             </Carousel.Caption>
@@ -153,7 +169,14 @@ export default function Home() {
           <Carousel.Item interval={1000}>
             <img src={chi} alt="Chitwan_Futsal" />
             <Carousel.Caption>
-              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+              <h3
+                style={{
+                  color: "#F8F9FA",
+                  fontWeight: 700,
+                  backgroundColor: "#1B2626",
+                  borderRadius: "20px",
+                }}
+              >
                 Chitwan futsal
               </h3>
             </Carousel.Caption>
@@ -161,7 +184,14 @@ export default function Home() {
           <Carousel.Item interval={1000}>
             <img src={bir} alt="Biratnagar_Futsal" />
             <Carousel.Caption>
-              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+              <h3
+                style={{
+                  color: "#F8F9FA",
+                  fontWeight: 700,
+                  backgroundColor: "#1B2626",
+                  borderRadius: "20px",
+                }}
+              >
                 Biratnagar futsal
               </h3>
             </Carousel.Caption>
@@ -169,7 +199,14 @@ export default function Home() {
           <Carousel.Item interval={1000}>
             <img src={lal} alt="Lalitpur_Futsal" />
             <Carousel.Caption>
-              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+              <h3
+                style={{
+                  color: "#F8F9FA",
+                  fontWeight: 700,
+                  backgroundColor: "#1B2626",
+                  borderRadius: "20px",
+                }}
+              >
                 Lalitpur futsal
               </h3>
             </Carousel.Caption>
@@ -177,7 +214,14 @@ export default function Home() {
           <Carousel.Item interval={1000}>
             <img src={bkt} alt="Bhaktapur_Futsal" />
             <Carousel.Caption>
-              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+              <h3
+                style={{
+                  color: "#F8F9FA",
+                  fontWeight: 700,
+                  backgroundColor: "#1B2626",
+                  borderRadius: "20px",
+                }}
+              >
                 Bhaktapur futsal
               </h3>
             </Carousel.Caption>
@@ -185,7 +229,14 @@ export default function Home() {
           <Carousel.Item interval={1000}>
             <img src={but} alt="Butwal_Futsal" />
             <Carousel.Caption>
-              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+              <h3
+                style={{
+                  color: "#F8F9FA",
+                  fontWeight: 700,
+                  backgroundColor: "#1B2626",
+                  borderRadius: "20px",
+                }}
+              >
                 Butwal futsal
               </h3>
             </Carousel.Caption>

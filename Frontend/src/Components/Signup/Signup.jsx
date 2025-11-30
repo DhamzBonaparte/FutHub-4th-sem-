@@ -14,8 +14,10 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [isSame, setIsSame] = useState(false);
-  const [roles,setRole]=useState("");
+  const [roles, setRole] = useState("");
+  const [phone, setPhone] = useState("");
   const navigate = useNavigate();
+  const [location, setLocation] = useState("");
 
   useEffect(() => {
     setIsSame(false);
@@ -28,15 +30,15 @@ export default function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    
+
     const isValidFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-    if(!isValidFormat){
+    if (!isValidFormat) {
       setErr("Not a valid email");
 
-      setTimeout(()=>{
-          setErr("");
-        },2000)
+      setTimeout(() => {
+        setErr("");
+      }, 2000);
       return;
     }
 
@@ -48,7 +50,9 @@ export default function Signup() {
         email: email,
         password: password,
         agreedToTerms: isAgreed,
-        roles:roles
+        roles: roles,
+        location: location,
+        phone: phone,
       });
 
       if (submit.status === 201) {
@@ -58,9 +62,9 @@ export default function Signup() {
       if (err.response?.status === 400) {
         setErr("Email Already Used!");
 
-        setTimeout(()=>{
+        setTimeout(() => {
           setErr("");
-        },2000)
+        }, 2000);
       }
       console.log(err);
     } finally {
@@ -134,8 +138,8 @@ export default function Signup() {
                   required
                   value={email}
                   onChange={(e) => {
-
-                    setEmail(e.target.value)}}
+                    setEmail(e.target.value);
+                  }}
                 />
               </div>
 
@@ -182,6 +186,26 @@ export default function Signup() {
                   className="form-input"
                   placeholder="Enter your location"
                   required
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="signup-confirm-password" className="form-label">
+                  Phone Number:
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  minlength="10"
+                  className="form-input"
+                  pattern="[0-9]{10,}"
+                  placeholder="Enter your phone number"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
 
@@ -199,7 +223,7 @@ export default function Signup() {
                       className="form-input"
                       style={{ fontSize: "20px" }}
                       required
-                      onChange={(e)=>setRole(e.target.value)}
+                      onChange={(e) => setRole(e.target.value)}
                     />
                     <label htmlFor="role-owner">Owner</label>
                   </div>
@@ -212,7 +236,7 @@ export default function Signup() {
                       value="player"
                       className="form-input"
                       required
-                      onChange={(e)=>setRole(e.target.value)}
+                      onChange={(e) => setRole(e.target.value)}
                     />
                     <label htmlFor="role-player">Player</label>
                   </div>
@@ -227,17 +251,22 @@ export default function Signup() {
                   required
                   onChange={() => setIsAgreed(!isAgreed)}
                 />
-                <label htmlFor="agree-terms" className="form-label" style={{textAlign:"center",marginTop:"6px"}}>
+                <label
+                  htmlFor="agree-terms"
+                  className="form-label"
+                  style={{ textAlign: "center", marginTop: "6px" }}
+                >
                   I agree to the{" "}
-                  <Link to='/terms' style={{textDecoration:"none"}}>
+                  <Link to="/terms" style={{ textDecoration: "none" }}>
                     Terms of Service
                   </Link>{" "}
                   and{" "}
-                  <Link to="/service" style={{textDecoration:"none"}}>
-                  Privacy Policy</Link>
+                  <Link to="/service" style={{ textDecoration: "none" }}>
+                    Privacy Policy
+                  </Link>
                 </label>
               </div>
-              <p style={{textAlign:"center",color:"red"}}>{err}</p>
+              <p style={{ textAlign: "center", color: "red" }}>{err}</p>
 
               <button
                 type="submit"

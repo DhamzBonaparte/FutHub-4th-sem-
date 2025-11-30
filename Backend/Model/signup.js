@@ -21,10 +21,22 @@ const Schema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    trim: true,
   },
   roles:{
     type:String,
-    required:true
+    required:true,
+    trim: true
+  },
+  location:{
+    type:String,
+    required:true,
+    trim: true
+  },
+  phone:{
+    type: String,
+    required: true,
+    trim: true,
   },
   agreedToTerms: {
     type: Boolean,
