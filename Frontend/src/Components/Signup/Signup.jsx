@@ -172,6 +172,19 @@ export default function Signup() {
                 </p>
               </div>
 
+              <div className="form-group">
+                <label htmlFor="signup-confirm-password" className="form-label">
+                  Your Location:
+                </label>
+                <input
+                  type="text"
+                  id="location"
+                  className="form-input"
+                  placeholder="Enter your location"
+                  required
+                />
+              </div>
+
               <div className="form-groups">
                 <label htmlFor="role" className="form-label">
                   Signing up as:
@@ -214,15 +227,14 @@ export default function Signup() {
                   required
                   onChange={() => setIsAgreed(!isAgreed)}
                 />
-                <label htmlFor="agree-terms" className="form-label">
+                <label htmlFor="agree-terms" className="form-label" style={{textAlign:"center",marginTop:"6px"}}>
                   I agree to the{" "}
-                  <a href="#" className="text-link">
+                  <Link to='/terms' style={{textDecoration:"none"}}>
                     Terms of Service
-                  </a>{" "}
+                  </Link>{" "}
                   and{" "}
-                  <a href="#" className="text-link">
-                    Privacy Policy
-                  </a>
+                  <Link to="/service" style={{textDecoration:"none"}}>
+                  Privacy Policy</Link>
                 </label>
               </div>
               <p style={{textAlign:"center",color:"red"}}>{err}</p>

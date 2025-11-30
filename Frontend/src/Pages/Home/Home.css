@@ -275,6 +275,7 @@ nav ul li a:hover {
 /* Partners Section */
 .partners-section {
   padding: 5rem 2rem;
+  height: 20%;
   background-color: var(--text-white);
 }
 
@@ -307,7 +308,7 @@ nav ul li a:hover {
 
 .carousel-item img {
   width: 100%;
-  height: 160px;
+  height: 80vh;
   object-fit: cover;
 }
 

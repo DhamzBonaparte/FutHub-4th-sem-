@@ -5,6 +5,7 @@ import PDashboard from "./Pages/Dashboard/Player/PDashboard";
 import ODashboard from "./Pages/Dashboard/Owner/ODashboard";
 import Home from "./Pages/Home/Home";
 import TOC from "./Pages/TOC/TOC";
+import Service from "./Pages/Service/Service";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/owner" element={<ODashboard/>}></Route>
         <Route path='/terms' element={<TOC/>}></Route>
         <Route path="/" element={<Home/>}></Route>
+        <Route path="/service" element={<Service/>}></Route>
       </Routes>
     </>
   );

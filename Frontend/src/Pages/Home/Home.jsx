@@ -1,13 +1,22 @@
 import "./Home.css";
 import { useRef, useEffect, useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Carousel from "react-bootstrap/Carousel";
+import "bootstrap/dist/css/bootstrap.min.css";
+import ktm from "./images/ktm_futsal.jpg";
+import bkt from "./images/bkt_futsal.jpg";
+import bir from "./images/biratnagar_futsal.jpg";
+import lal from "./images/lalitput_futsal.jpg";
+import pok from "./images/pokhara_futsal.jpg";
+import chi from "./images/chitwan_futsal.jpg";
+import but from "./images/butwal_futsal.jpg";
 
 export default function Home() {
   const home = useRef(null);
   const prop = useRef(null);
   const blog = useRef(null);
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [scroll, setScroll] = useState(0);
 
@@ -17,8 +26,8 @@ export default function Home() {
     });
   });
 
-  function redirect(){
-    navigate('/login');
+  function redirect() {
+    navigate("/login");
   }
 
   function scrollToRef(ref) {
@@ -42,7 +51,7 @@ export default function Home() {
         <nav>
           <ul>
             <li>
-                <Link to="/">Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li className="dropdown">
               <Link to="/login">Login</Link>{" "}
@@ -64,7 +73,7 @@ export default function Home() {
           height: "1vh",
           backgroundColor: "#0D1B2A",
           position: "sticky",
-          top: "11%",
+          top: "10%",
           zIndex: 100,
         }}
       >
@@ -88,7 +97,7 @@ export default function Home() {
             futsal community in Nepal.
           </p>
           <button className="cta-button">
-            Get Started <i className="fas fa-arrow-right"></i>
+            <Link to="/login" style={{textDecoration:"none",color:"white"}}>Get Started</Link> <i className="fas fa-arrow-right"></i>
           </button>
         </div>
         <div className="hero-image"></div>
@@ -96,7 +105,7 @@ export default function Home() {
       <section className="action-section" id="action-section" ref={prop}>
         <h2 className="section-title">What We Offer</h2>
         <div className="action-boxes">
-          <div className="action-box" onClick={()=>redirect()}>
+          <div className="action-box" onClick={() => redirect()}>
             <i className="fas fa-calendar-check"></i>
             <h3>Book Futsal</h3>
             <p>
@@ -104,7 +113,7 @@ export default function Home() {
               and instant confirmation.
             </p>
           </div>
-          <div className="action-box"  onClick={()=>redirect()}>
+          <div className="action-box" onClick={() => redirect()}>
             <i className="fas fa-users"></i>
             <h3>Find Opponents</h3>
             <p>
@@ -112,7 +121,7 @@ export default function Home() {
               futsal matches.
             </p>
           </div>
-          <div className="action-box"  onClick={()=>redirect()}>
+          <div className="action-box" onClick={() => redirect()}>
             <i className="fas fa-user-friends"></i>
             <h3>Find Teammates</h3>
             <p>
@@ -124,65 +133,64 @@ export default function Home() {
       </section>
       <section className="partners-section" id="partners">
         <h2 className="section-title">Our Partners</h2>
-        <div className="carousel">
-          <button className="carousel-btn prev">
-            <i className="fas fa-chevron-left"></i>
-          </button>
-          <div className="carousel-track">
-            <div className="carousel-item">
-              <img
-                src="https://images.unsplash.com/photo-1518604666860-9ed391f76460?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt="Kathmandu Futsal"
-              />
-              <h4>Kathmandu Futsal</h4>
-            </div>
-            <div className="carousel-item">
-              <img
-                src="https://images.unsplash.com/photo-1556056504-5c7696c4c28d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1976&q=80"
-                alt="Pokhara Arena"
-              />
-              <h4>Pokhara Arena</h4>
-            </div>
-            <div className="carousel-item">
-              <img
-                src="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"
-                alt="Chitwan Sports"
-              />
-              <h4>Chitwan Sports</h4>
-            </div>
-            <div className="carousel-item">
-              <img
-                src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt="Biratnagar Ground"
-              />
-              <h4>Biratnagar Ground</h4>
-            </div>
-            <div className="carousel-item">
-              <img
-                src="https://images.unsplash.com/photo-1590179064043-86d1bcfee0e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt="Lalitpur Futsal"
-              />
-              <h4>Lalitpur Futsal</h4>
-            </div>
-            <div className="carousel-item">
-              <img
-                src="https://images.unsplash.com/photo-1527281403897-97e5fb4f6eae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt="Bhaktapur Court"
-              />
-              <h4>Bhaktapur Court</h4>
-            </div>
-            <div className="carousel-item">
-              <img
-                src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt="Butwal Sports"
-              />
-              <h4>Butwal Sports</h4>
-            </div>
-          </div>
-          <button className="carousel-btn next">
-            <i className="fas fa-chevron-right"></i>
-          </button>
-        </div>
+        <Carousel>
+          <Carousel.Item interval={1000}>
+            <img src={ktm} alt="Kathmandu_Futsal" />
+            <Carousel.Caption>
+              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+                Kathmandu Futsal
+              </h3>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={1000}>
+            <img src={pok} alt="Pokhara_Futsal" />
+            <Carousel.Caption>
+              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+                Pokhara Futsal
+              </h3>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={1000}>
+            <img src={chi} alt="Chitwan_Futsal" />
+            <Carousel.Caption>
+              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+                Chitwan futsal
+              </h3>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={1000}>
+            <img src={bir} alt="Biratnagar_Futsal" />
+            <Carousel.Caption>
+              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+                Biratnagar futsal
+              </h3>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={1000}>
+            <img src={lal} alt="Lalitpur_Futsal" />
+            <Carousel.Caption>
+              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+                Lalitpur futsal
+              </h3>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={1000}>
+            <img src={bkt} alt="Bhaktapur_Futsal" />
+            <Carousel.Caption>
+              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+                Bhaktapur futsal
+              </h3>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={1000}>
+            <img src={but} alt="Butwal_Futsal" />
+            <Carousel.Caption>
+              <h3 style={{ color: "#F8F9FA", fontWeight: 700,backgroundColor:"#1B2626",borderRadius:"20px" }}>
+                Butwal futsal
+              </h3>
+            </Carousel.Caption>
+          </Carousel.Item>
+        </Carousel>
       </section>
 
       <section className="news-section" id="news" ref={blog}>
@@ -419,8 +427,9 @@ export default function Home() {
                 <i className="fas fa-phone"></i> +977 9811734678
               </li>
               <li>
-                <i className="fas fa-envelope"></i> sulavdhami420@gmail.com <br />
-                 <i className="fas fa-envelope"></i>lizanniraula@gmail.com
+                <i className="fas fa-envelope"></i> sulavdhami420@gmail.com{" "}
+                <br />
+                <i className="fas fa-envelope"></i>lizanniraula@gmail.com
               </li>
             </ul>
           </div>
