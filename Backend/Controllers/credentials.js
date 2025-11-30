@@ -32,7 +32,7 @@ const getCredentials = async (req, res) => {
         email: approved.email,
         firstName: approved.firstName,
         lastName: approved.lastName,
-        role:approved.roles,
+        role: approved.roles,
       },
       status: "completed",
     });
@@ -47,8 +47,16 @@ const getCredentials = async (req, res) => {
 };
 
 const setCredentials = async (req, res) => {
-  const { firstName, lastName, email, password, agreedToTerms,roles,location,phone } =
-    req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    agreedToTerms,
+    roles,
+    location,
+    phone,
+  } = req.body;
 
   const newPassword = await bcrypt.hash(password, 13);
 
@@ -61,7 +69,7 @@ const setCredentials = async (req, res) => {
       roles,
       agreedToTerms,
       location,
-      phone
+      phone,
     });
     res.status(201).json({
       msg: "User created successfully",

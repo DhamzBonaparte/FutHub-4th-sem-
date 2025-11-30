@@ -10,6 +10,9 @@ import lal from "./images/lalitput_futsal.jpg";
 import pok from "./images/pokhara_futsal.jpg";
 import chi from "./images/chitwan_futsal.jpg";
 import but from "./images/butwal_futsal.jpg";
+import blog1 from './images/blog_football.jpg'
+import blog2 from './images/blog_2.jpg'
+import blog3 from './images/blog-3.jpg'
 
 export default function Home() {
   const home = useRef(null);
@@ -25,6 +28,13 @@ export default function Home() {
       setScroll(Math.floor(window.scrollY));
     });
   });
+
+  useEffect(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth" 
+        });
+      }, []);
 
   function redirect() {
     navigate("/login");
@@ -249,7 +259,7 @@ export default function Home() {
         <div className="news-grid">
           <div className="news-card">
             <img
-              src="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"
+              src={blog1}
               alt="New Futsal Opening"
             />
             <div className="news-content">
@@ -265,7 +275,7 @@ export default function Home() {
           </div>
           <div className="news-card">
             <img
-              src="https://images.unsplash.com/photo-1556056504-5c7696c4c28d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1976&q=80"
+              src={blog2}
               alt="Maintenance Notice"
             />
             <div className="news-content">
@@ -281,7 +291,7 @@ export default function Home() {
           </div>
           <div className="news-card">
             <img
-              src="https://rosecityfutsal.com/wp-content/uploads/2024/11/1O8A1769-Enhanced-NR-copy.jpg"
+              src={blog3}
               alt="Tournament News"
             />
             <div className="news-content">

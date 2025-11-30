@@ -1,6 +1,15 @@
 import "./TOC.css"
+import { useEffect } from "react";
 
 export default function TOC() {
+
+    useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth" 
+    });
+  }, []);
+
   return (
   <>
     <div className="terms-container">

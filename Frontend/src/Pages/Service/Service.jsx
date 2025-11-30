@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import "./Service.css"
 
 export default function Service(){
+
+    useEffect(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth" 
+        });
+      }, []);
+
+
     return(
         <>
             <div className="policy-container">

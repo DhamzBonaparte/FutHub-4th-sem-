@@ -5,6 +5,14 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 export default function Signup() {
+
+  useEffect(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth" 
+        });
+      }, []);
+
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");

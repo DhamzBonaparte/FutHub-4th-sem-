@@ -107,7 +107,7 @@ nav ul li a:hover {
 /* Hero Section */
 .hero {
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    url("https://english.onlinekhabar.com/wp-content/uploads/2022/03/futsal-kickoff-scaled.jpg")
+    url("images/futsal-kickoff-scaled.jpg")
       no-repeat center center;
   background-size: cover;
   color: var(--text-white);
