@@ -10,9 +10,19 @@ import lal from "./images/lalitput_futsal.jpg";
 import pok from "./images/pokhara_futsal.jpg";
 import chi from "./images/chitwan_futsal.jpg";
 import but from "./images/butwal_futsal.jpg";
-import blog1 from './images/blog_football.jpg'
-import blog2 from './images/blog_2.jpg'
-import blog3 from './images/blog-3.jpg'
+import blog1 from "./images/blog_football.jpg";
+import blog2 from "./images/blog_2.jpg";
+import blog3 from "./images/blog-3.jpg";
+import HomeIcon from "@mui/icons-material/Home";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import TravelExploreSharpIcon from "@mui/icons-material/TravelExploreSharp";
+import LoginIcon from "@mui/icons-material/Login";
+import BookIcon from "@mui/icons-material/Book";
+import SchoolSharpIcon from "@mui/icons-material/SchoolSharp";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
+import PhoneSharpIcon from "@mui/icons-material/PhoneSharp";
+import EmailSharpIcon from "@mui/icons-material/EmailSharp";
 
 export default function Home() {
   const home = useRef(null);
@@ -30,11 +40,11 @@ export default function Home() {
   });
 
   useEffect(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth" 
-        });
-      }, []);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   function redirect() {
     navigate("/login");
@@ -61,18 +71,30 @@ export default function Home() {
         <nav>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/">
+                <HomeIcon className="icon" />
+                Home
+              </Link>
             </li>
             <li className="dropdown">
-              <Link to="/login">Login</Link>{" "}
+              <Link to="/login">
+                <LoginIcon className="icon" />
+                Login
+              </Link>{" "}
               <i className="fas fa-chevron-down"></i>
             </li>
             <li className="dropdown">
-              <Link to="/signup">Signup</Link>{" "}
+              <Link to="/signup">
+                <PersonAddAlt1Icon className="icon" />
+                Signup
+              </Link>{" "}
               <i className="fas fa-chevron-down"></i>
             </li>
             <li>
-              <a href="#news">Blog</a>
+              <a href="#news">
+                <BookIcon className="icon" />
+                Blog
+              </a>
             </li>
           </ul>
         </nav>
@@ -258,10 +280,7 @@ export default function Home() {
         <h2 className="section-title">Latest News & Articles</h2>
         <div className="news-grid">
           <div className="news-card">
-            <img
-              src={blog1}
-              alt="New Futsal Opening"
-            />
+            <img src={blog1} alt="New Futsal Opening" />
             <div className="news-content">
               <h3>New Futsal Arena Opening in Thamel</h3>
               <p>
@@ -274,10 +293,7 @@ export default function Home() {
             </div>
           </div>
           <div className="news-card">
-            <img
-              src={blog2}
-              alt="Maintenance Notice"
-            />
+            <img src={blog2} alt="Maintenance Notice" />
             <div className="news-content">
               <h3>Maintenance Schedule for Popular Courts</h3>
               <p>
@@ -290,10 +306,7 @@ export default function Home() {
             </div>
           </div>
           <div className="news-card">
-            <img
-              src={blog3}
-              alt="Tournament News"
-            />
+            <img src={blog3} alt="Tournament News" />
             <div className="news-content">
               <h3>Annual Futsal Tournament Registration Open</h3>
               <p>
@@ -432,13 +445,14 @@ export default function Home() {
             </div>
           </div>
           <div className="footer-column">
-            <h3>Quick Links</h3>
+            <h3 style={{ marginLeft: "30px" }}>Quick Links</h3>
             <ul>
               <li>
                 <a
                   style={{ cursor: "pointer" }}
                   onClick={() => scrollToRef(home)}
                 >
+                  <HomeIcon className="icon" />
                   Home
                 </a>
               </li>
@@ -447,6 +461,7 @@ export default function Home() {
                   style={{ cursor: "pointer" }}
                   onClick={() => scrollToRef(prop)}
                 >
+                  <BookmarkAddedIcon className="icon" />
                   Book Futsal
                 </a>
               </li>
@@ -455,6 +470,7 @@ export default function Home() {
                   style={{ cursor: "pointer" }}
                   onClick={() => scrollToRef(prop)}
                 >
+                  <TravelExploreSharpIcon className="icon" />
                   Find Opponents
                 </a>
               </li>
@@ -463,6 +479,7 @@ export default function Home() {
                   style={{ cursor: "pointer" }}
                   onClick={() => scrollToRef(prop)}
                 >
+                  <PersonSearchIcon className="icon" />
                   Find Teammates
                 </a>
               </li>
@@ -471,35 +488,33 @@ export default function Home() {
                   style={{ cursor: "pointer" }}
                   onClick={() => scrollToRef(blog)}
                 >
+                  <BookIcon className="icon" />
                   Blog
                 </a>
               </li>
             </ul>
           </div>
           <div className="footer-column">
-            <h3>Contact Us</h3>
+            <h3 style={{ marginLeft: "30px" }}>Contact Us</h3>
             <ul>
               <li>
-                <i className="fas fa-map-marker-alt"></i> New Summit College,
-                Kathmandu
+                <SchoolSharpIcon className="icon" />
+                New Summit College, Kathmandu
               </li>
               <li>
-                <i className="fas fa-phone"></i> +977 9840267722 <br />
-                <i className="fas fa-phone"></i> +977 9811734678
+                <PhoneSharpIcon className="icon" /> +977 9840267722, +977
+                9811734678 <br />
+                {/* <PhoneSharpIcon className="icon"/>  +977 9811734678 */}
               </li>
               <li>
-                <i className="fas fa-envelope"></i> sulavdhami420@gmail.com{" "}
-                <br />
-                <i className="fas fa-envelope"></i>lizanniraula@gmail.com
+                <EmailSharpIcon className="icon" /> sulavdhami420@gmail.com ,
+                lizanniraula@gmail.com
               </li>
             </ul>
           </div>
         </div>
         <div className="footer-bottom">
-          <p>
-            &copy; 2023 FutHub. All rights reserved. | BCA Project - Tribhuvan
-            University
-          </p>
+          <p>&copy; 2023 FutHub. All rights reserved.</p>
         </div>
       </footer>
 

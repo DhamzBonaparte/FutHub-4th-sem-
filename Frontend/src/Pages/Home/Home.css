@@ -1,11 +1,11 @@
 :root {
-     --primary-green: #1B5E20;   /* deep turf green */
-  --dark-green: #0D3B1E;      /* stadium shadow green */
-  --light-green: #66BB6A;     /* fresh pitch highlight */
-  --accent-green: #F9A825;   /* vibrant energy accent */
-  --text-white: #FFFFFF;      /* clean contrast */
-  --text-light: #F1F1F1;      /* soft neutral background */
-  --accent-gray: #37474F;     /* professional slate gray */
+  --primary-green: #1b5e20; /* deep turf green */
+  --dark-green: #0d3b1e; /* stadium shadow green */
+  --light-green: #66bb6a; /* fresh pitch highlight */
+  --accent-green: #f9a825; /* vibrant energy accent */
+  --text-white: #ffffff; /* clean contrast */
+  --text-light: #f1f1f1; /* soft neutral background */
+  --accent-gray: #37474f; /* professional slate gray */
   --card-bg: rgba(255, 255, 255, 0.95);
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
@@ -107,8 +107,7 @@ nav ul li a:hover {
 /* Hero Section */
 .hero {
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    url("images/futsal-kickoff-scaled.jpg")
-      no-repeat center center;
+    url("images/futsal-kickoff-scaled.jpg") no-repeat center center;
   background-size: cover;
   color: var(--text-white);
   padding: 5rem 2rem;
@@ -587,4 +586,12 @@ footer {
   .carousel-btn {
     display: none;
   }
+}
+
+.icon {
+  margin-right: 10px;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
