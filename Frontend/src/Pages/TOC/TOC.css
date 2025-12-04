@@ -123,9 +123,6 @@
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
             
             .terms-container {
                 padding: 1rem;

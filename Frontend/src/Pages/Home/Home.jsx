@@ -22,6 +22,7 @@ import SchoolSharpIcon from "@mui/icons-material/SchoolSharp";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import PhoneSharpIcon from "@mui/icons-material/PhoneSharp";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import EmailSharpIcon from "@mui/icons-material/EmailSharp";
 
 export default function Home() {
@@ -59,16 +60,23 @@ export default function Home() {
       <header
         style={{
           background: "#0D1B2A",
+          height: "11vh",
         }}
       >
         <div className="logo">
-          <i className="fas fa-futbol"></i>
-          Fut <span style={{ color: "lightgreen" }}>Hub</span>
+          Fut{" "}
+          <span style={{ color: "lightgreen", margin: "0", padding: "0" }}>
+            Hub
+          </span>
         </div>
-        <div className="mobile-menu">
-          <i className="fas fa-bars"></i>
-        </div>
-        <nav>
+        <div className="mobile-menu"></div>
+        <nav
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <ul>
             <li>
               <Link to="/">
@@ -81,14 +89,12 @@ export default function Home() {
                 <LoginIcon className="icon" />
                 Login
               </Link>{" "}
-              <i className="fas fa-chevron-down"></i>
             </li>
             <li className="dropdown">
               <Link to="/signup">
                 <PersonAddAlt1Icon className="icon" />
                 Signup
               </Link>{" "}
-              <i className="fas fa-chevron-down"></i>
             </li>
             <li>
               <a href="#news">
@@ -105,7 +111,7 @@ export default function Home() {
           height: "1vh",
           backgroundColor: "#0D1B2A",
           position: "sticky",
-          top: "10%",
+          top: "11%",
           zIndex: 100,
         }}
       >
@@ -116,7 +122,7 @@ export default function Home() {
             width: `${scroll}px`,
             backgroundColor: "#F9A825",
             position: "sticky",
-            top: "11%",
+            top: "14%",
             zIndex: 100,
           }}
         ></div>
@@ -130,7 +136,15 @@ export default function Home() {
           </p>
           <Link to="/login" style={{ textDecoration: "none", color: "white" }}>
             <button className="cta-button">
-              Get Started <i className="fas fa-arrow-right"></i>
+              Get Started{" "}
+              <ArrowForwardIcon
+                className="icon"
+                style={{
+                  fontSize: "2.2rem",
+                  transform: "translateX(0.9rem)",
+                  fontWeight: "700",
+                }}
+              />
             </button>
           </Link>
         </div>
@@ -140,7 +154,6 @@ export default function Home() {
         <h2 className="section-title">What We Offer</h2>
         <div className="action-boxes">
           <div className="action-box" onClick={() => redirect()}>
-            <i className="fas fa-calendar-check"></i>
             <h3>Book Futsal</h3>
             <p>
               Find and book futsal courts near you with real-time availability
@@ -148,7 +161,6 @@ export default function Home() {
             </p>
           </div>
           <div className="action-box" onClick={() => redirect()}>
-            <i className="fas fa-users"></i>
             <h3>Find Opponents</h3>
             <p>
               Connect with other players looking for opponents to complete your
@@ -156,7 +168,6 @@ export default function Home() {
             </p>
           </div>
           <div className="action-box" onClick={() => redirect()}>
-            <i className="fas fa-user-friends"></i>
             <h3>Find Teammates</h3>
             <p>
               Find players to join your team or join existing teams for regular

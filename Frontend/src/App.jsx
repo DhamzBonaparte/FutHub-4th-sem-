@@ -18,6 +18,7 @@ function App() {
         <Route path='/terms' element={<TOC/>}></Route>
         <Route path="/" element={<Home/>}></Route>
         <Route path="/service" element={<Service/>}></Route>
+        <Route path="/player" element={<PDashboard/>}></Route>
       </Routes>
     </>
   );

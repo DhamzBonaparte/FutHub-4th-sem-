@@ -1,0 +1,93 @@
+.sidebar {
+  width: var(--sidebar-width);
+  background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+  color: var(--text-white);
+  padding: 1.5rem;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  transition: var(--transition);
+}
+
+.logo2 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.logo2 h1 {
+  font-size: 1.8rem;
+  margin-left: 10px;
+}
+
+.logo2 i {
+  font-size: 2rem;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  background-color: var(--light-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark-green);
+  margin-right: 1rem;
+}
+
+.user-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+}
+
+.user-info p {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.nav-menu {
+  list-style: none;
+}
+
+.nav-menu li {
+  margin-bottom: 0.5rem;
+}
+
+.nav-menu a {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  color: var(--text-white);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-menu i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+  width: 24px;
+}

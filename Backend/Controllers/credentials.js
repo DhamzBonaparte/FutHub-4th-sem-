@@ -1,7 +1,9 @@
 const login = require("../Model/login");
 const signup = require("../Model/signup");
 const bcrypt = require("bcrypt");
+const mail = require("nodemailer");
 
+// for login
 const getCredentials = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -46,6 +48,7 @@ const getCredentials = async (req, res) => {
   }
 };
 
+//for signup
 const setCredentials = async (req, res) => {
   const {
     firstName,
