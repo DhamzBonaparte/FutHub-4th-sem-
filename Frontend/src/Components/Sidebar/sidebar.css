@@ -1,25 +1,26 @@
 .sidebar {
   width: var(--sidebar-width);
-  background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+  background: #0d1b2a;
   color: var(--text-white);
   padding: 1.5rem;
   position: fixed;
   height: 100vh;
   overflow-y: auto;
   transition: var(--transition);
+  left:0;
 }
 
 .logo2 {
   display: flex;
+  justify-content: center;
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.logo2 h1 {
-  font-size: 1.8rem;
-  margin-left: 10px;
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
 }
 
 .logo2 i {
@@ -29,6 +30,7 @@
 .user-profile {
   display: flex;
   align-items: center;
+  justify-content: space-evenly;
   margin-bottom: 2rem;
   padding: 1rem;
   background-color: rgba(255, 255, 255, 0.1);
@@ -61,6 +63,11 @@
   padding: 0.2rem 0.5rem;
   border-radius: 20px;
   display: inline-block;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
 }
 
 .nav-menu {
@@ -69,12 +76,13 @@
 
 .nav-menu li {
   margin-bottom: 0.5rem;
+  width: 100%;
 }
 
 .nav-menu a {
   display: flex;
   align-items: center;
-  padding: 0.8rem 1rem;
+  padding: 0.8rem ;
   color: var(--text-white);
   text-decoration: none;
   border-radius: 8px;
@@ -84,6 +92,7 @@
 .nav-menu a:hover,
 .nav-menu a.active {
   background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
 }
 
 .nav-menu i {
@@ -91,3 +100,34 @@
   font-size: 1.2rem;
   width: 24px;
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    padding: 1rem;
+  }
+
+  .logo2 h1,
+  .user-info,
+  .nav-menu span {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: 70px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+} 

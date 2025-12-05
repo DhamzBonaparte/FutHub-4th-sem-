@@ -1,44 +1,69 @@
 import "./PDash.css";
 import Sidebar from "d:/FutHub/Frontend/src/Components/Sidebar/Sidebar.jsx";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
 export default function PDashboard() {
   return (
     <>
       <Sidebar></Sidebar>
       <div className="main-content">
-        <div className="header">
-          <h2 className="dashboard-title">Player Dashboard</h2>
-        </div>
 
         <div id="dashboard" className="dashboard-section">
           <div className="stats-container">
             <div className="stat-card">
-              <div className="stat-icon">
-                <i className="fas fa-calendar-check"></i>
+                <div
+                className="stat-icon"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontSize: "2.5rem",
+                }}
+              >
+                <EventAvailableIcon className="bigIcon" />
               </div>
-              <div className="stat-title">Upcoming Matches</div>
+              <div className="stat-title">
+                Upcoming Matches
+              </div>
               <div className="stat-value">3</div>
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon">
-                <i className="fas fa-futbol"></i>
+              <div
+                className="stat-icon"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontSize: "2.5rem",
+                }}
+              >
+                <SportsSoccerIcon className="bigIcon" />
               </div>
               <div className="stat-title">Total Bookings</div>
               <div className="stat-value">15</div>
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon">
-                <i className="fas fa-heart"></i>
+              <div className="stat-icon" style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontSize: "2.5rem",
+                }}>
+                <FavoriteIcon className="bigIcon" />
               </div>
               <div className="stat-title">Favourite Venues</div>
               <div className="stat-value">4</div>
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon">
-                <i className="fas fa-running"></i>
+              <div className="stat-icon" style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontSize: "2.5rem",
+                }}>
+                <DirectionsRunIcon className="bigIcon" />
               </div>
               <div className="stat-title">Matches Played</div>
               <div className="stat-value">12</div>
@@ -47,9 +72,6 @@ export default function PDashboard() {
 
           <div className="section-header">
             <h2>Upcoming Bookings</h2>
-            <a href="#" className="view-all">
-              View All <i className="fas fa-arrow-right"></i>
-            </a>
           </div>
 
           <div className="upcoming-matches">

@@ -2,6 +2,8 @@ const login = require("../Model/login");
 const signup = require("../Model/signup");
 const bcrypt = require("bcrypt");
 const mail = require("nodemailer");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 // for login
 const getCredentials = async (req, res) => {
@@ -27,6 +29,23 @@ const getCredentials = async (req, res) => {
       });
     }
 
+    const token=jwt.sign(
+      {
+        id: approved._id,
+        email: approved.email,
+        firstName: approved.firstName,
+        lastName: approved.lastName,
+        role: approved.roles,
+      },process.env.SECRET,
+      {expiresIn:"1h"}
+    )
+
+    res.cookie("token",token,{
+      httpOnly:true,
+      secure:true,
+      sameSite:"none",
+    })
+
     res.status(200).json({
       msg: "Login successful",
       data: {
@@ -37,8 +56,10 @@ const getCredentials = async (req, res) => {
         role: approved.roles,
       },
       status: "completed",
+      token:token
     });
     console.log(correctPassword);
+    
   } catch (err) {
     res.status(401).json({
       msg: "Username or Password is incorrect.",
@@ -87,4 +108,8 @@ const setCredentials = async (req, res) => {
   }
 };
 
-module.exports = { getCredentials, setCredentials };
+const playerData=()=>{
+  res.json({msg:"Hiii"})
+}
+
+module.exports = { getCredentials, setCredentials,playerData };

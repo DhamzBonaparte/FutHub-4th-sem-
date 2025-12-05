@@ -25,7 +25,8 @@ export default function Login() {
       const login = await axios.post(`http://localhost:3000/api/v1/login`, {
         email: email,
         password: pass,
-      });
+      },{ withCredentials: true }
+    );
       setErr("");
  
       if( login.data.data.role==="player"){
