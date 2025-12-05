@@ -8,10 +8,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function Sidebar() {
+export default function Sidebar({ goToFav }) {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
-  const navigate=useNavigate();
+  const [active, setActive] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAllData();
@@ -26,17 +27,16 @@ export default function Sidebar() {
     } catch (err) {
       if (err.response?.status === 401) {
         setError("You must Login to view this page!");
-        navigate('/login')
+        navigate("/login");
       } else if (err.response?.status === 403) {
         setError("Session expired. Please login again.");
-        navigate('/login');
+        navigate("/login");
       } else {
         setError("Something went wrong. Please try again");
       }
     }
   };
 
-  console.log(data);
   return (
     <>
       <div className="sidebar">
@@ -64,31 +64,50 @@ export default function Sidebar() {
 
         <ul className="nav-menu">
           <li>
-            <a href="#" className="active">
+            <a
+              href="#"
+              className={active == "dashboard" ? "active" : ""}
+              onClick={() => setActive("dashboard")}
+            >
               <DashboardIcon className="icon" />
               <span>Dashboard</span>
             </a>
           </li>
           <li>
-            <a>
+            <a
+              className={active == "book" ? "active" : ""}
+              onClick={() => setActive("book")}
+            >
               <BookIcon className="icon" />
               <span>Booking</span>
             </a>
           </li>
           <li>
-            <a>
+            <a
+              onClick={() => {
+                goToFav();
+                setActive("fav");
+              }}
+              className={active == "fav" ? "active" : ""}
+            >
               <FavoriteIcon className="icon" />
               <span>Favourites</span>
             </a>
           </li>
           <li>
-            <a>
+            <a
+              className={active == "opponent" ? "active" : ""}
+              onClick={() => setActive("opponent")}
+            >
               <PersonAddIcon className="icon" />
               <span>Opponents</span>
             </a>
           </li>
           <li>
-            <a>
+            <a
+              className={active == "team" ? "active" : ""}
+              onClick={() => setActive("team")}
+            >
               <GroupsIcon className="icon" />
               <span>Teammates</span>
             </a>
