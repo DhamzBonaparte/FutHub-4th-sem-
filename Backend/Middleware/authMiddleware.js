@@ -5,7 +5,7 @@ const authorize = (req, res, next) => {
   const token = req.cookies?.token;
 
   if (!token) {
-    res.status(401).json({ msg: "Not authorized to enter!" });
+   return res.status(401).json({ msg: "Not authorized to enter!" });
   }
 
   try {
@@ -13,7 +13,8 @@ const authorize = (req, res, next) => {
     req.user=decoded;
     next();
   } catch (err) { 
-    res.status(403).send({ msg: "Invalid or Expired token" });
+     console.error("JWT error:", err.message); 
+     return res.status(403).send({ msg: "Invalid or Expired token" });
   }
 };
 

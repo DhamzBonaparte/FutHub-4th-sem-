@@ -45,6 +45,9 @@ export default function Login() {
           setErr("");
         }, 1500);
       } else {
+        console.log(err
+          
+        );
         setErr("Something went wrong. Please try again.");
       }
     } finally {

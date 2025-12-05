@@ -8,6 +8,7 @@ require("dotenv").config();
 // for login
 const getCredentials = async (req, res) => {
   try {
+
     const { email, password } = req.body;
     console.log(req.body);
 
@@ -42,8 +43,8 @@ const getCredentials = async (req, res) => {
 
     res.cookie("token",token,{
       httpOnly:true,
-      secure:true,
-      sameSite:"none",
+      secure:false,
+      sameSite:"lax",
     })
 
     res.status(200).json({

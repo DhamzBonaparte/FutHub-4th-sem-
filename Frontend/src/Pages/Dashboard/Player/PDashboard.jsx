@@ -2,16 +2,17 @@ import "./PDash.css";
 import Sidebar from "d:/FutHub/Frontend/src/Components/Sidebar/Sidebar.jsx";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
-import { useEffect, useState } from "react";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 export default function PDashboard() {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const ref = useRef();
 
   useEffect(() => {
     getAllData();
@@ -25,11 +26,19 @@ export default function PDashboard() {
       setData(res.data.msg);
     } catch (err) {
       if (err.response?.status === 401) {
-        setError("You must Login to view this page!");
-        navigate('/login')
+        setError("You must Login to view dashboard!");
+        alert("You must Login to view dashboard!");
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
       } else if (err.response?.status === 403) {
         setError("Session expired. Please login again.");
-        navigate('/login');
+        alert("Session expired. Please login again.");
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
       } else {
         setError("Something went wrong. Please try again");
       }
@@ -38,12 +47,26 @@ export default function PDashboard() {
 
   return (
     <>
+      <div className="error">
+        <h3
+          style={{
+            textAlign: "center",
+            padding: "10px",
+            display: error ? "block" : "none",
+          }}
+        >
+          {error}
+        </h3>
+      </div>
       <Sidebar></Sidebar>
-      <div className="main-content">
+      <div
+        className="main-content"
+        style={error ? { filter: "blur(10px)" } : { filter: "blur(0px)" }}
+      >
         <div id="dashboard" className="dashboard-section">
           <div className="stats-container">
             <div className="stat-card">
-                <div
+              <div
                 className="stat-icon"
                 style={{
                   display: "flex",
@@ -53,9 +76,7 @@ export default function PDashboard() {
               >
                 <EventAvailableIcon className="bigIcon" />
               </div>
-              <div className="stat-title">
-                Upcoming Matches
-              </div>
+              <div className="stat-title">Upcoming Matches</div>
               <div className="stat-value">3</div>
             </div>
 
@@ -75,11 +96,14 @@ export default function PDashboard() {
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon" style={{
+              <div
+                className="stat-icon"
+                style={{
                   display: "flex",
                   justifyContent: "center",
                   fontSize: "2.5rem",
-                }}>
+                }}
+              >
                 <FavoriteIcon className="bigIcon" />
               </div>
               <div className="stat-title">Favourite Venues</div>
@@ -87,11 +111,14 @@ export default function PDashboard() {
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon" style={{
+              <div
+                className="stat-icon"
+                style={{
                   display: "flex",
                   justifyContent: "center",
                   fontSize: "2.5rem",
-                }}>
+                }}
+              >
                 <DirectionsRunIcon className="bigIcon" />
               </div>
               <div className="stat-title">Matches Played</div>

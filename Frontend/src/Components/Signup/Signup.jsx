@@ -207,7 +207,7 @@ export default function Signup() {
                   type="tel"
                   id="phone"
                   name="phone"
-                  minlength="10"
+                  minLength="10"
                   className="form-input"
                   pattern="[0-9]{10,}"
                   placeholder="Enter your phone number"
