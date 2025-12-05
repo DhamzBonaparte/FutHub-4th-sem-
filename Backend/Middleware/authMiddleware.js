@@ -12,7 +12,7 @@ const authorize = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.SECRET);
     req.user=decoded;
     next();
-  } catch (err) {
+  } catch (err) { 
     res.status(403).send({ msg: "Invalid or Expired token" });
   }
 };

@@ -108,8 +108,8 @@ const setCredentials = async (req, res) => {
   }
 };
 
-const playerData=()=>{
-  res.json({msg:"Hiii"})
+const playerData=(req,res)=>{
+  res.status(200).json({msg:req.user})
 }
 
 module.exports = { getCredentials, setCredentials,playerData };

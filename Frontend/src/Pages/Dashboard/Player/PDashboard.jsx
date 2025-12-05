@@ -4,13 +4,42 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 export default function PDashboard() {
+  const [data, setData] = useState({});
+  const [error, setError] = useState("");
+  const navigate=useNavigate();
+
+  useEffect(() => {
+    getAllData();
+  }, []);
+
+  const getAllData = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/v1/player", {
+        withCredentials: true,
+      });
+      setData(res.data.msg);
+    } catch (err) {
+      if (err.response?.status === 401) {
+        setError("You must Login to view this page!");
+        navigate('/login')
+      } else if (err.response?.status === 403) {
+        setError("Session expired. Please login again.");
+        navigate('/login');
+      } else {
+        setError("Something went wrong. Please try again");
+      }
+    }
+  };
+
   return (
     <>
       <Sidebar></Sidebar>
       <div className="main-content">
-
         <div id="dashboard" className="dashboard-section">
           <div className="stats-container">
             <div className="stat-card">
