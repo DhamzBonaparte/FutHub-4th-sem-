@@ -4,6 +4,9 @@ import { useOutletContext } from "react-router-dom";
 
 export default function Opponent() {
   const [beOpponent, setBeOpponent] = useState(false);
+  const [totalPlayers, setTotalPlayers] = useState(5);
+  const [custom, setCustom] = useState("");
+
   return (
     <>
       <div id="opponents" className="opponents-section">
@@ -97,17 +100,23 @@ export default function Opponent() {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="opponent-name">Team Name</label>
-                  <input type="text" id="opponent-name" required placeholder="Enter Team Name"/>
+                  <input
+                    type="text"
+                    id="opponent-name"
+                    required
+                    placeholder="Enter Team Name"
+                  />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="opponent-age">Total Players</label>
+                  <label htmlFor="opponent-playrs">Total Players</label>
                   <input
                     type="number"
-                    id="opponent-age"
+                    id="opponent-players"
                     min="5"
-                    max="20"
+                    max="15"
                     placeholder="Enter total number of players"
                     required
+                    onChange={(e) => setTotalPlayers(Number(e.target.value))}
                   />
                 </div>
               </div>
@@ -128,8 +137,8 @@ export default function Opponent() {
                     type="tel"
                     id="opponent-phone"
                     required
-                    minlength="10"
-                    maxlength="10"
+                    minLength="10"
+                    maxLength="10"
                     pattern="[0-9]{10}"
                     placeholder="Enter contact number"
                   />
@@ -139,18 +148,71 @@ export default function Opponent() {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="opponent-venue">Venue</label>
-                  <input type="text" id="opponent-venue" required placeholder="Enter venue" />
+                  <input
+                    type="text"
+                    id="opponent-venue"
+                    required
+                    placeholder="Enter venue"
+                  />
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="opponent-time">Preferred Time</label>
-                  <select id="opponent-time" required>
-                    <option value="">Select Time Slot</option>
-                    <option value="morning">Morning (6 AM - 12 PM)</option>
-                    <option value="afternoon">Afternoon (12 PM - 5 PM)</option>
-                    <option value="evening">Evening (5 PM - 9 PM)</option>
-                    <option value="night">Night (9 PM - 11 PM)</option>
-                  </select>
+                <div
+                  className="form-group"
+                  style={{
+                    textAlign: "Center",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <label htmlFor="gender">Gender</label>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "15px",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <div>
+                      <input
+                        type="radio"
+                        id="male"
+                        name="gender"
+                        value="male"
+                        required
+                      />
+                      <label htmlFor="male" style={{ marginLeft: "5px" }}>
+                        Male
+                      </label>
+                    </div>
+
+                    <div>
+                      <input
+                        type="radio"
+                        id="female"
+                        name="gender"
+                        value="female"
+                        required
+                      />
+                      <label htmlFor="female" style={{ marginLeft: "5px" }}>
+                        Female
+                      </label>
+                    </div>
+
+                    <div>
+                      <input
+                        type="radio"
+                        id="other"
+                        name="gender"
+                        value="other"
+                        required
+                      />
+                      <label htmlFor="other" style={{ marginLeft: "5px" }}>
+                        Other
+                      </label>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="form-group">
@@ -166,7 +228,7 @@ export default function Opponent() {
                       border: "1px solid #ccc",
                       borderRadius: "4px",
                       fontSize: "14px",
-                      height: "57%",
+                      height: "48px",
                     }}
                   />
                 </div>
@@ -174,8 +236,10 @@ export default function Opponent() {
 
               <div className="form-row">
                 <div>
-                  <h3 style={{ color:"#009624",marginBottom:"20px" }}>Player Details</h3>
-                  {[...Array(5)].map((_, index) => (
+                  <h3 style={{ color: "#009624", marginBottom: "20px" }}>
+                    Player Details
+                  </h3>
+                  {[...Array(totalPlayers)].map((_, index) => (
                     <div
                       key={index}
                       style={{
@@ -214,18 +278,99 @@ export default function Opponent() {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="opponent-skills">Skills Level</label>
-                <select id="opponent-skills" required>
-                  <option value="">Select Skill Level</option>
-                  <option value="beginner">Beginner</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced">Advanced</option>
-                  <option value="professional">Professional</option>
-                </select>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="opponent-skills">Skills Level</label>
+                  <select id="opponent-skills" required>
+                    <option value="">Select Skill Level</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                    <option value="professional">Professional</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="opponent-time">Preferred Time</label>
+                  <div
+                    className="from"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <label
+                      htmlFor="from"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "10px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      From
+                    </label>
+                    <input
+                      type="time"
+                      name="from"
+                      required
+                      style={{
+                        marginTop: "10px",
+                        padding: "6px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px",
+                        fontSize: "14px",
+                        padding: "10px",
+                      }}
+                    />
+                  </div>
+
+                  <div
+                    className="to"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <label
+                      htmlFor="to"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "10px",
+                        marginTop: "10px",
+                        marginRight: "10px",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      To
+                    </label>
+                    <input
+                      type="time"
+                      name="to"
+                      required
+                      style={{
+                        marginTop: "10px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px",
+                        fontSize: "14px",
+                        width: "100%",
+                        padding: "10px",
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
 
-              <button type="submit" className="submit-btn" style={{ background: "#0d1b2a", color: "#5efc82" }}>
+              <button
+                type="submit"
+                className="submit-btn"
+                style={{ background: "#0d1b2a", color: "#5efc82" }}
+              >
                 Post as Opponent
               </button>
             </form>

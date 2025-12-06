@@ -1,0 +1,63 @@
+const mongoose = require("mongoose");
+
+const opponentSchema = new mongoose.Schema({
+  teamName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  totalPlayers: {
+    type: Number,
+    required: true,
+    min: 5,
+    max: 15,
+  },
+  location: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  contact: {
+    type: String,
+    required: true,
+    trim: true,
+    match: [/^\d{10}$/, "Contact number must be exactly 10 digits"],
+  },
+  venue: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  matchDate: {
+    type: Date,
+    required: true,
+  },
+  players: [
+    {
+      name: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+    },
+  ],
+  timeFrom: {
+    type: String,
+    required: true,
+  },
+  timeTo: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+module.exports = mongoose.model("Opponent", opponentSchema);
