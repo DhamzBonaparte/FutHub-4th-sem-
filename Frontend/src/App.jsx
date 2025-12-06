@@ -7,6 +7,7 @@ import Home from "./Pages/Home/Home";
 import TOC from "./Pages/TOC/TOC";
 import Opponent from "./Pages/Dashboard/Player/opponent/Opponent";
 import Service from "./Pages/Service/Service";
+import Main from "./Pages/Dashboard/Player/Main/Main";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/service" element={<Service />}></Route>
         <Route path="/player" element={<PDashboard />}>
+          <Route index element={<Main/>}></Route>
           <Route path="/player/find-opponent" element={<Opponent />}></Route>
         </Route>
       </Routes>

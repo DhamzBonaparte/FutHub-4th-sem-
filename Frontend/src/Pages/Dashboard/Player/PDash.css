@@ -324,8 +324,7 @@
 }
 
 /* Opponents Section */
-.opponents-section {
-  display: none;
+.opponents-section {   
   background-color: white;
   border-radius: 10px;
   padding: 1.5rem;

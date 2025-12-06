@@ -1,9 +1,11 @@
-import Sidebar from "../../../../Components/Sidebar/Sidebar";
+import "../PDash.css"
+import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 export default function Opponent() {
+  const[beOpponent,setBeOpponent]=useState(false);
   return (
     <>
-      <Sidebar />
       <div id="opponents" className="opponents-section">
         <div className="section-tabs">
           <div className="tab active">Find Opponents</div>
@@ -20,16 +22,18 @@ export default function Opponent() {
                 id="opponent-search"
               />
             </div>
-            <button className="become-opponent-btn">Become an Opponent</button>
+            <button className="become-opponent-btn" style={{backgroundColor:"#0d1b2a"}}>Become an Opponent</button>
           </div>
 
-          <div className="opponents-grid" id="opponents-grid"></div>
+          <div className="opponents-grid" id="opponents-grid">
+            {/* put the available opponents in the area  */}
+          </div>
         </div>
 
         <div
           id="become-opponent"
           className="opponent-tab"
-          //   style={{ display: "none" }}
+            style={!beOpponent?{ display: "none" }:{display:"block"}}
         >
           <div className="form-container">
             <h3>Post as an Opponent</h3>

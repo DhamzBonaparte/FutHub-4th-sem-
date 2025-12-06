@@ -7,6 +7,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Sidebar({ goToFav }) {
   const [data, setData] = useState({});
@@ -39,7 +40,10 @@ export default function Sidebar({ goToFav }) {
 
   return (
     <>
-      <div className="sidebar">
+      <div
+        className="sidebar"
+        style={error ? { filter: "blur(10px)" } : { filter: "blur(0px)" }}
+      >
         <div className="logo2">
           Fut{" "}
           <span style={{ color: "lightgreen", margin: "0", padding: "0" }}>
@@ -64,14 +68,14 @@ export default function Sidebar({ goToFav }) {
 
         <ul className="nav-menu">
           <li>
-            <a
-              href="#"
+            <Link
+              to="/player"
               className={active == "dashboard" ? "active" : ""}
               onClick={() => setActive("dashboard")}
             >
               <DashboardIcon className="icon" />
               <span>Dashboard</span>
-            </a>
+            </Link>
           </li>
           <li>
             <a
@@ -83,7 +87,8 @@ export default function Sidebar({ goToFav }) {
             </a>
           </li>
           <li>
-            <a
+            <Link
+            to='/player'
               onClick={() => {
                 goToFav();
                 setActive("fav");
@@ -92,16 +97,17 @@ export default function Sidebar({ goToFav }) {
             >
               <FavoriteIcon className="icon" />
               <span>Favourites</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
+              to="/player/find-opponent"
               className={active == "opponent" ? "active" : ""}
               onClick={() => setActive("opponent")}
             >
               <PersonAddIcon className="icon" />
               <span>Opponents</span>
-            </a>
+            </Link>
           </li>
           <li>
             <a
