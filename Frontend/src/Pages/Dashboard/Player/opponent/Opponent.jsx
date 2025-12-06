@@ -1,11 +1,47 @@
 import "../PDash.css";
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
-
+import axios from "axios";
 export default function Opponent() {
   const [beOpponent, setBeOpponent] = useState(false);
   const [totalPlayers, setTotalPlayers] = useState(5);
-  const [custom, setCustom] = useState("");
+  const [error, setError] = useState("");
+  const [playerNames, setPlayerNames] = useState(Array(5).fill(""));
+  const [teamName, setTeamName] = useState("");
+  const [location, setLocation] = useState("");
+  const [contact, setContact] = useState("");
+  const [venue, setVenue] = useState("");
+  const [gender, setGender] = useState("");
+  const [date, setDate] = useState("");
+  const [level, setLevel] = useState("");
+  const [timeFrom, setTimeFrom] = useState("");
+  const [timeTo, setTimeTo] = useState("");
+
+  function handleNames(index, name) {
+    const updatedNames = [...playerNames];
+    updatedNames[index] = name;
+    setPlayerNames(updatedNames);
+  }
+
+  async function handleSubmit() {
+    try {
+      const upl=axios.post("http://localhost:3000/api/v1/player/find-opponent", {
+        teamName,
+        totalPlayers,
+        location,
+        contact,
+        venue,
+        gender,
+        date,
+        playerNames,
+        level,
+        timeFrom,
+        timeTo
+      });
+      console.log(upl);
+    } catch (error) {
+      setError(error);
+    }
+  }
 
   return (
     <>
@@ -105,6 +141,7 @@ export default function Opponent() {
                     id="opponent-name"
                     required
                     placeholder="Enter Team Name"
+                    onChange={(e) => setTeamName(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
@@ -124,7 +161,11 @@ export default function Opponent() {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="opponent-location">Location</label>
-                  <select id="opponent-location" required>
+                  <select
+                    id="opponent-location"
+                    required
+                    onChange={(e) => setLocation(e.target.value)}
+                  >
                     <option value="">Select Location</option>
                     <option value="kathmandu">Kathmandu</option>
                     <option value="bhaktapur">Bhaktapur</option>
@@ -141,6 +182,7 @@ export default function Opponent() {
                     maxLength="10"
                     pattern="[0-9]{10}"
                     placeholder="Enter contact number"
+                    onChange={(e) => setContact(e.target.value)}
                   />
                 </div>
               </div>
@@ -153,6 +195,7 @@ export default function Opponent() {
                     id="opponent-venue"
                     required
                     placeholder="Enter venue"
+                    onChange={(e) => setVenue(e.target.value)}
                   />
                 </div>
 
@@ -181,6 +224,7 @@ export default function Opponent() {
                         name="gender"
                         value="male"
                         required
+                        onChange={(e) => setGender(e.target.value)}
                       />
                       <label htmlFor="male" style={{ marginLeft: "5px" }}>
                         Male
@@ -194,6 +238,7 @@ export default function Opponent() {
                         name="gender"
                         value="female"
                         required
+                        onChange={(e) => setGender(e.target.value)}
                       />
                       <label htmlFor="female" style={{ marginLeft: "5px" }}>
                         Female
@@ -207,6 +252,7 @@ export default function Opponent() {
                         name="gender"
                         value="other"
                         required
+                        onChange={(e) => setGender(e.target.value)}
                       />
                       <label htmlFor="other" style={{ marginLeft: "5px" }}>
                         Other
@@ -223,6 +269,7 @@ export default function Opponent() {
                     name="user-date"
                     required
                     min={new Date().toISOString().split("T")[0]}
+                    onChange={(e) => setDate(e.target.value)}
                     style={{
                       padding: "6px",
                       border: "1px solid #ccc",
@@ -265,6 +312,7 @@ export default function Opponent() {
                         name={`player-${index + 1}`}
                         required
                         placeholder="Enter name"
+                        onChange={(e) => handleNames(index, e.target.value)}
                         style={{
                           flex: 1,
                           padding: "6px",
@@ -281,7 +329,11 @@ export default function Opponent() {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="opponent-skills">Skills Level</label>
-                  <select id="opponent-skills" required>
+                  <select
+                    id="opponent-skills"
+                    required
+                    onChange={(e) => setLevel(e.target.value)}
+                  >
                     <option value="">Select Skill Level</option>
                     <option value="beginner">Beginner</option>
                     <option value="intermediate">Intermediate</option>
@@ -324,6 +376,7 @@ export default function Opponent() {
                         fontSize: "14px",
                         padding: "10px",
                       }}
+                      onChange={(e) => setTimeFrom(e.target.value)}
                     />
                   </div>
 
@@ -353,6 +406,7 @@ export default function Opponent() {
                       type="time"
                       name="to"
                       required
+                      onChange={(e) => setTimeTo(e.target.value)}
                       style={{
                         marginTop: "10px",
                         border: "1px solid #ccc",
@@ -370,6 +424,7 @@ export default function Opponent() {
                 type="submit"
                 className="submit-btn"
                 style={{ background: "#0d1b2a", color: "#5efc82" }}
+                onClick={() => handleSubmit()}
               >
                 Post as Opponent
               </button>

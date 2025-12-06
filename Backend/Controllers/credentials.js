@@ -2,7 +2,9 @@ const login = require("../Model/login");
 const signup = require("../Model/signup");
 const bcrypt = require("bcrypt");
 const mail = require("nodemailer");
+const oppponent = require('../Model/opponent');
 const jwt = require("jsonwebtoken");
+const opponent = require("../Model/opponent");
 require("dotenv").config();
 
 // for login
@@ -113,4 +115,42 @@ const playerData=(req,res)=>{
   res.status(200).json({msg:req.user})
 }
 
-module.exports = { getCredentials, setCredentials,playerData };
+const setOpponent=async (req,res)=>{
+
+  try {
+    const {
+        teamName,
+        totalPlayers,
+        location,
+        contact,
+        venue,
+        gender,
+        date,
+        playerNames,
+        level,
+        timeFrom,
+        timeTo
+      } = req.body;
+    const getData=await opponent.create(
+      {
+        teamName,
+        totalPlayers,
+        location,
+        contact,
+        venue,
+        gender,
+        matchDate:new Date(date),
+        players:playerNames.map((n) => ({ name: n })),
+        level,
+        timeFrom,
+        timeTo
+      }
+    );
+    res.status(200).json({msg:"hi there",data:getData})
+  } catch (error) {
+    res.status(500).json({msg:"Something went wrong",error:error.message})
+  }
+
+}
+
+module.exports = { getCredentials, setCredentials,playerData,setOpponent };

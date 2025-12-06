@@ -46,6 +46,12 @@ const opponentSchema = new mongoose.Schema({
       },
     },
   ],
+  level:{
+    type:String,
+    required:true,
+    trim:true
+  }
+  ,
   timeFrom: {
     type: String,
     required: true,
