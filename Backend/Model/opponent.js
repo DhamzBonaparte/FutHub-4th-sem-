@@ -17,6 +17,11 @@ const opponentSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  averageAge:{
+    type:Number,
+    required:true,
+  }
+  ,
   contact: {
     type: String,
     required: true,

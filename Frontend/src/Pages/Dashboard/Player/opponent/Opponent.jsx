@@ -1,6 +1,12 @@
 import "../PDash.css";
 import { useState } from "react";
 import axios from "axios";
+import LocationPinIcon from '@mui/icons-material/LocationPin';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import PhoneIcon from '@mui/icons-material/Phone';
+import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
+
 export default function Opponent() {
   const [beOpponent, setBeOpponent] = useState(false);
   const [totalPlayers, setTotalPlayers] = useState(5);
@@ -15,6 +21,7 @@ export default function Opponent() {
   const [level, setLevel] = useState("");
   const [timeFrom, setTimeFrom] = useState("");
   const [timeTo, setTimeTo] = useState("");
+  const [averageAge, setAverageAge] = useState(null);
 
   function handleNames(index, name) {
     const updatedNames = [...playerNames];
@@ -24,19 +31,23 @@ export default function Opponent() {
 
   async function handleSubmit() {
     try {
-      const upl=axios.post("http://localhost:3000/api/v1/player/find-opponent", {
-        teamName,
-        totalPlayers,
-        location,
-        contact,
-        venue,
-        gender,
-        date,
-        playerNames,
-        level,
-        timeFrom,
-        timeTo
-      });
+      const upl = axios.post(
+        "http://localhost:3000/api/v1/player/find-opponent",
+        {
+          teamName,
+          totalPlayers,
+          location,
+          averageAge,
+          contact,
+          venue,
+          gender,
+          date,
+          playerNames,
+          level,
+          timeFrom,
+          timeTo,
+        }
+      );
       console.log(upl);
     } catch (error) {
       setError(error);
@@ -78,7 +89,6 @@ export default function Opponent() {
         >
           <div className="search-container">
             <div className="location-search">
-              <i className="fas fa-search"></i>
               <input
                 type="text"
                 placeholder="Search location (e.g., Kathmandu, Bhaktapur)"
@@ -94,7 +104,30 @@ export default function Opponent() {
           </div>
 
           <div className="opponents-grid" id="opponents-grid">
-            {/* put the available opponents in the area  */}
+            <div className="opponent-card">
+              <div className="opponent-header">
+                <div className="opponent-name">Sulav Dhami</div>
+                <div className="opponent-age">22 years</div>
+              </div>
+              <div class="opponent-details">
+                <p>
+                  <LocationPinIcon height="20" class="icons" style={{color: "#5efc82",marginRight:"10px" }}/> Lokanthali
+                </p>
+                <p>
+                  <SportsSoccerIcon  height="20" class="icons" style={{color: "#5efc82",marginRight:"10px" }}/> wembley Futsal
+                </p>
+                <p>
+                  <AccessTimeIcon  height="20" class="icons" style={{color: "#5efc82",marginRight:"10px" }}/> 6-7
+                </p>
+                <p>
+                  <PhoneIcon  height="20" class="icons" style={{color: "#5efc82",marginRight:"10px" }}/> 9840267722
+                </p>
+                <p>
+                  <MilitaryTechIcon height="20" class="icons" style={{color: "#5efc82",marginRight:"10px" }}/>intermediate Level
+                </p>
+              </div>
+              <button class="confirm-btn"  style={{ background: "#0d1b2a", color: "#5efc82" }}>Confirm as Opponent</button>
+            </div>
           </div>
         </div>
 
@@ -172,6 +205,26 @@ export default function Opponent() {
                     <option value="lalitpur">Lalitpur</option>
                   </select>
                 </div>
+                <div className="form-group">
+                  <label htmlFor="average-age">Average Age</label>
+                  <input
+                    type="number"
+                    id="average-age"
+                    name="average-age"
+                    required
+                    placeholder="Enter average age"
+                    value={averageAge}
+                    onChange={(e) => setAverageAge(e.target.value)}
+                    style={{
+                      width: "100%",
+                      height: "50px",
+                      padding: "6px",
+                      borderRadius: "4px",
+                      fontSize: "14px",
+                    }}
+                  />
+                </div>
+
                 <div className="form-group">
                   <label htmlFor="opponent-phone">Contact Number</label>
                   <input

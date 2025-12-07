@@ -2,7 +2,7 @@ const login = require("../Model/login");
 const signup = require("../Model/signup");
 const bcrypt = require("bcrypt");
 const mail = require("nodemailer");
-const oppponent = require('../Model/opponent');
+const oppponent = require("../Model/opponent");
 const jwt = require("jsonwebtoken");
 const opponent = require("../Model/opponent");
 require("dotenv").config();
@@ -10,7 +10,6 @@ require("dotenv").config();
 // for login
 const getCredentials = async (req, res) => {
   try {
-
     const { email, password } = req.body;
     console.log(req.body);
 
@@ -32,22 +31,23 @@ const getCredentials = async (req, res) => {
       });
     }
 
-    const token=jwt.sign(
+    const token = jwt.sign(
       {
         id: approved._id,
         email: approved.email,
         firstName: approved.firstName,
         lastName: approved.lastName,
         role: approved.roles,
-      },process.env.SECRET,
-      {expiresIn:"1h"}
-    )
+      },
+      process.env.SECRET,
+      { expiresIn: "1h" }
+    );
 
-    res.cookie("token",token,{
-      httpOnly:true,
-      secure:false,
-      sameSite:"lax",
-    })
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
 
     res.status(200).json({
       msg: "Login successful",
@@ -59,10 +59,9 @@ const getCredentials = async (req, res) => {
         role: approved.roles,
       },
       status: "completed",
-      token:token
+      token: token,
     });
     console.log(correctPassword);
-    
   } catch (err) {
     res.status(401).json({
       msg: "Username or Password is incorrect.",
@@ -111,46 +110,56 @@ const setCredentials = async (req, res) => {
   }
 };
 
-const playerData=(req,res)=>{
-  res.status(200).json({msg:req.user})
-}
+const playerData = (req, res) => {
+  res.status(200).json({ msg: req.user });
+};
 
-const setOpponent=async (req,res)=>{
-
+const setOpponent = async (req, res) => {
   try {
     const {
-        teamName,
-        totalPlayers,
-        location,
-        contact,
-        venue,
-        gender,
-        date,
-        playerNames,
-        level,
-        timeFrom,
-        timeTo
-      } = req.body;
-    const getData=await opponent.create(
-      {
-        teamName,
-        totalPlayers,
-        location,
-        contact,
-        venue,
-        gender,
-        matchDate:new Date(date),
-        players:playerNames.map((n) => ({ name: n })),
-        level,
-        timeFrom,
-        timeTo
-      }
-    );
-    res.status(200).json({msg:"hi there",data:getData})
+      teamName,
+      totalPlayers,
+      location,
+      averageAge,
+      contact,
+      venue,
+      gender,
+      date,
+      playerNames,
+      level,
+      timeFrom,
+      timeTo,
+    } = req.body;
+    const getData = await opponent.create({
+      teamName,
+      totalPlayers,
+      location,
+      averageAge,
+      contact,
+      venue,
+      gender,
+      matchDate: new Date(date),
+      players: playerNames.map((n) => ({ name: n })),
+      level,
+      timeFrom,
+      timeTo,
+    });
+    console.log(getData);
+    res.status(200).json({ msg: "hi there", data: getData });
   } catch (error) {
-    res.status(500).json({msg:"Something went wrong",error:error.message})
+    res.status(500).json({ msg: "Something went wrong", error: error.message });
   }
+};
 
+const getOpponents= async(req,res)=>{
+  const all=await opponent.find();
+  res.status(200).json({msg:"all ooponents",data:all})
 }
 
-module.exports = { getCredentials, setCredentials,playerData,setOpponent };
+module.exports = {
+  getCredentials,
+  setCredentials,
+  playerData,
+  setOpponent,
+  getOpponents,
+};
