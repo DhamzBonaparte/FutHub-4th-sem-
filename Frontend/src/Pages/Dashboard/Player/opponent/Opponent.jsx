@@ -1,11 +1,12 @@
 import "../PDash.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import LocationPinIcon from '@mui/icons-material/LocationPin';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import PhoneIcon from '@mui/icons-material/Phone';
-import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
+import LocationPinIcon from "@mui/icons-material/LocationPin";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PhoneIcon from "@mui/icons-material/Phone";
+import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 export default function Opponent() {
   const [beOpponent, setBeOpponent] = useState(false);
@@ -21,7 +22,28 @@ export default function Opponent() {
   const [level, setLevel] = useState("");
   const [timeFrom, setTimeFrom] = useState("");
   const [timeTo, setTimeTo] = useState("");
-  const [averageAge, setAverageAge] = useState(null);
+  const [averageAge, setAverageAge] = useState("");
+  const [opponents, setOpponents] = useState({});
+  const [curr, setCurr] = useState("");
+  const [length, setLength] = useState(0);
+
+  useEffect(() => {
+    getOpponents();
+  }, [length]);
+
+  async function getOpponents() {
+    try {
+      const oppo = await axios.get(
+        "http://localhost:3000/api/v1/player/find-opponent"
+      );
+      setOpponents(oppo.data);
+      setLength(opponents.length);
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+
+  console.log(opponents.data);
 
   function handleNames(index, name) {
     const updatedNames = [...playerNames];
@@ -104,30 +126,81 @@ export default function Opponent() {
           </div>
 
           <div className="opponents-grid" id="opponents-grid">
-            <div className="opponent-card">
-              <div className="opponent-header">
-                <div className="opponent-name">Sulav Dhami</div>
-                <div className="opponent-age">22 years</div>
-              </div>
-              <div class="opponent-details">
-                <p>
-                  <LocationPinIcon height="20" class="icons" style={{color: "#5efc82",marginRight:"10px" }}/> Lokanthali
-                </p>
-                <p>
-                  <SportsSoccerIcon  height="20" class="icons" style={{color: "#5efc82",marginRight:"10px" }}/> wembley Futsal
-                </p>
-                <p>
-                  <AccessTimeIcon  height="20" class="icons" style={{color: "#5efc82",marginRight:"10px" }}/> 6-7
-                </p>
-                <p>
-                  <PhoneIcon  height="20" class="icons" style={{color: "#5efc82",marginRight:"10px" }}/> 9840267722
-                </p>
-                <p>
-                  <MilitaryTechIcon height="20" class="icons" style={{color: "#5efc82",marginRight:"10px" }}/>intermediate Level
-                </p>
-              </div>
-              <button class="confirm-btn"  style={{ background: "#0d1b2a", color: "#5efc82" }}>Confirm as Opponent</button>
-            </div>
+            {opponents?.data?.map((opp, index) => {
+              return (
+                <div className="opponent-card" key={index}>
+                  <div className="opponent-header" key={index}>
+                    <div className="opponent-name">{opp.teamName}</div>
+                    <div className="opponent-age">{opp.averageAge} years</div>
+                  </div>
+                  <div className="opponent-details">
+                    <p>
+                      <LocationPinIcon
+                        height="20"
+                        style={{ color: "black", marginRight: "10px" }}
+                      />{" "}
+                      {opp.location.slice(0, 1).toUpperCase() +
+                        opp.location.slice(1)}
+                    </p>
+                    <p>
+                      <SportsSoccerIcon
+                        height="20"
+                        style={{ color: "black", marginRight: "10px" }}
+                      />{" "}
+                      {opp.venue.slice(0, 1).toUpperCase() + opp.venue.slice(1)}
+                    </p>
+                    <p>
+                      <CalendarTodayIcon
+                        height="20"
+                        style={{ color: "black", marginRight: "10px" }}
+                      />{" "}
+                      {opp.matchDate.slice(0, 10)}
+                    </p>
+                    <p>
+                      <AccessTimeIcon
+                        height="20"
+                        style={{ color: "black", marginRight: "10px" }}
+                      />{" "}
+                      {new Date(
+                        `1970-01-01T${opp.timeFrom}:00`
+                      ).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                      {" "}-{" "}
+                      {new Date(
+                        `1970-01-01T${opp.timeTo}:00`
+                      ).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </p>
+                    <p>
+                      <PhoneIcon
+                        height="20"
+                        style={{ color: "black", marginRight: "10px" }}
+                      />{" "}
+                      {opp.contact}
+                    </p>
+                    <p>
+                      <MilitaryTechIcon
+                        height="20"
+                        style={{ color: "black", marginRight: "10px" }}
+                      />
+                      {opp.level.slice(0,1).toUpperCase() + opp.level.slice(1) + " " +"level"}
+                    </p>
+                  </div>
+                  <button
+                    className="confirm-btn"
+                    style={{ background: "#0d1b2a", color: "#5efc82" }}
+                  >
+                    Confirm as Opponent
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
 

@@ -153,7 +153,7 @@ const setOpponent = async (req, res) => {
 
 const getOpponents= async(req,res)=>{
   const all=await opponent.find();
-  res.status(200).json({msg:"all ooponents",data:all})
+  res.status(200).json({msg:"all ooponents",data:all,length:all.length})
 }
 
 module.exports = {
