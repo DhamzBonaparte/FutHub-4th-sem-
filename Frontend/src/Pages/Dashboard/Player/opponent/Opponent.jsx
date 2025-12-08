@@ -96,6 +96,17 @@ export default function Opponent() {
 
   return (
     <>
+      <div className="error">
+        <h3
+          style={{
+            textAlign: "center",
+            padding: "10px",
+            display: error ? "block" : "none",
+          }}
+        >
+          {error}
+        </h3>
+      </div>
       <div id="opponents" className="opponents-section">
         <div className="section-tabs">
           <div
