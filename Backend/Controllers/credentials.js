@@ -110,10 +110,12 @@ const setCredentials = async (req, res) => {
   }
 };
 
+//users data after login
 const playerData = (req, res) => {
   res.status(200).json({ msg: req.user });
 };
 
+//posting as opponent
 const setOpponent = async (req, res) => {
   
   try {
@@ -155,11 +157,13 @@ const setOpponent = async (req, res) => {
   }
 };
 
+//getting oppponents
 const getOpponents= async(req,res)=>{
   const all=await opponent.find();
   res.status(200).json({msg:"all ooponents",data:all,length:all.length})
 }
 
+//filtered search
 const searchOpponents= async (req,res)=>{
   const {search} = req.body;
   const filter = await opponent.find({location:{ $regex: search, $options: "i" } });
@@ -169,11 +173,26 @@ const searchOpponents= async (req,res)=>{
   })
 }
 
+//my opponents
+const myOpponentPostings=async(req,res)=>{
+  //frontend ma with credentials lai true
+  try{
+    const {id} = req.user;
+    const myopponentPostings=await opponent.find({userId:id})
+    res.status(200).json({msg:"Done",data:myopponentPostings});
+}catch(error){
+    res.status(400).json({error:error.message})
+    console.log(error)
+}
+}
+
+
 module.exports = {
   getCredentials,
   setCredentials,
   playerData, 
   setOpponent,
   getOpponents,
-  searchOpponents
+  searchOpponents,
+  myOpponentPostings
 };

@@ -8,6 +8,7 @@ const {
   setOpponent,
   getOpponents,
   searchOpponents,
+  myOpponentPostings
 } = require("../Controllers/credentials");
 
 router.route("/login").post(getCredentials);
@@ -19,5 +20,5 @@ router
   .get(getOpponents);
 
 router.route("/player/search-opponent").post(searchOpponents);
-
+router.route("/player/my-opponent-postings").get(authorize,myOpponentPostings)
 module.exports = router;

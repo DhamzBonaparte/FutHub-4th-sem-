@@ -7,9 +7,12 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PhoneIcon from "@mui/icons-material/Phone";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import PersonIcon from "@mui/icons-material/Person";
+import WcIcon from "@mui/icons-material/Wc";
 
 export default function Opponent() {
   const [beOpponent, setBeOpponent] = useState(false);
+  const [mine, setMine] = useState("");
   const [totalPlayers, setTotalPlayers] = useState(5);
   const [error, setError] = useState("");
   const [playerNames, setPlayerNames] = useState(Array(5).fill(""));
@@ -27,6 +30,12 @@ export default function Opponent() {
   const [search, setSearch] = useState("");
   const [length, setLength] = useState(0);
   const [filter, setFilter] = useState({});
+  const [main, setMain] = useState(true);
+  const [myOppPostings, setMyOppPostings] = useState([]);
+
+  useEffect(() => {
+    getMyOpponentListings();
+  }, []);
 
   useEffect(() => {
     handleFilter();
@@ -34,7 +43,21 @@ export default function Opponent() {
 
   useEffect(() => {
     getOpponents();
+    // getMyOpponentListings();
   }, [length]);
+
+  async function getMyOpponentListings() {
+    try {
+      const value = await axios.get(
+        "http://localhost:3000/api/v1/player/my-opponent-postings",
+        { withCredentials: true }
+      );
+      setMyOppPostings(value.data.data);
+      console.log(value.data.data);
+    } catch (error) {
+      setError(error.message);
+    }
+  }
 
   async function getOpponents() {
     try {
@@ -112,11 +135,15 @@ export default function Opponent() {
           <div
             className="tab active"
             style={
-              !beOpponent
+              main
                 ? { borderBottom: "3px solid #00c853", color: "#009624" }
                 : { borderBottom: "0px", color: "black" }
             }
-            onClick={() => setBeOpponent(false)}
+            onClick={() => {
+              setMain(true);
+              setBeOpponent(false);
+              setMine(false);
+            }}
           >
             Find Opponents
           </div>
@@ -127,16 +154,35 @@ export default function Opponent() {
                 ? { borderBottom: "3px solid #00c853", color: "#009624" }
                 : { borderBottom: "0px", color: "black" }
             }
-            onClick={() => setBeOpponent(true)}
+            onClick={() => {
+              setBeOpponent(true);
+              setMain(false);
+              setMine(false);
+            }}
           >
             Become an Opponent
+          </div>
+          <div
+            className="tab"
+            style={
+              mine
+                ? { borderBottom: "3px solid #00c853", color: "#009624" }
+                : { borderBottom: "0px", color: "black" }
+            }
+            onClick={() => {
+              setMine(true);
+              setBeOpponent(false);
+              setMain(false);
+            }}
+          >
+            My Postings of opponents
           </div>
         </div>
 
         <div
           id="find-opponents"
           className="opponent-tab"
-          style={!beOpponent ? { display: "block" } : { display: "none" }}
+          style={main ? { display: "block" } : { display: "none" }}
         >
           <div className="search-container">
             <div className="location-search">
@@ -681,6 +727,145 @@ export default function Opponent() {
             </form>
           </div>
         </div>
+
+        {myOppPostings?.map((opp) => (
+          <div
+            className="opponents-grid"
+            style={mine ? { display: "block" } : { display: "none" }}
+            key={opp._id}
+          >
+            <div className="opponent-card" style={{ marginBottom: "20px" }}>
+              <div className="opponent-header">
+                <div className="opponent-name">
+                  {opp.teamName.slice(0, 1).toUpperCase() +
+                    opp.teamName.slice(1)}
+                </div>
+                <div className="opponent-age">{opp.averageAge} years</div>
+              </div>
+              <div className="opponent-details">
+                <p>
+                  <LocationPinIcon
+                    height="20"
+                    style={{ color: "black", marginRight: "10px" }}
+                  />{" "}
+                  {opp.location.slice(0, 1).toUpperCase() +
+                    opp.location.slice(1)}
+                </p>
+                <p>
+                  <SportsSoccerIcon
+                    height="20"
+                    style={{ color: "black", marginRight: "10px" }}
+                  />{" "}
+                  {opp.venue.slice(0, 1).toUpperCase() + opp.venue.slice(1)}
+                </p>
+                <p>
+                  <CalendarTodayIcon
+                    height="20"
+                    style={{ color: "black", marginRight: "10px" }}
+                  />{" "}
+                  {opp.matchDate.slice(0, 10)}
+                </p>
+                <p>
+                  <AccessTimeIcon
+                    height="20"
+                    style={{ color: "black", marginRight: "10px" }}
+                  />{" "}
+                  {new Date(`1970-01-01T${opp.timeFrom}:00`).toLocaleTimeString(
+                    [],
+                    {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    }
+                  )}{" "}
+                  -{" "}
+                  {new Date(`1970-01-01T${opp.timeTo}:00`).toLocaleTimeString(
+                    [],
+                    {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    }
+                  )}
+                </p>
+                <p>
+                  <PhoneIcon
+                    height="20"
+                    style={{ color: "black", marginRight: "10px" }}
+                  />{" "}
+                  {opp.contact}
+                </p>
+                <p>
+                  <MilitaryTechIcon
+                    height="20"
+                    style={{ color: "black", marginRight: "10px" }}
+                  />
+                  {opp.level.slice(0, 1).toUpperCase() +
+                    opp.level.slice(1) +
+                    " " +
+                    "level"}
+                </p>
+                <p>
+                  <WcIcon
+                    height="20"
+                    style={{ color: "black", marginRight: "10px" }}
+                  />
+                  {opp.gender.slice(0, 1).toUpperCase() + opp.gender.slice(1)}
+                </p>
+                <div className="opponent-players">
+                  <p style={{ fontWeight: 700 }}>Players:</p>
+                  <ul>
+                    {opp.players.map((player, i) => (
+                      <li key={i} type="none">
+                        <PersonIcon className="icon" />
+                        {player.name.split(" ")[0].slice(0, 1).toUpperCase() +
+                          player.name.split(" ")[0].slice(1) +
+                          " " +
+                          player.name.split(" ")[1].slice(0, 1).toUpperCase() +
+                          player.name.split(" ")[1].slice(1)}{" "}
+                        {player.age ? `- ${player.age} yrs` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div
+                className="opponent-actions"
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  gap: "10px",
+                }}
+              >
+                <button
+                  className="edit-btn"
+                  style={{
+                    background: "#1d3557",
+                    color: "white",
+                    padding: "5px 10px",
+                    borderRadius: "4px",
+                  }}
+                  onClick={() => handleEdit(opp._id)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="delete-btn"
+                  style={{
+                    background: "#e63946",
+                    color: "white",
+                    padding: "5px 10px",
+                    borderRadius: "4px",
+                  }}
+                  onClick={() => handleDelete(opp._id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </>
   );
