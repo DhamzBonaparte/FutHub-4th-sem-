@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 
 const opponentSchema = new mongoose.Schema({
+  userId:{
+    type:String,
+    required:true
+  },
   teamName: {
     type: String,
     required: true,
     trim: true,
+    lowercase: true
   },
   totalPlayers: {
     type: Number,
@@ -16,6 +21,7 @@ const opponentSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    lowercase: true
   },
   averageAge:{
     type:Number,
@@ -32,6 +38,7 @@ const opponentSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    lowercase: true
   },
   gender: {
     type: String,
@@ -48,6 +55,7 @@ const opponentSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        lowercase: true
       },
     },
   ],

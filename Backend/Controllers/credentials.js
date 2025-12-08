@@ -115,7 +115,10 @@ const playerData = (req, res) => {
 };
 
 const setOpponent = async (req, res) => {
+  
   try {
+    const {id}=req.user;
+
     const {
       teamName,
       totalPlayers,
@@ -130,8 +133,10 @@ const setOpponent = async (req, res) => {
       timeFrom,
       timeTo,
     } = req.body;
+
     const getData = await opponent.create({
-      teamName,
+      userId:id,
+      teamName, 
       totalPlayers,
       location,
       averageAge,
@@ -143,8 +148,7 @@ const setOpponent = async (req, res) => {
       level,
       timeFrom,
       timeTo,
-    });
-    console.log(getData);
+    });    
     res.status(200).json({ msg: "hi there", data: getData });
   } catch (error) {
     res.status(500).json({ msg: "Something went wrong", error: error.message });
@@ -156,10 +160,20 @@ const getOpponents= async(req,res)=>{
   res.status(200).json({msg:"all ooponents",data:all,length:all.length})
 }
 
+const searchOpponents= async (req,res)=>{
+  const {search} = req.body;
+  const filter = await opponent.find({location:{ $regex: search, $options: "i" } });
+
+  res.status(200).json({
+    filteredData:filter
+  })
+}
+
 module.exports = {
   getCredentials,
   setCredentials,
-  playerData,
+  playerData, 
   setOpponent,
   getOpponents,
+  searchOpponents
 };

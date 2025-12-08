@@ -24,8 +24,13 @@ export default function Opponent() {
   const [timeTo, setTimeTo] = useState("");
   const [averageAge, setAverageAge] = useState("");
   const [opponents, setOpponents] = useState({});
-  const [curr, setCurr] = useState("");
+  const [search, setSearch] = useState("");
   const [length, setLength] = useState(0);
+  const [filter, setFilter] = useState({});
+
+  useEffect(() => {
+    handleFilter();
+  }, [search]);
 
   useEffect(() => {
     getOpponents();
@@ -43,7 +48,20 @@ export default function Opponent() {
     }
   }
 
-  console.log(opponents.data);
+  async function handleFilter() {
+    try {
+      const values = await axios.post(
+        "http://localhost:3000/api/v1/player/search-opponent",
+        { search },
+        {
+          withCredentials: true,
+        }
+      );
+      setFilter(values.data.filteredData);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
 
   function handleNames(index, name) {
     const updatedNames = [...playerNames];
@@ -68,9 +86,9 @@ export default function Opponent() {
           level,
           timeFrom,
           timeTo,
-        }
+        },
+        { withCredentials: true }
       );
-      console.log(upl);
     } catch (error) {
       setError(error);
     }
@@ -115,92 +133,186 @@ export default function Opponent() {
                 type="text"
                 placeholder="Search location (e.g., Kathmandu, Bhaktapur)"
                 id="opponent-search"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  handleFilter();
+                }}
               />
             </div>
             <button
               className="become-opponent-btn"
               style={{ background: "#0d1b2a", color: "#5efc82" }}
+              onClick={() => handleFilter()}
             >
               Search Opponent
             </button>
           </div>
 
           <div className="opponents-grid" id="opponents-grid">
-            {opponents?.data?.map((opp, index) => {
-              return (
-                <div className="opponent-card" key={index}>
-                  <div className="opponent-header" key={index}>
-                    <div className="opponent-name">{opp.teamName}</div>
-                    <div className="opponent-age">{opp.averageAge} years</div>
-                  </div>
-                  <div className="opponent-details">
-                    <p>
-                      <LocationPinIcon
-                        height="20"
-                        style={{ color: "black", marginRight: "10px" }}
-                      />{" "}
-                      {opp.location.slice(0, 1).toUpperCase() +
-                        opp.location.slice(1)}
-                    </p>
-                    <p>
-                      <SportsSoccerIcon
-                        height="20"
-                        style={{ color: "black", marginRight: "10px" }}
-                      />{" "}
-                      {opp.venue.slice(0, 1).toUpperCase() + opp.venue.slice(1)}
-                    </p>
-                    <p>
-                      <CalendarTodayIcon
-                        height="20"
-                        style={{ color: "black", marginRight: "10px" }}
-                      />{" "}
-                      {opp.matchDate.slice(0, 10)}
-                    </p>
-                    <p>
-                      <AccessTimeIcon
-                        height="20"
-                        style={{ color: "black", marginRight: "10px" }}
-                      />{" "}
-                      {new Date(
-                        `1970-01-01T${opp.timeFrom}:00`
-                      ).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                      })}
-                      {" "}-{" "}
-                      {new Date(
-                        `1970-01-01T${opp.timeTo}:00`
-                      ).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                      })}
-                    </p>
-                    <p>
-                      <PhoneIcon
-                        height="20"
-                        style={{ color: "black", marginRight: "10px" }}
-                      />{" "}
-                      {opp.contact}
-                    </p>
-                    <p>
-                      <MilitaryTechIcon
-                        height="20"
-                        style={{ color: "black", marginRight: "10px" }}
-                      />
-                      {opp.level.slice(0,1).toUpperCase() + opp.level.slice(1) + " " +"level"}
-                    </p>
-                  </div>
-                  <button
-                    className="confirm-btn"
-                    style={{ background: "#0d1b2a", color: "#5efc82" }}
-                  >
-                    Confirm as Opponent
-                  </button>
-                </div>
-              );
-            })}
+            {!search
+              ? opponents?.data?.map((opp, index) => {
+                  return (
+                    <div className="opponent-card" key={index}>
+                      <div className="opponent-header" key={index}>
+                        <div className="opponent-name">{opp.teamName}</div>
+                        <div className="opponent-age">
+                          {opp.averageAge} years
+                        </div>
+                      </div>
+                      <div className="opponent-details">
+                        <p>
+                          <LocationPinIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />{" "}
+                          {opp.location.slice(0, 1).toUpperCase() +
+                            opp.location.slice(1)}
+                        </p>
+                        <p>
+                          <SportsSoccerIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />{" "}
+                          {opp.venue.slice(0, 1).toUpperCase() +
+                            opp.venue.slice(1)}
+                        </p>
+                        <p>
+                          <CalendarTodayIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />{" "}
+                          {opp.matchDate.slice(0, 10)}
+                        </p>
+                        <p>
+                          <AccessTimeIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />{" "}
+                          {new Date(
+                            `1970-01-01T${opp.timeFrom}:00`
+                          ).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                          })}{" "}
+                          -{" "}
+                          {new Date(
+                            `1970-01-01T${opp.timeTo}:00`
+                          ).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                          })}
+                        </p>
+                        <p>
+                          <PhoneIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />{" "}
+                          {opp.contact}
+                        </p>
+                        <p>
+                          <MilitaryTechIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />
+                          {opp.level.slice(0, 1).toUpperCase() +
+                            opp.level.slice(1) +
+                            " " +
+                            "level"}
+                        </p>
+                      </div>
+                      <button
+                        className="confirm-btn"
+                        style={{ background: "#0d1b2a", color: "#5efc82" }}
+                      >
+                        Confirm as Opponent
+                      </button>
+                    </div>
+                  );
+                })
+              : filter?.map((opp, index) => {
+                  return (
+                    <div className="opponent-card" key={index}>
+                      <div className="opponent-header" key={index}>
+                        <div className="opponent-name">{opp.teamName}</div>
+                        <div className="opponent-age">
+                          {opp.averageAge} years
+                        </div>
+                      </div>
+                      <div className="opponent-details">
+                        <p>
+                          <LocationPinIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />{" "}
+                          {opp.location.slice(0, 1).toUpperCase() +
+                            opp.location.slice(1)}
+                        </p>
+                        <p>
+                          <SportsSoccerIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />{" "}
+                          {opp.venue.slice(0, 1).toUpperCase() +
+                            opp.venue.slice(1)}
+                        </p>
+                        <p>
+                          <CalendarTodayIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />{" "}
+                          {opp.matchDate.slice(0, 10)}
+                        </p>
+                        <p>
+                          <AccessTimeIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />{" "}
+                          {new Date(
+                            `1970-01-01T${opp.timeFrom}:00`
+                          ).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                          })}{" "}
+                          -{" "}
+                          {new Date(
+                            `1970-01-01T${opp.timeTo}:00`
+                          ).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                          })}
+                        </p>
+                        <p>
+                          <PhoneIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />{" "}
+                          {opp.contact}
+                        </p>
+                        <p>
+                          <MilitaryTechIcon
+                            height="20"
+                            style={{ color: "black", marginRight: "10px" }}
+                          />
+                          {opp.level.slice(0, 1).toUpperCase() +
+                            opp.level.slice(1) +
+                            " " +
+                            "level"}
+                        </p>
+                      </div>
+                      <button
+                        className="confirm-btn"
+                        style={{ background: "#0d1b2a", color: "#5efc82" }}
+                      >
+                        Confirm as Opponent
+                      </button>
+                    </div>
+                  );
+                })}
           </div>
         </div>
 
@@ -286,6 +398,8 @@ export default function Opponent() {
                     name="average-age"
                     required
                     placeholder="Enter average age"
+                    min="12"
+                    max="65"
                     value={averageAge}
                     onChange={(e) => setAverageAge(e.target.value)}
                     style={{
@@ -496,7 +610,6 @@ export default function Opponent() {
                       required
                       style={{
                         marginTop: "10px",
-                        padding: "6px",
                         border: "1px solid #ccc",
                         borderRadius: "4px",
                         fontSize: "14px",

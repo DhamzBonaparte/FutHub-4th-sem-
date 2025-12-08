@@ -8,6 +8,7 @@ import TOC from "./Pages/TOC/TOC";
 import Opponent from "./Pages/Dashboard/Player/opponent/Opponent";
 import Service from "./Pages/Service/Service";
 import Main from "./Pages/Dashboard/Player/Main/Main";
+import Teammate from "./Pages/Dashboard/Player/Teammate/Teammate";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/player" element={<PDashboard />}>
           <Route index element={<Main/>}></Route>
           <Route path="/player/find-opponent" element={<Opponent />}></Route>
+          <Route path='/player/find-teammates' element={<Teammate/>}/>
         </Route>
       </Routes>
     </>
