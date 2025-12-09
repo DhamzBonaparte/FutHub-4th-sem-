@@ -87,7 +87,6 @@ export default function Opponent() {
     } catch (err) {
       setError(err.message);
     }
-    console.log("saved");
   }
 
   async function getOpponents() {
@@ -240,7 +239,7 @@ export default function Opponent() {
               type="text"
               id="opponent-name"
               required={edit}
-              defaultValue={
+              value={
                 teamName.split(" ")[0].slice(0, 1).toUpperCase() +
                 teamName.slice(1)
               }
@@ -254,7 +253,7 @@ export default function Opponent() {
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
               id="opponent-location"
               required={edit}
-              defaultValue={location}
+              value={location}
               onChange={(e) => setLocation(e.target.value)}
             >
               <option value="">Select Location</option>
@@ -269,7 +268,7 @@ export default function Opponent() {
               id="average-age"
               name="average-age"
               required={edit}
-              defaultValue={averageAge}
+              value={averageAge}
               placeholder="Enter average age"
               min="12"
               max="65"
@@ -281,7 +280,7 @@ export default function Opponent() {
               type="tel"
               id="opponent-phone"
               required={edit}
-              defaultValue={contact}
+              value={contact}
               minLength="10"
               maxLength="10"
               pattern="[0-9]{10}"
@@ -295,7 +294,7 @@ export default function Opponent() {
               type="text"
               id="opponent-venue"
               required={edit}
-              defaultValue={
+              value={
                 venue.split(" ")[0].slice(0, 1).toUpperCase() + venue.slice(1)
               }
               placeholder="Enter venue"
@@ -360,7 +359,7 @@ export default function Opponent() {
               id="user-date"
               name="user-date"
               required={edit}
-              defaultValue={date.slice(0, 10)}
+              value={date.slice(0, 10)}
               onChange={(e) => setDate(e.target.value)}
               min={new Date().toISOString().split("T")[0]}
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
@@ -386,7 +385,7 @@ export default function Opponent() {
               type="time"
               name="from"
               required={edit}
-              defaultValue={timeFrom}
+              value={timeFrom}
               onChange={(e) => setTimeFrom(e.target.value)}
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
             />
@@ -395,7 +394,7 @@ export default function Opponent() {
             <input
               type="time"
               name="to"
-              defaultValue={timeTo}
+              value={timeTo}
               required={edit}
               onChange={(e) => setTimeTo(e.target.value)}
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
@@ -416,7 +415,13 @@ export default function Opponent() {
                 Save
               </button>
               <button
-                onClick={() => setEdit(false)}
+                onClick={() => {
+                  setEdit(false);
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                  });
+                }}
                 type="button"
                 style={{
                   background: "#e63946",
