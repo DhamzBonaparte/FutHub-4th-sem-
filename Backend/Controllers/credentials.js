@@ -190,10 +190,50 @@ const delMyOpponents = async (req, res) => {
   try {
     const id = req.params.id;
     const userId = req.user.id;
-    const del = await opponent.findOneAndDelete({_id:id,userId})
-    res.status(200).json({ msg: "deleted",data:del});
+    const del = await opponent.findOneAndDelete({ _id: id, userId });
+    res.status(200).json({ msg: "deleted", data: del });
   } catch (err) {
     res.status(400).json({ msg: err.message });
+  }
+};
+
+const updateMyOpponents = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userId = req.user.id;
+    const {
+      teamName,
+      location,
+      averageAge,
+      contact,
+      venue,
+      gender,
+      date,
+      level,
+      timeFrom,
+      timeTo,
+    } = req.body;
+
+    const update = await oppponent.findOneAndUpdate(
+      { _id: id, userId },
+      {
+        teamName,
+        location,
+        averageAge,
+        contact,
+        venue,
+        gender,
+        matchDate: date,
+        level,
+        timeFrom,
+        timeTo,
+      },
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({ msg: "update data", updatedData: update });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -206,4 +246,5 @@ module.exports = {
   searchOpponents,
   myOpponentPostings,
   delMyOpponents,
+  updateMyOpponents,
 };

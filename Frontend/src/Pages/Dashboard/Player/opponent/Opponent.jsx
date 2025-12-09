@@ -33,6 +33,7 @@ export default function Opponent() {
   const [edit, setEdit] = useState(false);
   const [main, setMain] = useState(true);
   const [myOppPostings, setMyOppPostings] = useState([]);
+  const [ID, setId] = useState("");
 
   useEffect(() => {
     handleFilter();
@@ -56,8 +57,36 @@ export default function Opponent() {
     }
   }
 
-  function handleSave() {
-    setEdit(false);
+  async function handleEditSubmit(e) {
+    e.preventDefault();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    try {
+      const upd = await axios.patch(
+        `http://localhost:3000/api/v1/player/my-opponent-postings/${ID}`,
+        {
+          teamName,
+          location,
+          averageAge,
+          contact,
+          venue,
+          gender,
+          date,
+          level,
+          timeFrom,
+          timeTo,
+        },
+        { withCredentials: true }
+      );
+      getMyOpponentListings();
+      console.log(upd.data);
+      setEdit(false);
+    } catch (err) {
+      setError(err.message);
+    }
     console.log("saved");
   }
 
@@ -88,7 +117,22 @@ export default function Opponent() {
     }
   }
 
-  async function handleEdit(Eage, Egender, Econtact, Eto, Efrom,  Evenue,Edate,Eteam,Elevel) {
+  async function handleEdit(
+    Eage,
+    Egender,
+    Econtact,
+    Eto,
+    Efrom,
+    Evenue,
+    Edate,
+    Eteam,
+    Elevel,
+    Eid
+  ) {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     setEdit(true);
     setAverageAge(Eage);
     setGender(Egender);
@@ -99,6 +143,7 @@ export default function Opponent() {
     setVenue(Evenue);
     setTeamName(Eteam);
     setLevel(Elevel);
+    setId(Eid);
   }
 
   function handleNames(index, name) {
@@ -156,10 +201,10 @@ export default function Opponent() {
           background: "rgba(0,0,0,0.5)",
           display: edit ? "flex" : "none",
           justifyContent: "center",
-          alignItems: "flex-start", 
+          alignItems: "flex-start",
           zIndex: 1000,
-          overflowY: "auto", 
-          paddingTop: "40px", 
+          overflowY: "auto",
+          paddingTop: "40px",
           boxSizing: "border-box",
           padding: "20px",
         }}
@@ -189,14 +234,18 @@ export default function Opponent() {
             Edit Opponent Posting
           </p>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={(e) => handleEditSubmit(e)}>
             <label>Team Name:</label>
             <input
               type="text"
               id="opponent-name"
               required={edit}
-              defaultValue={teamName}
+              defaultValue={
+                teamName.split(" ")[0].slice(0, 1).toUpperCase() +
+                teamName.slice(1)
+              }
               placeholder="Enter Team Name"
+              onChange={(e) => setTeamName(e.target.value)}
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
             />
 
@@ -206,6 +255,7 @@ export default function Opponent() {
               id="opponent-location"
               required={edit}
               defaultValue={location}
+              onChange={(e) => setLocation(e.target.value)}
             >
               <option value="">Select Location</option>
               <option value="kathmandu">Kathmandu</option>
@@ -223,6 +273,7 @@ export default function Opponent() {
               placeholder="Enter average age"
               min="12"
               max="65"
+              onChange={(e) => setAverageAge(e.target.value)}
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
             />
             <label>Contact:</label>
@@ -235,6 +286,7 @@ export default function Opponent() {
               maxLength="10"
               pattern="[0-9]{10}"
               placeholder="Enter contact number"
+              onChange={(e) => setContact(e.target.value)}
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
             />
 
@@ -243,7 +295,9 @@ export default function Opponent() {
               type="text"
               id="opponent-venue"
               required={edit}
-              defaultValue={venue}
+              defaultValue={
+                venue.split(" ")[0].slice(0, 1).toUpperCase() + venue.slice(1)
+              }
               placeholder="Enter venue"
               onChange={(e) => setVenue(e.target.value)}
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
@@ -259,9 +313,10 @@ export default function Opponent() {
                   type="radio"
                   id="male"
                   name="gender"
-                  checked={gender === "male"}
+                  checked={gender == "male"}
                   value="male"
                   required={edit}
+                  onChange={(e) => setGender(e.target.value)}
                 />
                 <label htmlFor="male" style={{ marginLeft: "5px" }}>
                   Male
@@ -274,8 +329,9 @@ export default function Opponent() {
                   id="female"
                   name="gender"
                   value="female"
-                  checked={gender === "female"}
+                  checked={gender == "female"}
                   required={edit}
+                  onChange={(e) => setGender(e.target.value)}
                 />
                 <label htmlFor="female" style={{ marginLeft: "5px" }}>
                   Female
@@ -288,8 +344,9 @@ export default function Opponent() {
                   id="other"
                   name="gender"
                   value="other"
-                  checked={gender === "other"}
+                  checked={gender == "other"}
                   required={edit}
+                  onChange={(e) => setGender(e.target.value)}
                 />
                 <label htmlFor="other" style={{ marginLeft: "5px" }}>
                   Other
@@ -303,7 +360,8 @@ export default function Opponent() {
               id="user-date"
               name="user-date"
               required={edit}
-              value={date.slice(0,10)}
+              defaultValue={date.slice(0, 10)}
+              onChange={(e) => setDate(e.target.value)}
               min={new Date().toISOString().split("T")[0]}
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
             />
@@ -313,6 +371,7 @@ export default function Opponent() {
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
               id="opponent-skills"
               required={edit}
+              onChange={(e) => setLevel(e.target.value)}
               value={level}
             >
               <option value="">Select Skill Level</option>
@@ -328,6 +387,7 @@ export default function Opponent() {
               name="from"
               required={edit}
               defaultValue={timeFrom}
+              onChange={(e) => setTimeFrom(e.target.value)}
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
             />
 
@@ -337,13 +397,13 @@ export default function Opponent() {
               name="to"
               defaultValue={timeTo}
               required={edit}
+              onChange={(e) => setTimeTo(e.target.value)}
               style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
             />
 
             <div style={{ textAlign: "center", marginTop: "15px" }}>
               <button
                 type="submit"
-                onClick={() => handleSave()}
                 style={{
                   background: "#0d1b2a",
                   color: "#5efc82",
@@ -1121,7 +1181,7 @@ export default function Opponent() {
                       opp.matchDate,
                       opp.teamName,
                       opp.level,
-                      opp.gender
+                      opp._id
                     )
                   }
                 >

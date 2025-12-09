@@ -10,6 +10,7 @@ const {
   searchOpponents,
   myOpponentPostings,
   delMyOpponents,
+  updateMyOpponents
 } = require("../Controllers/credentials");
 
 router.route("/login").post(getCredentials);
@@ -24,5 +25,6 @@ router.route("/player/search-opponent").post(searchOpponents);
 router.route("/player/my-opponent-postings").get(authorize, myOpponentPostings);
 router
   .route("/player/my-opponent-postings/:id")
-  .delete(authorize, delMyOpponents);
+  .delete(authorize, delMyOpponents)
+  .patch(authorize,updateMyOpponents)
 module.exports = router;
