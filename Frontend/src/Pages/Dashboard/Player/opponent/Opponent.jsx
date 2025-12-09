@@ -30,12 +30,9 @@ export default function Opponent() {
   const [search, setSearch] = useState("");
   const [length, setLength] = useState(0);
   const [filter, setFilter] = useState({});
+  const [edit, setEdit] = useState(false);
   const [main, setMain] = useState(true);
   const [myOppPostings, setMyOppPostings] = useState([]);
-
-  useEffect(() => {
-    getMyOpponentListings();
-  }, []);
 
   useEffect(() => {
     handleFilter();
@@ -43,7 +40,7 @@ export default function Opponent() {
 
   useEffect(() => {
     getOpponents();
-    // getMyOpponentListings();
+    getMyOpponentListings();
   }, [length]);
 
   async function getMyOpponentListings() {
@@ -57,6 +54,11 @@ export default function Opponent() {
     } catch (error) {
       setError(error.message);
     }
+  }
+
+  function handleSave() {
+    setEdit(false);
+    console.log("saved");
   }
 
   async function getOpponents() {
@@ -86,10 +88,35 @@ export default function Opponent() {
     }
   }
 
+  async function handleEdit(Eage, Egender, Econtact, Eto, Efrom,  Evenue,Edate,Eteam,Elevel) {
+    setEdit(true);
+    setAverageAge(Eage);
+    setGender(Egender);
+    setContact(Econtact);
+    setTimeTo(Eto);
+    setTimeFrom(Efrom);
+    setDate(Edate);
+    setVenue(Evenue);
+    setTeamName(Eteam);
+    setLevel(Elevel);
+  }
+
   function handleNames(index, name) {
     const updatedNames = [...playerNames];
     updatedNames[index] = name;
     setPlayerNames(updatedNames);
+  }
+
+  async function handleDelete(id) {
+    try {
+      const del = await axios.delete(
+        `http://localhost:3000/api/v1/player/my-opponent-postings/${id}`,
+        { withCredentials: true }
+      );
+      getMyOpponentListings();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleSubmit() {
@@ -119,6 +146,235 @@ export default function Opponent() {
 
   return (
     <>
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: "rgba(0,0,0,0.5)",
+          display: edit ? "flex" : "none",
+          justifyContent: "center",
+          alignItems: "flex-start", 
+          zIndex: 1000,
+          overflowY: "auto", 
+          paddingTop: "40px", 
+          boxSizing: "border-box",
+          padding: "20px",
+        }}
+      >
+        <div
+          style={{
+            background: "#fff",
+            width: "100%",
+            maxWidth: "600px",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+          }}
+        >
+          <p
+            style={{
+              marginTop: "0",
+              textAlign: "center",
+              fontSize: "28px",
+              fontWeight: "700",
+              color: "#0d1b2a",
+              letterSpacing: "1px",
+              padding: "10px 0",
+              borderBottom: "2px solid #5efc82",
+            }}
+          >
+            Edit Opponent Posting
+          </p>
+
+          <form onSubmit={handleSubmit}>
+            <label>Team Name:</label>
+            <input
+              type="text"
+              id="opponent-name"
+              required={edit}
+              defaultValue={teamName}
+              placeholder="Enter Team Name"
+              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+            />
+
+            <label>Location:</label>
+            <select
+              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              id="opponent-location"
+              required={edit}
+              defaultValue={location}
+            >
+              <option value="">Select Location</option>
+              <option value="kathmandu">Kathmandu</option>
+              <option value="bhaktapur">Bhaktapur</option>
+              <option value="lalitpur">Lalitpur</option>
+            </select>
+
+            <label>Average Age:</label>
+            <input
+              type="number"
+              id="average-age"
+              name="average-age"
+              required={edit}
+              defaultValue={averageAge}
+              placeholder="Enter average age"
+              min="12"
+              max="65"
+              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+            />
+            <label>Contact:</label>
+            <input
+              type="tel"
+              id="opponent-phone"
+              required={edit}
+              defaultValue={contact}
+              minLength="10"
+              maxLength="10"
+              pattern="[0-9]{10}"
+              placeholder="Enter contact number"
+              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+            />
+
+            <label>Venue:</label>
+            <input
+              type="text"
+              id="opponent-venue"
+              required={edit}
+              defaultValue={venue}
+              placeholder="Enter venue"
+              onChange={(e) => setVenue(e.target.value)}
+              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+            />
+
+            <label>Gender:</label>
+            <div
+              className="gen"
+              style={{ display: "flex", justifyContent: "space-around" }}
+            >
+              <div>
+                <input
+                  type="radio"
+                  id="male"
+                  name="gender"
+                  checked={gender === "male"}
+                  value="male"
+                  required={edit}
+                />
+                <label htmlFor="male" style={{ marginLeft: "5px" }}>
+                  Male
+                </label>
+              </div>
+
+              <div>
+                <input
+                  type="radio"
+                  id="female"
+                  name="gender"
+                  value="female"
+                  checked={gender === "female"}
+                  required={edit}
+                />
+                <label htmlFor="female" style={{ marginLeft: "5px" }}>
+                  Female
+                </label>
+              </div>
+
+              <div>
+                <input
+                  type="radio"
+                  id="other"
+                  name="gender"
+                  value="other"
+                  checked={gender === "other"}
+                  required={edit}
+                />
+                <label htmlFor="other" style={{ marginLeft: "5px" }}>
+                  Other
+                </label>
+              </div>
+            </div>
+
+            <label>Match Date:</label>
+            <input
+              type="date"
+              id="user-date"
+              name="user-date"
+              required={edit}
+              value={date.slice(0,10)}
+              min={new Date().toISOString().split("T")[0]}
+              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+            />
+
+            <label>Level:</label>
+            <select
+              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              id="opponent-skills"
+              required={edit}
+              value={level}
+            >
+              <option value="">Select Skill Level</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+              <option value="professional">Professional</option>
+            </select>
+
+            <label>Time From:</label>
+            <input
+              type="time"
+              name="from"
+              required={edit}
+              defaultValue={timeFrom}
+              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+            />
+
+            <label>Time To:</label>
+            <input
+              type="time"
+              name="to"
+              defaultValue={timeTo}
+              required={edit}
+              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+            />
+
+            <div style={{ textAlign: "center", marginTop: "15px" }}>
+              <button
+                type="submit"
+                onClick={() => handleSave()}
+                style={{
+                  background: "#0d1b2a",
+                  color: "#5efc82",
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setEdit(false)}
+                type="button"
+                style={{
+                  background: "#e63946",
+                  color: "#fff",
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  marginLeft: "10px",
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       <div className="error">
         <h3
           style={{
@@ -130,7 +386,15 @@ export default function Opponent() {
           {error}
         </h3>
       </div>
-      <div id="opponents" className="opponents-section">
+      <div
+        id="opponents"
+        className="opponents-section"
+        style={{
+          filter: edit ? "blur(10px)" : "blur(0px)",
+          position: "relative",
+          height: "100%",
+        }}
+      >
         <div className="section-tabs">
           <div
             className="tab active"
@@ -846,8 +1110,22 @@ export default function Opponent() {
                     padding: "5px 10px",
                     borderRadius: "4px",
                   }}
-                  onClick={() => handleEdit(opp._id)}
+                  onClick={() =>
+                    handleEdit(
+                      opp.averageAge,
+                      opp.gender,
+                      opp.contact,
+                      opp.timeTo,
+                      opp.timeFrom,
+                      opp.venue,
+                      opp.matchDate,
+                      opp.teamName,
+                      opp.level,
+                      opp.gender
+                    )
+                  }
                 >
+                  {/* //editttt */}
                   Edit
                 </button>
                 <button

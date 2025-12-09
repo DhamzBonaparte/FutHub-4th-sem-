@@ -117,9 +117,8 @@ const playerData = (req, res) => {
 
 //posting as opponent
 const setOpponent = async (req, res) => {
-  
   try {
-    const {id}=req.user;
+    const { id } = req.user;
 
     const {
       teamName,
@@ -137,8 +136,8 @@ const setOpponent = async (req, res) => {
     } = req.body;
 
     const getData = await opponent.create({
-      userId:id,
-      teamName, 
+      userId: id,
+      teamName,
       totalPlayers,
       location,
       averageAge,
@@ -150,7 +149,7 @@ const setOpponent = async (req, res) => {
       level,
       timeFrom,
       timeTo,
-    });    
+    });
     res.status(200).json({ msg: "hi there", data: getData });
   } catch (error) {
     res.status(500).json({ msg: "Something went wrong", error: error.message });
@@ -158,41 +157,53 @@ const setOpponent = async (req, res) => {
 };
 
 //getting oppponents
-const getOpponents= async(req,res)=>{
-  const all=await opponent.find();
-  res.status(200).json({msg:"all ooponents",data:all,length:all.length})
-}
+const getOpponents = async (req, res) => {
+  const all = await opponent.find();
+  res.status(200).json({ msg: "all ooponents", data: all, length: all.length });
+};
 
 //filtered search
-const searchOpponents= async (req,res)=>{
-  const {search} = req.body;
-  const filter = await opponent.find({location:{ $regex: search, $options: "i" } });
+const searchOpponents = async (req, res) => {
+  const { search } = req.body;
+  const filter = await opponent.find({
+    location: { $regex: search, $options: "i" },
+  });
 
   res.status(200).json({
-    filteredData:filter
-  })
-}
+    filteredData: filter,
+  });
+};
 
 //my opponents
-const myOpponentPostings=async(req,res)=>{
-  //frontend ma with credentials lai true
-  try{
-    const {id} = req.user;
-    const myopponentPostings=await opponent.find({userId:id})
-    res.status(200).json({msg:"Done",data:myopponentPostings});
-}catch(error){
-    res.status(400).json({error:error.message})
-    console.log(error)
-}
-}
+const myOpponentPostings = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const myopponentPostings = await opponent.find({ userId: id });
+    res.status(200).json({ msg: "Done", data: myopponentPostings });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+    console.log(error);
+  }
+};
 
+const delMyOpponents = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userId = req.user.id;
+    const del = await opponent.findOneAndDelete({_id:id,userId})
+    res.status(200).json({ msg: "deleted",data:del});
+  } catch (err) {
+    res.status(400).json({ msg: err.message });
+  }
+};
 
 module.exports = {
   getCredentials,
   setCredentials,
-  playerData, 
+  playerData,
   setOpponent,
   getOpponents,
   searchOpponents,
-  myOpponentPostings
+  myOpponentPostings,
+  delMyOpponents,
 };
