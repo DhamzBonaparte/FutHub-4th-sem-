@@ -86,7 +86,6 @@ export default function Opponent() {
         { withCredentials: true }
       );
       getMyOpponentListings();
-      console.log(upd.data);
       setEdit(false);
     } catch (err) {
       setError(err.message);
@@ -166,7 +165,7 @@ export default function Opponent() {
   async function handleDelete(id) {
     setLoading(true);
     try {
-      const del = await axios.delete(
+      await axios.delete(
         `http://localhost:3000/api/v1/player/my-opponent-postings/${id}`,
         { withCredentials: true }
       );
@@ -181,7 +180,7 @@ export default function Opponent() {
   async function handleSubmit() {
     setLoading(true);
     try {
-      const upl = axios.post(
+      await axios.post(
         "http://localhost:3000/api/v1/player/find-opponent",
         {
           teamName,
@@ -247,7 +246,7 @@ export default function Opponent() {
               borderBottom: "2px solid #5efc82",
             }}
           >
-            Edit Opponent Posting
+            Edit your posting
           </p>
 
           <form onSubmit={(e) => handleEditSubmit(e)}>
@@ -262,12 +261,22 @@ export default function Opponent() {
               }
               placeholder="Enter Team Name"
               onChange={(e) => setTeamName(e.target.value)}
-              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              style={{
+                width: "100%",
+                padding: "6px",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
             />
 
             <label>Location:</label>
             <select
-              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              style={{
+                width: "100%",
+                padding: "6px",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
               id="opponent-location"
               required={edit}
               value={location}
@@ -290,7 +299,12 @@ export default function Opponent() {
               min="12"
               max="65"
               onChange={(e) => setAverageAge(e.target.value)}
-              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              style={{
+                width: "100%",
+                padding: "6px",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
             />
             <label>Contact:</label>
             <input
@@ -303,7 +317,12 @@ export default function Opponent() {
               pattern="[0-9]{10}"
               placeholder="Enter contact number"
               onChange={(e) => setContact(e.target.value)}
-              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              style={{
+                width: "100%",
+                padding: "6px",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
             />
 
             <label>Venue:</label>
@@ -316,7 +335,12 @@ export default function Opponent() {
               }
               placeholder="Enter venue"
               onChange={(e) => setVenue(e.target.value)}
-              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              style={{
+                width: "100%",
+                padding: "6px",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
             />
 
             <label>Gender:</label>
@@ -334,7 +358,10 @@ export default function Opponent() {
                   required={edit}
                   onChange={(e) => setGender(e.target.value)}
                 />
-                <label htmlFor="male" style={{ marginLeft: "5px" }}>
+                <label
+                  htmlFor="male"
+                  style={{ marginLeft: "5px", borderRadius: "10px" }}
+                >
                   Male
                 </label>
               </div>
@@ -379,12 +406,22 @@ export default function Opponent() {
               value={date.slice(0, 10)}
               onChange={(e) => setDate(e.target.value)}
               min={new Date().toISOString().split("T")[0]}
-              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              style={{
+                width: "100%",
+                padding: "6px",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
             />
 
             <label>Level:</label>
             <select
-              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              style={{
+                width: "100%",
+                padding: "6px",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
               id="opponent-skills"
               required={edit}
               onChange={(e) => setLevel(e.target.value)}
@@ -404,7 +441,12 @@ export default function Opponent() {
               required={edit}
               value={timeFrom}
               onChange={(e) => setTimeFrom(e.target.value)}
-              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              style={{
+                width: "100%",
+                padding: "6px",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
             />
 
             <label>Time To:</label>
@@ -414,10 +456,21 @@ export default function Opponent() {
               value={timeTo}
               required={edit}
               onChange={(e) => setTimeTo(e.target.value)}
-              style={{ width: "100%", padding: "6px", marginBottom: "10px" }}
+              style={{
+                width: "100%",
+                padding: "6px",
+                marginBottom: "10px",
+                borderRadius: "10px",
+              }}
             />
 
-            <div style={{ textAlign: "center", marginTop: "15px" }}>
+            <div
+              style={{
+                textAlign: "center",
+                marginTop: "15px",
+                borderRadius: "10px",
+              }}
+            >
               <button
                 type="submit"
                 style={{
@@ -648,106 +701,102 @@ export default function Opponent() {
               : filter?.map((opp, index) => {
                   return (
                     <>
-                      {loading ? (
-                        <p>Loading opponents...</p>
-                      ) : (
-                        <div className="opponent-card" key={index}>
-                          <div className="opponent-header">
-                            <div className="opponent-name">{opp.teamName}</div>
-                            <div className="opponent-age">
-                              {opp.averageAge} years
-                            </div>
+                      <div className="opponent-card" key={index}>
+                        <div className="opponent-header">
+                          <div className="opponent-name">{opp.teamName}</div>
+                          <div className="opponent-age">
+                            {opp.averageAge} years
                           </div>
-
-                          <div className="opponent-details">
-                            <p>
-                              <LocationPinIcon
-                                style={{
-                                  color: "black",
-                                  marginRight: "10px",
-                                  fontSize: "20px",
-                                }}
-                              />
-                              {opp.location.charAt(0).toUpperCase() +
-                                opp.location.slice(1)}
-                            </p>
-                            <p>
-                              <SportsSoccerIcon
-                                style={{
-                                  color: "black",
-                                  marginRight: "10px",
-                                  fontSize: "20px",
-                                }}
-                              />
-                              {opp.venue.charAt(0).toUpperCase() +
-                                opp.venue.slice(1)}
-                            </p>
-                            <p>
-                              <CalendarTodayIcon
-                                style={{
-                                  color: "black",
-                                  marginRight: "10px",
-                                  fontSize: "20px",
-                                }}
-                              />
-                              {opp.matchDate.slice(0, 10)}
-                            </p>
-                            <p>
-                              <AccessTimeIcon
-                                style={{
-                                  color: "black",
-                                  marginRight: "10px",
-                                  fontSize: "20px",
-                                }}
-                              />
-                              {new Date(
-                                `1970-01-01T${opp.timeFrom}:00`
-                              ).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: true,
-                              })}{" "}
-                              -{" "}
-                              {new Date(
-                                `1970-01-01T${opp.timeTo}:00`
-                              ).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: true,
-                              })}
-                            </p>
-                            <p>
-                              <PhoneIcon
-                                style={{
-                                  color: "black",
-                                  marginRight: "10px",
-                                  fontSize: "20px",
-                                }}
-                              />
-                              {opp.contact}
-                            </p>
-                            <p>
-                              <MilitaryTechIcon
-                                style={{
-                                  color: "black",
-                                  marginRight: "10px",
-                                  fontSize: "20px",
-                                }}
-                              />
-                              {opp.level.charAt(0).toUpperCase() +
-                                opp.level.slice(1)}{" "}
-                              level
-                            </p>
-                          </div>
-
-                          <button
-                            className="confirm-btn"
-                            style={{ background: "#0d1b2a", color: "#5efc82" }}
-                          >
-                            Confirm as Opponent
-                          </button>
                         </div>
-                      )}
+
+                        <div className="opponent-details">
+                          <p>
+                            <LocationPinIcon
+                              style={{
+                                color: "black",
+                                marginRight: "10px",
+                                fontSize: "20px",
+                              }}
+                            />
+                            {opp.location.charAt(0).toUpperCase() +
+                              opp.location.slice(1)}
+                          </p>
+                          <p>
+                            <SportsSoccerIcon
+                              style={{
+                                color: "black",
+                                marginRight: "10px",
+                                fontSize: "20px",
+                              }}
+                            />
+                            {opp.venue.charAt(0).toUpperCase() +
+                              opp.venue.slice(1)}
+                          </p>
+                          <p>
+                            <CalendarTodayIcon
+                              style={{
+                                color: "black",
+                                marginRight: "10px",
+                                fontSize: "20px",
+                              }}
+                            />
+                            {opp.matchDate.slice(0, 10)}
+                          </p>
+                          <p>
+                            <AccessTimeIcon
+                              style={{
+                                color: "black",
+                                marginRight: "10px",
+                                fontSize: "20px",
+                              }}
+                            />
+                            {new Date(
+                              `1970-01-01T${opp.timeFrom}:00`
+                            ).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            })}{" "}
+                            -{" "}
+                            {new Date(
+                              `1970-01-01T${opp.timeTo}:00`
+                            ).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            })}
+                          </p>
+                          <p>
+                            <PhoneIcon
+                              style={{
+                                color: "black",
+                                marginRight: "10px",
+                                fontSize: "20px",
+                              }}
+                            />
+                            {opp.contact}
+                          </p>
+                          <p>
+                            <MilitaryTechIcon
+                              style={{
+                                color: "black",
+                                marginRight: "10px",
+                                fontSize: "20px",
+                              }}
+                            />
+                            {opp.level.charAt(0).toUpperCase() +
+                              opp.level.slice(1)}{" "}
+                            level
+                          </p>
+                        </div>
+
+                        <button
+                          className="confirm-btn"
+                          style={{ background: "#0d1b2a", color: "#5efc82" }}
+                        >
+                          Confirm as Opponent
+                        </button>
+                      </div>
                     </>
                   );
                 })}
@@ -906,43 +955,40 @@ export default function Opponent() {
                     }}
                   >
                     <div>
-                      <input
-                        type="radio"
-                        id="male"
-                        name="gender"
-                        value="male"
-                        required
-                        onChange={(e) => setGender(e.target.value)}
-                      />
-                      <label htmlFor="male" style={{ marginLeft: "5px" }}>
+                      <label style={{ marginLeft: "5px" }}>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="male"
+                          required
+                          onChange={(e) => setGender(e.target.value)}
+                        />
                         Male
                       </label>
                     </div>
 
                     <div>
-                      <input
-                        type="radio"
-                        id="female"
-                        name="gender"
-                        value="female"
-                        required
-                        onChange={(e) => setGender(e.target.value)}
-                      />
-                      <label htmlFor="female" style={{ marginLeft: "5px" }}>
+                      <label style={{ marginLeft: "5px" }}>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="female"
+                          required
+                          onChange={(e) => setGender(e.target.value)}
+                        />
                         Female
                       </label>
                     </div>
 
                     <div>
-                      <input
-                        type="radio"
-                        id="other"
-                        name="gender"
-                        value="other"
-                        required
-                        onChange={(e) => setGender(e.target.value)}
-                      />
-                      <label htmlFor="other" style={{ marginLeft: "5px" }}>
+                      <label style={{ marginLeft: "5px" }}>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="other"
+                          required
+                          onChange={(e) => setGender(e.target.value)}
+                        />
                         Other
                       </label>
                     </div>
