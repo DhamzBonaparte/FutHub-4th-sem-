@@ -1,24 +1,75 @@
+import axios from "axios";
+import { useEffect } from "react";
 import { useState } from "react";
 
 export default function Teammate() {
   const [find, setFind] = useState(true);
   const [become, setBecome] = useState(false);
   const [myPosting, setMyPosting] = useState(false);
-  const [isEdit, setIsEdit] = useState(false); 
+  const [isEdit, setIsEdit] = useState(false);
+  const [error, setError] = useState("");
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [location, setLocation] = useState("");
+  const [contact, setContact] = useState("");
+  const [position, setPosition] = useState("");
+  const [experience, setExperience] = useState("");
+  const [gender, setGender] = useState("");
+  const [available, setAvailable] = useState("");
+  const [about, setAbout] = useState("");
+  const [data, setData] = useState({});
+  const [length,setLength]=useState(0);
+
+  useEffect(()=>{
+    getTeams();
+  },[length]);
 
   const setActiveTab = (activeTab) => {
-    setFind(activeTab === 'find');
-    setBecome(activeTab === 'become');
-    setMyPosting(activeTab === 'myPosting');
+    setFind(activeTab === "find");
+    setBecome(activeTab === "become");
+    setMyPosting(activeTab === "myPosting");
   };
 
   const contentDisplay = (isActive) => ({
-    display: isActive ? "block" : "none"
+    display: isActive ? "block" : "none",
   });
 
+  const getTeams=async ()=>{
+    try {
+      const teams = await axios.get("http://localhost:3000/api/v1/player/find-teammate");
+      setData(teams.data);
+      setLength(teams.data.length);
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+  
+  console.log(data,length);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const frnd = await axios.post(
+        "http://localhost:3000/api/v1/player/find-teammate",
+        {
+          name,
+          age,
+          location,
+          contact,
+          position,
+          experience,
+          gender,
+          available,
+          about,
+        },
+        { withCredentials: true }
+      );
+      
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   return (
     <>
-      <input type="text" name="name" value="Sulav" />
       <div
         style={{
           fontFamily: "Arial, sans-serif",
@@ -26,8 +77,7 @@ export default function Teammate() {
           minHeight: "100vh",
         }}
       >
-        
-        {isEdit && ( 
+        {isEdit && (
           <div
             style={{
               position: "fixed",
@@ -35,7 +85,7 @@ export default function Teammate() {
               left: 0,
               width: "100%",
               height: "100%",
-              background: "rgba(0,0,0,0.5)", 
+              background: "rgba(0,0,0,0.5)",
               display: "flex",
               justifyContent: "center",
               alignItems: "flex-start",
@@ -273,79 +323,91 @@ export default function Teammate() {
           >
             {/* Find Teammates Tab */}
             <div
-              style={find?{
-                flex: 1,
-                padding: "15px",
-                textAlign: "center",
-                background: "#e8f5e9",
-                color: "#009624",
-                fontWeight: "bold",
-                borderBottom: "4px solid #00c853",
-                cursor:"pointer"
-              }:{
-                flex: 1,
-                padding: "15px",
-                textAlign: "center",
-                background: "#fff",
-                color: "#333",
-                cursor:"pointer"
-              }}
-              onClick={() => setActiveTab('find')}
+              style={
+                find
+                  ? {
+                      flex: 1,
+                      padding: "15px",
+                      textAlign: "center",
+                      background: "#e8f5e9",
+                      color: "#009624",
+                      fontWeight: "bold",
+                      borderBottom: "4px solid #00c853",
+                      cursor: "pointer",
+                    }
+                  : {
+                      flex: 1,
+                      padding: "15px",
+                      textAlign: "center",
+                      background: "#fff",
+                      color: "#333",
+                      cursor: "pointer",
+                    }
+              }
+              onClick={() => setActiveTab("find")}
             >
               Find Teammates
             </div>
-            
+
             {/* Become a Teammate Tab */}
             <div
-              style={become?{
-                flex: 1,
-                padding: "15px",
-                textAlign: "center",
-                background: "#e8f5e9",
-                color: "#009624",
-                fontWeight: "bold",
-                borderBottom: "4px solid #00c853",
-                cursor:"pointer"
-              }:{
-                flex: 1,
-                padding: "15px",
-                textAlign: "center",
-                background: "#fff",
-                color: "#333",
-                cursor:"pointer"
-              }}
-              onClick={() => setActiveTab('become')}
+              style={
+                become
+                  ? {
+                      flex: 1,
+                      padding: "15px",
+                      textAlign: "center",
+                      background: "#e8f5e9",
+                      color: "#009624",
+                      fontWeight: "bold",
+                      borderBottom: "4px solid #00c853",
+                      cursor: "pointer",
+                    }
+                  : {
+                      flex: 1,
+                      padding: "15px",
+                      textAlign: "center",
+                      background: "#fff",
+                      color: "#333",
+                      cursor: "pointer",
+                    }
+              }
+              onClick={() => setActiveTab("become")}
             >
               Become a Teammate
             </div>
-            
+
             {/* My Postings Tab */}
             <div
-              style={myPosting?{
-                flex: 1,
-                padding: "15px",
-                textAlign: "center",
-                background: "#e8f5e9",
-                color: "#009624",
-                fontWeight: "bold",
-                borderBottom: "4px solid #00c853",
-                cursor:"pointer"
-              }:{
-                flex: 1,
-                padding: "15px",
-                textAlign: "center",
-                background: "#fff",
-                color: "#333",
-                cursor:"pointer"
-              }}
-              onClick={() => setActiveTab('myPosting')}
+              style={
+                myPosting
+                  ? {
+                      flex: 1,
+                      padding: "15px",
+                      textAlign: "center",
+                      background: "#e8f5e9",
+                      color: "#009624",
+                      fontWeight: "bold",
+                      borderBottom: "4px solid #00c853",
+                      cursor: "pointer",
+                    }
+                  : {
+                      flex: 1,
+                      padding: "15px",
+                      textAlign: "center",
+                      background: "#fff",
+                      color: "#333",
+                      cursor: "pointer",
+                    }
+              }
+              onClick={() => setActiveTab("myPosting")}
             >
               My Postings
             </div>
           </div>
 
           {/* Tab Content Containers */}
-          
+
           {/* 1. Find Teammates Tab Content */}
           <div style={contentDisplay(find)}>
             <div
@@ -353,17 +415,18 @@ export default function Teammate() {
                 display: "flex",
                 gap: "10px",
                 marginBottom: "30px",
-                maxWidth: "700px",
+                maxWidth: "100%",
               }}
             >
               <input
                 type="text"
-                placeholder="Search location..."
+                placeholder="Search location ....."
                 style={{
                   flex: 1,
                   padding: "12px",
                   borderRadius: "8px",
                   border: "1px solid #ccc",
+                  width: "100%",
                 }}
               />
               <button
@@ -449,27 +512,222 @@ export default function Teammate() {
           </div>
 
           {/* 2. Become a Teammate Form Content */}
+          {/* form of teammate */}
           <div style={contentDisplay(become)}>
-            <h2 style={{ textAlign: "center", color: "#0d1b2a" }}>
-              Post Your Team
-            </h2>
-            <form style={{ maxWidth: "800px", margin: "0 auto" }}>
-              {/* You would place the actual "Post Your Team" form content here, 
-                  likely identical to the modal's form fields. */}
+            <form
+              style={{ maxWidth: "800px", margin: "0 auto" }}
+              onSubmit={(e) => handleSubmit(e)}
+            >
+              <div id="become-teammate" className="teammate-tab">
+                <div className="form-container" style={{ width: "100%" }}>
+                  <h3
+                    style={{
+                      textAlign: "center",
+                      borderBottom: "5px solid green",
+                      marginBottom: "30px",
+                    }}
+                  >
+                    Become Teammate
+                  </h3>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="teammate-name">Full Name</label>
+                      <input
+                        type="text"
+                        id="teammate-name"
+                        required
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Enter Name"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="teammate-age">Age</label>
+                      <input
+                        type="number"
+                        id="teammate-age"
+                        min="16"
+                        max="60"
+                        required
+                        placeholder="Enter Age"
+                        onChange={(e) => setAge(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="teammate-location">Location</label>
+                      <select
+                        id="teammate-location"
+                        required
+                        onChange={(e) => setLocation(e.target.value)}
+                      >
+                        <option value="">Select Location</option>
+                        <option value="kathmandu">Kathmandu</option>
+                        <option value="bhaktapur">Bhaktapur</option>
+                        <option value="lalitpur">Lalitpur</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="teammate-phone">Contact Number</label>
+                      <input
+                        type="tel"
+                        id="teammate-phone"
+                        required
+                        minLength="10"
+                        maxLength="10"
+                        pattern="[0-9]{10}"
+                        onChange={(e) => setContact(e.target.value)}
+                        placeholder="Enter Contact Number"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="teammate-position">
+                        Preferred Position
+                      </label>
+                      <select
+                        id="teammate-position"
+                        required
+                        onChange={(e) => setPosition(e.target.value)}
+                      >
+                        <option value="">Select Position</option>
+                        <option value="goalkeeper">Goalkeeper</option>
+                        <option value="defender">Defender</option>
+                        <option value="midfielder">Midfielder</option>
+                        <option value="forward">Forward</option>
+                        <option value="any">Any Position</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="teammate-experience">
+                        Years of Experience
+                      </label>
+                      <select
+                        id="teammate-experience"
+                        required
+                        onChange={(e) => setExperience(e.target.value)}
+                      >
+                        <option value="">Select Experience</option>
+                        <option value="0-1">0-1 Years</option>
+                        <option value="1-3">1-3 Years</option>
+                        <option value="3-5">3-5 Years</option>
+                        <option value="5+">5+ Years</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div
+                    className="form-group"
+                    style={{
+                      textAlign: "Center",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <label htmlFor="gender">Gender</label>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "15px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      <div>
+                        <input
+                          type="radio"
+                          id="male"
+                          name="gender"
+                          value="male"
+                          required
+                          onChange={(e) => setGender(e.target.value)}
+                        />
+                        <label htmlFor="male" style={{ marginLeft: "5px" }}>
+                          Male
+                        </label>
+                      </div>
+
+                      <div>
+                        <input
+                          type="radio"
+                          id="female"
+                          name="gender"
+                          value="female"
+                          required
+                          onChange={(e) => setGender(e.target.value)}
+                        />
+                        <label htmlFor="female" style={{ marginLeft: "5px" }}>
+                          Female
+                        </label>
+                      </div>
+
+                      <div>
+                        <input
+                          type="radio"
+                          id="other"
+                          name="gender"
+                          value="other"
+                          required
+                          onChange={(e) => setGender(e.target.value)}
+                        />
+                        <label htmlFor="other" style={{ marginLeft: "5px" }}>
+                          Other
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="teammate-availability">Availability</label>
+                    <select
+                      id="teammate-availability"
+                      required
+                      onChange={(e) => setAvailable(e.target.value)}
+                    >
+                      <option value="">Select Availability</option>
+                      <option value="weekdays">Weekdays Only</option>
+                      <option value="weekends">Weekends Only</option>
+                      <option value="both">Both Weekdays & Weekends</option>
+                      <option value="flexible">Flexible</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="teammate-about">
+                      About You (Skills, Preferences)
+                    </label>
+                    <textarea
+                      id="teammate-about"
+                      rows="3"
+                      style={{
+                        width: "100%",
+                        padding: "0.8rem",
+                        border: "1px solid #ddd",
+                        borderRadius: "5px",
+                      }}
+                      placeholder="About yourself..."
+                      onChange={(e) => setAbout(e.target.value)}
+                    ></textarea>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="submit-btn"
+                    style={{ background: "#0d1b2a", color: "#5efc82" }}
+                  >
+                    Post as Teammate
+                  </button>
+                </div>
+              </div>
             </form>
           </div>
 
           {/* 3. My Postings Content */}
           <div style={{ marginTop: "50px", ...contentDisplay(myPosting) }}>
-            <h2
-              style={{
-                textAlign: "center",
-                color: "#0d1b2a",
-                marginBottom: "30px",
-              }}
-            >
-              My Opponent Postings
-            </h2>
             <div
               style={{
                 background: "#fff",

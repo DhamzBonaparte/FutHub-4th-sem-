@@ -43,6 +43,7 @@ const opponentSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    lowercase:true
   },
   matchDate: {
     type: Date,

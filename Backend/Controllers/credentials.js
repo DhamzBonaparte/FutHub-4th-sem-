@@ -1,10 +1,10 @@
-const login = require("../Model/login");
 const signup = require("../Model/signup");
 const bcrypt = require("bcrypt");
 const mail = require("nodemailer");
 const oppponent = require("../Model/opponent");
 const jwt = require("jsonwebtoken");
 const opponent = require("../Model/opponent");
+const teammate = require("../Model/teammate");
 require("dotenv").config();
 
 // for login
@@ -230,10 +230,51 @@ const updateMyOpponents = async (req, res) => {
       },
       { new: true, runValidators: true }
     );
-
     res.status(200).json({ msg: "update data", updatedData: update });
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+};
+
+const setTeammate = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const {
+      name,
+      age,
+      location,
+      contact,
+      position,
+      experience,
+      gender,
+      available,
+      about,
+    } = req.body;
+
+    const frnd = await teammate.create({
+      userId,
+      name,
+      location,
+      age,
+      contact,
+      position,
+      experience,
+      gender,
+      availability: available,
+      about,
+    });
+    res.status(200).json({ msg: "got it", data: frnd });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+};
+
+const getTeammate = async (req, res) => {
+  try {
+    const teams = await teammate.find();
+    res.status(200).json({ msg: "got it", data: teams,length:teams.length });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
   }
 };
 
@@ -247,4 +288,6 @@ module.exports = {
   myOpponentPostings,
   delMyOpponents,
   updateMyOpponents,
+  setTeammate,
+  getTeammate,
 };
