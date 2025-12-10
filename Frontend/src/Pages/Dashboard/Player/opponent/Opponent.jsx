@@ -196,16 +196,15 @@ export default function Opponent() {
           top: 0,
           left: 0,
           width: "100%",
-          height: "100%",
+          height: "110%",
           background: "rgba(0,0,0,0.5)",
           display: edit ? "flex" : "none",
           justifyContent: "center",
           alignItems: "flex-start",
           zIndex: 1000,
           overflowY: "auto",
-          paddingTop: "40px",
           boxSizing: "border-box",
-          padding: "20px",
+          padding: "40px 20px", // top 40, sides 20
         }}
       >
         <div
@@ -220,13 +219,13 @@ export default function Opponent() {
         >
           <p
             style={{
-              marginTop: "0",
+              margin: 0, // removes default margin
               textAlign: "center",
               fontSize: "28px",
-              fontWeight: "700",
+              fontWeight: 700,
               color: "#0d1b2a",
               letterSpacing: "1px",
-              padding: "10px 0",
+              paddingBottom: "12px", // only bottom padding
               borderBottom: "2px solid #5efc82",
             }}
           >
@@ -1064,41 +1063,27 @@ export default function Opponent() {
             key={opp._id}
           >
             <div className="opponent-card" style={{ marginBottom: "20px" }}>
-              <div className="opponent-header">
-                <div className="opponent-name">
+              <div
+                style={{
+                  background: "#fff",
+                  padding: "20px",
+                  borderRadius: "12px",
+                  boxShadow: "0 4px 15px rgba(0,0,0.1)",
+                  display: mine ? "block" : "none",
+                }}
+              >
+                <h3>
                   {opp.teamName.slice(0, 1).toUpperCase() +
-                    opp.teamName.slice(1)}
-                </div>
-                <div className="opponent-age">{opp.averageAge} years</div>
-              </div>
-              <div className="opponent-details">
+                    opp.teamName.slice(1)}{" "}
+                  • {opp.averageAge} yrs avg
+                </h3>
                 <p>
-                  <LocationPinIcon
-                    height="20"
-                    style={{ color: "black", marginRight: "10px" }}
-                  />{" "}
-                  {opp.location.slice(0, 1).toUpperCase() +
-                    opp.location.slice(1)}
-                </p>
-                <p>
-                  <SportsSoccerIcon
-                    height="20"
-                    style={{ color: "black", marginRight: "10px" }}
-                  />{" "}
-                  {opp.venue.slice(0, 1).toUpperCase() + opp.venue.slice(1)}
-                </p>
-                <p>
-                  <CalendarTodayIcon
-                    height="20"
-                    style={{ color: "black", marginRight: "10px" }}
-                  />{" "}
+                  <strong>Location:</strong> {opp.location} |{" "}
+                  <strong>Venue:</strong> {opp.venue} | <strong>Date:</strong>{" "}
                   {opp.matchDate.slice(0, 10)}
                 </p>
                 <p>
-                  <AccessTimeIcon
-                    height="20"
-                    style={{ color: "black", marginRight: "10px" }}
-                  />{" "}
+                  <strong>Time:</strong>{" "}
                   {new Date(`1970-01-01T${opp.timeFrom}:00`).toLocaleTimeString(
                     [],
                     {
@@ -1115,34 +1100,17 @@ export default function Opponent() {
                       minute: "2-digit",
                       hour12: true,
                     }
-                  )}
-                </p>
-                <p>
-                  <PhoneIcon
-                    height="20"
-                    style={{ color: "black", marginRight: "10px" }}
-                  />{" "}
-                  {opp.contact}
-                </p>
-                <p>
-                  <MilitaryTechIcon
-                    height="20"
-                    style={{ color: "black", marginRight: "10px" }}
-                  />
+                  )}{" "}
+                  | <strong>Level:</strong>{" "}
                   {opp.level.slice(0, 1).toUpperCase() +
                     opp.level.slice(1) +
                     " " +
-                    "level"}
-                </p>
-                <p>
-                  <WcIcon
-                    height="20"
-                    style={{ color: "black", marginRight: "10px" }}
-                  />
+                    "level "}
+                  | <strong>Gender:</strong>{" "}
                   {opp.gender.slice(0, 1).toUpperCase() + opp.gender.slice(1)}
                 </p>
-                <div className="opponent-players">
-                  <p style={{ fontWeight: 700 }}>Players:</p>
+                <div style={{ margin: "15px 0" }}>
+                  <strong>Players:</strong>
                   <ul>
                     {opp.players.map((player, i) => (
                       <li key={i} type="none">
@@ -1157,54 +1125,46 @@ export default function Opponent() {
                     ))}
                   </ul>
                 </div>
-              </div>
-
-              <div
-                className="opponent-actions"
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  gap: "10px",
-                }}
-              >
-                <button
-                  className="edit-btn"
-                  style={{
-                    background: "#1d3557",
-                    color: "white",
-                    padding: "5px 10px",
-                    borderRadius: "4px",
-                  }}
-                  onClick={() =>
-                    handleEdit(
-                      opp.averageAge,
-                      opp.gender,
-                      opp.contact,
-                      opp.timeTo,
-                      opp.timeFrom,
-                      opp.venue,
-                      opp.matchDate,
-                      opp.teamName,
-                      opp.level,
-                      opp._id
-                    )
-                  }
-                >
-                  {/* //editttt */}
-                  Edit
-                </button>
-                <button
-                  className="delete-btn"
-                  style={{
-                    background: "#e63946",
-                    color: "white",
-                    padding: "5px 10px",
-                    borderRadius: "4px",
-                  }}
-                  onClick={() => handleDelete(opp._id)}
-                >
-                  Delete
-                </button>
+                <div style={{ textAlign: "right" }}>
+                  <button
+                    style={{
+                      background: "#1d3557",
+                      color: "white",
+                      padding: "8px 16px",
+                      border: "none",
+                      borderRadius: "6px",
+                      marginRight: "10px",
+                    }}
+                    onClick={() =>
+                      handleEdit(
+                        opp.averageAge,
+                        opp.gender,
+                        opp.contact,
+                        opp.timeTo,
+                        opp.timeFrom,
+                        opp.venue,
+                        opp.matchDate,
+                        opp.teamName,
+                        opp.level,
+                        opp._id
+                      )
+                    }
+                  >
+                    Edit
+                  </button>
+                  <button
+                    style={{
+                      background: "#e63946",
+                      color: "white",
+                      padding: "8px 16px",
+                      border: "none",
+                      borderRadius: "6px",
+                    }}
+                    onClick={() => handleDelete(opp._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           </div>

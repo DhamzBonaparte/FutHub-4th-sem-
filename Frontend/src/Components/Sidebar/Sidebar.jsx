@@ -88,7 +88,7 @@ export default function Sidebar({ goToFav }) {
           </li>
           <li>
             <Link
-            to='/player'
+              to="/player"
               onClick={() => {
                 goToFav();
                 setActive("fav");
@@ -110,13 +110,14 @@ export default function Sidebar({ goToFav }) {
             </Link>
           </li>
           <li>
-            <a
+            <Link
+              to="find-teammates"
               className={active == "team" ? "active" : ""}
               onClick={() => setActive("team")}
             >
               <GroupsIcon className="icon" />
               <span>Teammates</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
