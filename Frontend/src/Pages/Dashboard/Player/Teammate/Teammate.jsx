@@ -1,14 +1,24 @@
+import { useState } from "react";
+
 export default function Teammate() {
-  const LocationPinIcon = () => "Location";
-  const SportsSoccerIcon = () => "Soccer";
-  const CalendarTodayIcon = () => "Calendar";
-  const AccessTimeIcon = () => "Time";
-  const PhoneIcon = () => "Phone";
-  const MilitaryTechIcon = () => "Trophy";
-  const WcIcon = () => "Gender";
-  const PersonIcon = () => "Person";
+  const [find, setFind] = useState(true);
+  const [become, setBecome] = useState(false);
+  const [myPosting, setMyPosting] = useState(false);
+  const [isEdit, setIsEdit] = useState(false); 
+
+  const setActiveTab = (activeTab) => {
+    setFind(activeTab === 'find');
+    setBecome(activeTab === 'become');
+    setMyPosting(activeTab === 'myPosting');
+  };
+
+  const contentDisplay = (isActive) => ({
+    display: isActive ? "block" : "none"
+  });
+
   return (
     <>
+      <input type="text" name="name" value="Sulav" />
       <div
         style={{
           fontFamily: "Arial, sans-serif",
@@ -16,240 +26,241 @@ export default function Teammate() {
           minHeight: "100vh",
         }}
       >
-        {/* Edit Modal Overlay */}
-        <div
-          style={{
-            position: "fixed",
-            
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            // background: "rgba(0,0,0,0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-start",
-            zIndex: 1000,
-            padding: "60px 20px 20px",
-            overflowY: "auto",
-            boxSizing: "border-box",
-          }}
-        >
+        
+        {isEdit && ( 
           <div
             style={{
-              background: "#fff",
-              display:"none",
+              position: "fixed",
+              top: 0,
+              left: 0,
               width: "100%",
-              maxWidth: "600px",
-              padding: "30px",
-              borderRadius: "12px",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+              height: "100%",
+              background: "rgba(0,0,0,0.5)", 
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              zIndex: 1000,
+              padding: "60px 20px 20px",
+              overflowY: "auto",
+              boxSizing: "border-box",
             }}
           >
-            <p
+            <div
               style={{
-                margin: "0 0 20px 0",
-                textAlign: "center",
-                fontSize: "28px",
-                fontWeight: "700",
-                color: "#0d1b2a",
-                letterSpacing: "1px",
-                paddingBottom: "10px",
-                borderBottom: "3px solid #5efc82",
-                
+                background: "#fff",
+                width: "100%",
+                maxWidth: "600px",
+                padding: "30px",
+                borderRadius: "12px",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
               }}
             >
-              Edit Opponent Posting
-            </p>
-
-            <form>
-              <label>Team Name:</label>
-              <input
-                type="text"
-                placeholder="Enter Team Name"
+              <p
                 style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginBottom: "15px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
-              />
-
-              <label>Location:</label>
-              <select
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginBottom: "15px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
+                  margin: "0 0 20px 0",
+                  textAlign: "center",
+                  fontSize: "28px",
+                  fontWeight: "700",
+                  color: "#0d1b2a",
+                  letterSpacing: "1px",
+                  paddingBottom: "10px",
+                  borderBottom: "3px solid #5efc82",
+                  display: "block",
                 }}
               >
-                <option>Select Location</option>
-                <option>Kathmandu</option>
-                <option>Bhaktapur</option>
-                <option>Lalitpur</option>
-              </select>
+                Edit Opponent Posting
+              </p>
 
-              <label>Average Age:</label>
-              <input
-                type="number"
-                placeholder="Enter average age"
-                min="12"
-                max="65"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginBottom: "15px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
-              />
-
-              <label>Contact:</label>
-              <input
-                type="tel"
-                placeholder="Enter contact number"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginBottom: "15px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
-              />
-
-              <label>Venue:</label>
-              <input
-                type="text"
-                placeholder="Enter venue"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginBottom: "15px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
-              />
-
-              <label>Gender:</label>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-around",
-                  marginBottom: "15px",
-                }}
-              >
-                <div>
-                  <input type="radio" id="male" name="gender" />{" "}
-                  <label htmlFor="male" style={{ marginLeft: "5px" }}>
-                    Male
-                  </label>
-                </div>
-                <div>
-                  <input type="radio" id="female" name="gender" />{" "}
-                  <label htmlFor="female" style={{ marginLeft: "5px" }}>
-                    Female
-                  </label>
-                </div>
-                <div>
-                  <input type="radio" id="other" name="gender" />{" "}
-                  <label htmlFor="other" style={{ marginLeft: "5px" }}>
-                    Other
-                  </label>
-                </div>
-              </div>
-
-              <label>Match Date:</label>
-              <input
-                type="date"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginBottom: "15px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
-              />
-
-              <label>Level:</label>
-              <select
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginBottom: "15px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
-              >
-                <option>Select Skill Level</option>
-                <option>Beginner</option>
-                <option>Intermediate</option>
-                <option>Advanced</option>
-                <option>Professional</option>
-              </select>
-
-              <label>Time From:</label>
-              <input
-                type="time"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginBottom: "15px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
-              />
-
-              <label>Time To:</label>
-              <input
-                type="time"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginBottom: "20px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
-              />
-
-              <div style={{ textAlign: "center" }}>
-                <button
-                  type="submit"
+              <form>
+                <label>Team Name:</label>
+                <input
+                  type="text"
+                  placeholder="Enter Team Name"
                   style={{
-                    background: "#0d1b2a",
-                    color: "#5efc82",
-                    padding: "12px 24px",
-                    border: "none",
+                    width: "100%",
+                    padding: "10px",
+                    marginBottom: "15px",
                     borderRadius: "6px",
-                    fontWeight: "bold",
-                    marginRight: "10px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                <label>Location:</label>
+                <select
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    marginBottom: "15px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
                   }}
                 >
-                  Save
-                </button>
-                <button
-                  type="button"
+                  <option>Select Location</option>
+                  <option>Kathmandu</option>
+                  <option>Bhaktapur</option>
+                  <option>Lalitpur</option>
+                </select>
+
+                <label>Average Age:</label>
+                <input
+                  type="number"
+                  placeholder="Enter average age"
+                  min="12"
+                  max="65"
                   style={{
-                    background: "#e63946",
-                    color: "#fff",
-                    padding: "12px 24px",
-                    border: "none",
+                    width: "100%",
+                    padding: "10px",
+                    marginBottom: "15px",
                     borderRadius: "6px",
-                    fontWeight: "bold",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                <label>Contact:</label>
+                <input
+                  type="tel"
+                  placeholder="Enter contact number"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    marginBottom: "15px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                <label>Venue:</label>
+                <input
+                  type="text"
+                  placeholder="Enter venue"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    marginBottom: "15px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                <label>Gender:</label>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    marginBottom: "15px",
                   }}
                 >
-                  Cancel
-                </button>
-              </div>
-            </form>
+                  <div>
+                    <input type="radio" id="male" name="gender" />{" "}
+                    <label htmlFor="male" style={{ marginLeft: "5px" }}>
+                      Male
+                    </label>
+                  </div>
+                  <div>
+                    <input type="radio" id="female" name="gender" />{" "}
+                    <label htmlFor="female" style={{ marginLeft: "5px" }}>
+                      Female
+                    </label>
+                  </div>
+                  <div>
+                    <input type="radio" id="other" name="gender" />{" "}
+                    <label htmlFor="other" style={{ marginLeft: "5px" }}>
+                      Other
+                    </label>
+                  </div>
+                </div>
+
+                <label>Match Date:</label>
+                <input
+                  type="date"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    marginBottom: "15px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                <label>Level:</label>
+                <select
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    marginBottom: "15px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
+                  }}
+                >
+                  <option>Select Skill Level</option>
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Advanced</option>
+                  <option>Professional</option>
+                </select>
+
+                <label>Time From:</label>
+                <input
+                  type="time"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    marginBottom: "15px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                <label>Time To:</label>
+                <input
+                  type="time"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    marginBottom: "20px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                <div style={{ textAlign: "center" }}>
+                  <button
+                    type="submit"
+                    style={{
+                      background: "#0d1b2a",
+                      color: "#5efc82",
+                      padding: "12px 24px",
+                      border: "none",
+                      borderRadius: "6px",
+                      fontWeight: "bold",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsEdit(false)} // Added close functionality
+                    style={{
+                      background: "#e63946",
+                      color: "#fff",
+                      padding: "12px 24px",
+                      border: "none",
+                      borderRadius: "6px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Main Content with Blur */}
+        {/* Main Content */}
         <div style={{ padding: "20px" }}>
-          {/* Tabs */}
+          {/* Tabs Navigation */}
           <div
             style={{
               display: "flex",
@@ -260,8 +271,9 @@ export default function Teammate() {
               boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
             }}
           >
+            {/* Find Teammates Tab */}
             <div
-              style={{
+              style={find?{
                 flex: 1,
                 padding: "15px",
                 textAlign: "center",
@@ -269,36 +281,73 @@ export default function Teammate() {
                 color: "#009624",
                 fontWeight: "bold",
                 borderBottom: "4px solid #00c853",
-              }}
-            >
-              Find Opponents
-            </div>
-            <div
-              style={{
+                cursor:"pointer"
+              }:{
                 flex: 1,
                 padding: "15px",
                 textAlign: "center",
                 background: "#fff",
                 color: "#333",
+                cursor:"pointer"
               }}
+              onClick={() => setActiveTab('find')}
             >
-              Become an Opponent
+              Find Teammates
             </div>
+            
+            {/* Become a Teammate Tab */}
             <div
-              style={{
+              style={become?{
+                flex: 1,
+                padding: "15px",
+                textAlign: "center",
+                background: "#e8f5e9",
+                color: "#009624",
+                fontWeight: "bold",
+                borderBottom: "4px solid #00c853",
+                cursor:"pointer"
+              }:{
                 flex: 1,
                 padding: "15px",
                 textAlign: "center",
                 background: "#fff",
                 color: "#333",
+                cursor:"pointer"
               }}
+              onClick={() => setActiveTab('become')}
+            >
+              Become a Teammate
+            </div>
+            
+            {/* My Postings Tab */}
+            <div
+              style={myPosting?{
+                flex: 1,
+                padding: "15px",
+                textAlign: "center",
+                background: "#e8f5e9",
+                color: "#009624",
+                fontWeight: "bold",
+                borderBottom: "4px solid #00c853",
+                cursor:"pointer"
+              }:{
+                flex: 1,
+                padding: "15px",
+                textAlign: "center",
+                background: "#fff",
+                color: "#333",
+                cursor:"pointer"
+              }}
+              onClick={() => setActiveTab('myPosting')}
             >
               My Postings
             </div>
           </div>
 
-          {/* Find Opponents Tab */}
-          <div>
+          {/* Tab Content Containers */}
+          
+          {/* 1. Find Teammates Tab Content */}
+          <div style={contentDisplay(find)}>
             <div
               style={{
                 display: "flex",
@@ -399,18 +448,19 @@ export default function Teammate() {
             </div>
           </div>
 
-          {/* Become an Opponent Form (Hidden in this static view, but structure kept) */}
-          <div style={{ display: "none" }}>
+          {/* 2. Become a Teammate Form Content */}
+          <div style={contentDisplay(become)}>
             <h2 style={{ textAlign: "center", color: "#0d1b2a" }}>
               Post Your Team
             </h2>
             <form style={{ maxWidth: "800px", margin: "0 auto" }}>
-              {/* Form fields similar to edit modal */}
+              {/* You would place the actual "Post Your Team" form content here, 
+                  likely identical to the modal's form fields. */}
             </form>
           </div>
 
-          {/* My Postings */}
-          <div style={{ marginTop: "50px" }}>
+          {/* 3. My Postings Content */}
+          <div style={{ marginTop: "50px", ...contentDisplay(myPosting) }}>
             <h2
               style={{
                 textAlign: "center",
@@ -447,6 +497,7 @@ export default function Teammate() {
               </div>
               <div style={{ textAlign: "right" }}>
                 <button
+                  onClick={() => setIsEdit(true)} // Open the Edit Modal
                   style={{
                     background: "#1d3557",
                     color: "white",

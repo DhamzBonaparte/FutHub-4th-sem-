@@ -11,6 +11,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import WcIcon from "@mui/icons-material/Wc";
 
 export default function Opponent() {
+  const [loading, setLoading] = useState(true);
   const [beOpponent, setBeOpponent] = useState(false);
   const [mine, setMine] = useState("");
   const [totalPlayers, setTotalPlayers] = useState(5);
@@ -45,6 +46,7 @@ export default function Opponent() {
   }, [length]);
 
   async function getMyOpponentListings() {
+    setLoading(true);
     try {
       const value = await axios.get(
         "http://localhost:3000/api/v1/player/my-opponent-postings",
@@ -54,12 +56,14 @@ export default function Opponent() {
       console.log(value.data.data);
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   async function handleEditSubmit(e) {
     e.preventDefault();
-
+    setLoading(true);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -86,10 +90,13 @@ export default function Opponent() {
       setEdit(false);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   async function getOpponents() {
+    setLoading(true);
     try {
       const oppo = await axios.get(
         "http://localhost:3000/api/v1/player/find-opponent"
@@ -98,10 +105,13 @@ export default function Opponent() {
       setLength(opponents.length);
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   async function handleFilter() {
+    setLoading(true);
     try {
       const values = await axios.post(
         "http://localhost:3000/api/v1/player/search-opponent",
@@ -113,6 +123,8 @@ export default function Opponent() {
       setFilter(values.data.filteredData);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -152,6 +164,7 @@ export default function Opponent() {
   }
 
   async function handleDelete(id) {
+    setLoading(true);
     try {
       const del = await axios.delete(
         `http://localhost:3000/api/v1/player/my-opponent-postings/${id}`,
@@ -160,10 +173,13 @@ export default function Opponent() {
       getMyOpponentListings();
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   async function handleSubmit() {
+    setLoading(true);
     try {
       const upl = axios.post(
         "http://localhost:3000/api/v1/player/find-opponent",
@@ -185,6 +201,8 @@ export default function Opponent() {
       );
     } catch (error) {
       setError(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -538,169 +556,214 @@ export default function Opponent() {
             {!search
               ? opponents?.data?.map((opp, index) => {
                   return (
-                    <div className="opponent-card" key={index}>
-                      <div className="opponent-header" key={index}>
-                        <div className="opponent-name">{opp.teamName}</div>
-                        <div className="opponent-age">
-                          {opp.averageAge} years
+                    <>
+                      <div className="opponent-card" key={index}>
+                        <div className="opponent-header" key={index}>
+                          <div className="opponent-name">{opp.teamName}</div>
+                          <div className="opponent-age">
+                            {opp.averageAge} years
+                          </div>
                         </div>
+                        <div className="opponent-details">
+                          <p>
+                            <LocationPinIcon
+                              height="20"
+                              style={{ color: "black", marginRight: "10px" }}
+                            />{" "}
+                            {opp.location.slice(0, 1).toUpperCase() +
+                              opp.location.slice(1)}
+                          </p>
+                          <p>
+                            <SportsSoccerIcon
+                              height="20"
+                              style={{ color: "black", marginRight: "10px" }}
+                            />{" "}
+                            {opp.venue.slice(0, 1).toUpperCase() +
+                              opp.venue.slice(1)}
+                          </p>
+                          <p>
+                            <CalendarTodayIcon
+                              height="20"
+                              style={{ color: "black", marginRight: "10px" }}
+                            />{" "}
+                            {opp.matchDate.slice(0, 10)}
+                          </p>
+                          <p>
+                            <AccessTimeIcon
+                              height="20"
+                              style={{ color: "black", marginRight: "10px" }}
+                            />{" "}
+                            {new Date(
+                              `1970-01-01T${opp.timeFrom}:00`
+                            ).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            })}{" "}
+                            -{" "}
+                            {new Date(
+                              `1970-01-01T${opp.timeTo}:00`
+                            ).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            })}
+                          </p>
+                          <p>
+                            <PhoneIcon
+                              height="20"
+                              style={{ color: "black", marginRight: "10px" }}
+                            />{" "}
+                            {opp.contact}
+                          </p>
+                          <p>
+                            <MilitaryTechIcon
+                              height="20"
+                              style={{ color: "black", marginRight: "10px" }}
+                            />
+                            {opp.level.slice(0, 1).toUpperCase() +
+                              opp.level.slice(1) +
+                              " " +
+                              "level"}
+                          </p>
+                          <p>
+                            <WcIcon
+                              height="20"
+                              style={{ color: "black", marginRight: "10px" }}
+                            />
+                            {opp.gender.slice(0, 1).toUpperCase() +
+                              opp.gender.slice(1)}
+                          </p>
+                        </div>
+                        <button
+                          className="confirm-btn"
+                          style={{ background: "#0d1b2a", color: "#5efc82" }}
+                        >
+                          Confirm as Opponent
+                        </button>
                       </div>
-                      <div className="opponent-details">
-                        <p>
-                          <LocationPinIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />{" "}
-                          {opp.location.slice(0, 1).toUpperCase() +
-                            opp.location.slice(1)}
-                        </p>
-                        <p>
-                          <SportsSoccerIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />{" "}
-                          {opp.venue.slice(0, 1).toUpperCase() +
-                            opp.venue.slice(1)}
-                        </p>
-                        <p>
-                          <CalendarTodayIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />{" "}
-                          {opp.matchDate.slice(0, 10)}
-                        </p>
-                        <p>
-                          <AccessTimeIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />{" "}
-                          {new Date(
-                            `1970-01-01T${opp.timeFrom}:00`
-                          ).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                          })}{" "}
-                          -{" "}
-                          {new Date(
-                            `1970-01-01T${opp.timeTo}:00`
-                          ).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                          })}
-                        </p>
-                        <p>
-                          <PhoneIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />{" "}
-                          {opp.contact}
-                        </p>
-                        <p>
-                          <MilitaryTechIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />
-                          {opp.level.slice(0, 1).toUpperCase() +
-                            opp.level.slice(1) +
-                            " " +
-                            "level"}
-                        </p>
-                      </div>
-                      <button
-                        className="confirm-btn"
-                        style={{ background: "#0d1b2a", color: "#5efc82" }}
-                      >
-                        Confirm as Opponent
-                      </button>
-                    </div>
+                    </>
                   );
                 })
               : filter?.map((opp, index) => {
                   return (
-                    <div className="opponent-card" key={index}>
-                      <div className="opponent-header" key={index}>
-                        <div className="opponent-name">{opp.teamName}</div>
-                        <div className="opponent-age">
-                          {opp.averageAge} years
+                    <>
+                      {loading ? (
+                        <p>Loading opponents...</p>
+                      ) : (
+                        <div className="opponent-card" key={index}>
+                          <div className="opponent-header">
+                            <div className="opponent-name">{opp.teamName}</div>
+                            <div className="opponent-age">
+                              {opp.averageAge} years
+                            </div>
+                          </div>
+
+                          <div className="opponent-details">
+                            <p>
+                              <LocationPinIcon
+                                style={{
+                                  color: "black",
+                                  marginRight: "10px",
+                                  fontSize: "20px",
+                                }}
+                              />
+                              {opp.location.charAt(0).toUpperCase() +
+                                opp.location.slice(1)}
+                            </p>
+                            <p>
+                              <SportsSoccerIcon
+                                style={{
+                                  color: "black",
+                                  marginRight: "10px",
+                                  fontSize: "20px",
+                                }}
+                              />
+                              {opp.venue.charAt(0).toUpperCase() +
+                                opp.venue.slice(1)}
+                            </p>
+                            <p>
+                              <CalendarTodayIcon
+                                style={{
+                                  color: "black",
+                                  marginRight: "10px",
+                                  fontSize: "20px",
+                                }}
+                              />
+                              {opp.matchDate.slice(0, 10)}
+                            </p>
+                            <p>
+                              <AccessTimeIcon
+                                style={{
+                                  color: "black",
+                                  marginRight: "10px",
+                                  fontSize: "20px",
+                                }}
+                              />
+                              {new Date(
+                                `1970-01-01T${opp.timeFrom}:00`
+                              ).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: true,
+                              })}{" "}
+                              -{" "}
+                              {new Date(
+                                `1970-01-01T${opp.timeTo}:00`
+                              ).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: true,
+                              })}
+                            </p>
+                            <p>
+                              <PhoneIcon
+                                style={{
+                                  color: "black",
+                                  marginRight: "10px",
+                                  fontSize: "20px",
+                                }}
+                              />
+                              {opp.contact}
+                            </p>
+                            <p>
+                              <MilitaryTechIcon
+                                style={{
+                                  color: "black",
+                                  marginRight: "10px",
+                                  fontSize: "20px",
+                                }}
+                              />
+                              {opp.level.charAt(0).toUpperCase() +
+                                opp.level.slice(1)}{" "}
+                              level
+                            </p>
+                          </div>
+
+                          <button
+                            className="confirm-btn"
+                            style={{ background: "#0d1b2a", color: "#5efc82" }}
+                          >
+                            Confirm as Opponent
+                          </button>
                         </div>
-                      </div>
-                      <div className="opponent-details">
-                        <p>
-                          <LocationPinIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />{" "}
-                          {opp.location.slice(0, 1).toUpperCase() +
-                            opp.location.slice(1)}
-                        </p>
-                        <p>
-                          <SportsSoccerIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />{" "}
-                          {opp.venue.slice(0, 1).toUpperCase() +
-                            opp.venue.slice(1)}
-                        </p>
-                        <p>
-                          <CalendarTodayIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />{" "}
-                          {opp.matchDate.slice(0, 10)}
-                        </p>
-                        <p>
-                          <AccessTimeIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />{" "}
-                          {new Date(
-                            `1970-01-01T${opp.timeFrom}:00`
-                          ).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                          })}{" "}
-                          -{" "}
-                          {new Date(
-                            `1970-01-01T${opp.timeTo}:00`
-                          ).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                          })}
-                        </p>
-                        <p>
-                          <PhoneIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />{" "}
-                          {opp.contact}
-                        </p>
-                        <p>
-                          <MilitaryTechIcon
-                            height="20"
-                            style={{ color: "black", marginRight: "10px" }}
-                          />
-                          {opp.level.slice(0, 1).toUpperCase() +
-                            opp.level.slice(1) +
-                            " " +
-                            "level"}
-                        </p>
-                      </div>
-                      <button
-                        className="confirm-btn"
-                        style={{ background: "#0d1b2a", color: "#5efc82" }}
-                      >
-                        Confirm as Opponent
-                      </button>
-                    </div>
+                      )}
+                    </>
                   );
                 })}
           </div>
         </div>
-
+        <div className="sdf">
+          <p
+            style={{
+              textAlign: "center",
+              fontWeight: 700,
+              fontFamily: "arial",
+            }}
+          >
+            {loading ? "Loading Opponents..." : ""}
+          </p>
+        </div>
         <div
           id="become-opponent"
           className="opponent-tab"
@@ -1072,6 +1135,7 @@ export default function Opponent() {
                   display: mine ? "block" : "none",
                 }}
               >
+                <h2>{opp.length == 0 ? "Nothing to show" : ""}</h2>
                 <h3>
                   {opp.teamName.slice(0, 1).toUpperCase() +
                     opp.teamName.slice(1)}{" "}
