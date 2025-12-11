@@ -244,13 +244,16 @@ export default function Opponent() {
               letterSpacing: "1px",
               padding: "12px 20px", // only bottom padding
               borderBottom: "2px solid #5efc82",
-              fontFamily:"arial"
+              fontFamily: "arial",
             }}
           >
             Edit your posting
           </p>
 
-          <form onSubmit={(e) => handleEditSubmit(e)} style={{padding: "12px 20px"}}>
+          <form
+            onSubmit={(e) => handleEditSubmit(e)}
+            style={{ padding: "12px 20px" }}
+          >
             <label>Team Name:</label>
             <input
               type="text"
@@ -613,7 +616,10 @@ export default function Opponent() {
                     <>
                       <div className="opponent-card" key={index}>
                         <div className="opponent-header" key={index}>
-                          <div className="opponent-name">{opp.teamName}</div>
+                          <div className="opponent-name">
+                            {opp.teamName.slice(0, 1).toUpperCase() +
+                              opp.teamName.slice(1)}
+                          </div>
                           <div className="opponent-age">
                             {opp.averageAge} years
                           </div>

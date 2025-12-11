@@ -164,14 +164,18 @@ const getOpponents = async (req, res) => {
 
 //filtered search
 const searchOpponents = async (req, res) => {
-  const { search } = req.body;
-  const filter = await opponent.find({
-    location: { $regex: search, $options: "i" },
-  });
+  try {
+    const { search } = req.body;
+    const filter = await opponent.find({
+      location: { $regex: search, $options: "i" },
+    });
 
-  res.status(200).json({
-    filteredData: filter,
-  });
+    res.status(200).json({
+      filteredData: filter,
+    });
+  } catch (err) {
+    res.status(400).json({ msg: err.message });
+  }
 };
 
 //my opponents
@@ -239,6 +243,14 @@ const updateMyOpponents = async (req, res) => {
 const setTeammate = async (req, res) => {
   try {
     const userId = req.user.id;
+
+    const exist = await teammate.findOne({ userId });
+    if (exist) {
+      return res
+        .status(200)
+        .json({ msg: "Already Registered", registered: true });
+    }
+
     const {
       name,
       age,
@@ -263,6 +275,7 @@ const setTeammate = async (req, res) => {
       availability: available,
       about,
     });
+
     res.status(200).json({ msg: "got it", data: frnd });
   } catch (error) {
     res.status(400).json({ msg: error.message });
@@ -272,24 +285,50 @@ const setTeammate = async (req, res) => {
 const getTeammate = async (req, res) => {
   try {
     const teams = await teammate.find();
-    res.status(200).json({ msg: "got it", data: teams,length:teams.length });
+    res.status(200).json({ msg: "got it", data: teams, length: teams.length });
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
 };
 
-const logout = async(req,res)=>{
-  try{  
-    res.clearCookie("token",{
+const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-    })
+    });
     res.status(200).json({ msg: "logout" });
-  }catch(err){
+  } catch (err) {
     res.status(400).json({ msg: err.message });
   }
-}
+};
+
+const searchTeammates = async (req, res) => {
+  try {
+    const { search } = req.body;
+    const data = await teammate.find({
+      location: { $regex: search, $options: "i" },
+    });
+    res.status(200).json({ msg: "searchh", data });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+const checkTeammate = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const check = await teammate.findOne({ userId });
+    if(check){
+      res.status(200).json({ msg: "Already registered",registered:true });
+    }else{
+      res.status(200).json({msg:"Not registered",registered:false})
+    }
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 
 module.exports = {
   getCredentials,
@@ -303,5 +342,7 @@ module.exports = {
   updateMyOpponents,
   setTeammate,
   getTeammate,
-  logout
+  logout,
+  searchTeammates,
+  checkTeammate,
 };

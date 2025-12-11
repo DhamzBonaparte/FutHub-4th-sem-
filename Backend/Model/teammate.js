@@ -4,6 +4,7 @@ const teammate = new mongoose.Schema({
     userId: {
     type: String,
     required: true,
+    unique:true
   },
   name: {
     type: String,
@@ -56,7 +57,7 @@ const teammate = new mongoose.Schema({
     required:true,
     trim: true,
     lowercase: true,
-  },
+  }
 });
 
 module.exports = mongoose.model("teammate",teammate);

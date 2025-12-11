@@ -19,10 +19,34 @@ export default function Teammate() {
   const [about, setAbout] = useState("");
   const [data, setData] = useState([]);
   const [length, setLength] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
+  const [register, setRegistered] = useState(false);
+
+
+  useEffect(()=>{
+    checkTeammate();
+  },[])
+
+  useEffect(() => {
+    handleSearch();
+  }, [search]);
 
   useEffect(() => {
     getTeams();
   }, [length]);
+
+  const checkTeammate = async () => {
+    try {
+      const check=await axios.get("http://localhost:3000/api/v1/player/check-teammate", {
+        withCredentials: true,
+      });
+      console.log(check);
+      setRegistered(check.data.registered)
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   const setActiveTab = (activeTab) => {
     setFind(activeTab === "find");
@@ -34,23 +58,51 @@ export default function Teammate() {
     display: isActive ? "block" : "none",
   });
 
+  const handleSearch = async (e) => {
+    setLoading(true);
+    try {
+      const se = await axios.post(
+        "http://localhost:3000/api/v1/player/search-teammate",
+        { search },
+        { withCredentials: true }
+      );
+      setData(se.data.data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getMyTeammateListings = async () => {};
+
   const getTeams = async () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    setLoading(true);
     try {
       const teams = await axios.get(
-        "http://localhost:3000/api/v1/player/find-teammate"
+        "http://localhost:3000/api/v1/player/find-teammate",
+        { withCredentials: true }
       );
       setData(teams.data.data);
       setLength(teams.data.length);
-      // console.log(data.map((a)=> a._id));
+      checkTeammate();
+      console.log(data);
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const frnd = await axios.post(
+      const res = await axios.post(
         "http://localhost:3000/api/v1/player/find-teammate",
         {
           name,
@@ -67,7 +119,11 @@ export default function Teammate() {
       );
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
+    setActiveTab("find");
+    getTeams();
   };
   return (
     <>
@@ -403,7 +459,7 @@ export default function Teammate() {
               }
               onClick={() => setActiveTab("myPosting")}
             >
-              My Postings
+              My Posting
             </div>
           </div>
 
@@ -429,6 +485,10 @@ export default function Teammate() {
                   border: "1px solid #ccc",
                   width: "100%",
                 }}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  handleSearch();
+                }}
               />
               <button
                 style={{
@@ -445,103 +505,158 @@ export default function Teammate() {
             </div>
 
             <div
+              className="loadi"
+              style={{
+                textAlign: "center",
+                fontFamily: "Arial",
+                fontSize: "20px",
+                fontWeight: 700,
+              }}
+            >
+              <p>{loading ? "Loading teammates..." : ""}</p>{" "}
+            </div>
+
+            <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
                 gap: "20px",
               }}
             >
-              <div
-                style={{
-                  background: "#fff",
-                  borderRadius: "12px",
-                  overflow: "hidden",
-                  boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
-                }}
-              >
-                {/* {data?.map((value, index) => {
-                  return (
-                    <>
-                      <div
-                      key={index}
-                        style={{
-                          background: "#0d1b2a",
-                          color: "#5efc82",
-                          padding: "15px",
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <span>{value.name.split(" ")[0].slice(0,1).toUpperCase()+value.name.slice(1)}</span>
-                        <span>24 yrs</span>
-                      </div>
-                    </>
-                  );
-                })} */}
-                <div
-                  style={{
-                    background: "#0d1b2a",
-                    color: "#5efc82",
-                    padding: "15px",
-                    fontSize: "20px",
-                    fontWeight: "bold",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <span>Thunder Strikers</span>
-                  <span>24 yrs</span>
-                </div>
-                <div style={{ padding: "15px" }}>
-                  <p>
-                    <strong>Location:</strong> Kathmandu
-                  </p>
-                  <p>
-                    <strong>Venue:</strong> Dasharath Stadium
-                  </p>
-                  <p>
-                    <strong>Date:</strong> 2025-12-20
-                  </p>
-                  <p>
-                    <strong>Time:</strong> 02:00 PM - 04:00 PM
-                  </p>
-                  <p>
-                    <strong>Contact:</strong> 9801234567
-                  </p>
-                  <p>
-                    <strong>Level:</strong> Intermediate
-                  </p>
-                </div>
-                <div style={{ padding: "0 15px 15px" }}>
-                  <button
+              {Array.isArray(data) &&
+                data.map((value, index) => (
+                  <div
+                    key={index}
                     style={{
-                      width: "100%",
-                      background: "#0d1b2a",
-                      color: "#5efc82",
-                      padding: "12px",
-                      border: "none",
-                      borderRadius: "8px",
-                      fontWeight: "bold",
+                      background: "#fff",
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                      boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
+                      transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-4px)";
+                      e.currentTarget.style.boxShadow =
+                        "0 10px 24px rgba(0,0,0,0.15)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "none";
+                      e.currentTarget.style.boxShadow =
+                        "0 6px 20px rgba(0,0,0,0.1)";
                     }}
                   >
-                    Confirm as Opponent
-                  </button>
-                </div>
-              </div>
+                    {/* Header */}
+                    <div
+                      style={{
+                        background: "#1f2937", // slate gray
+                        color: "#f8f9fa", // soft white
+                        padding: "15px",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <span>
+                        {value.name.split(" ")[0].slice(0, 1).toUpperCase() +
+                          value.name.slice(1)}
+                      </span>
+                      <span>{value.age} years</span>
+                    </div>
+
+                    {/* Body */}
+                    <div style={{ padding: "15px", lineHeight: "1.6" }}>
+                      <p>
+                        <strong>Location:</strong>{" "}
+                        {value.location.charAt(0).toUpperCase() +
+                          value.location.slice(1)}
+                      </p>
+                      <p>
+                        <strong>Contact:</strong> {value.contact}
+                      </p>
+                      <p>
+                        <strong>Position:</strong>{" "}
+                        {value.position.charAt(0).toUpperCase() +
+                          value.position.slice(1)}
+                      </p>
+                      <p>
+                        <strong>Experience:</strong> {value.experience} years
+                      </p>
+                      <p>
+                        <strong>Gender:</strong>{" "}
+                        {value.gender.charAt(0).toUpperCase() +
+                          value.gender.slice(1)}
+                      </p>
+                      <p>
+                        <strong>Availability:</strong>{" "}
+                        {value.availability.charAt(0).toUpperCase() +
+                          value.availability.slice(1)}
+                      </p>
+                      <p>
+                        {value.about.charAt(0).toUpperCase() +
+                          value.about.slice(1)}
+                      </p>
+                    </div>
+
+                    {/* Footer */}
+                    <div style={{ padding: "0 15px 15px" }}>
+                      <button
+                        style={{
+                          width: "100%",
+                          background: "#0d1b2a",
+                          color: "#5efc82",
+                          padding: "12px",
+                          border: "none",
+                          borderRadius: "8px",
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                          transition: "background 0.3s ease",
+                        }}
+                      >
+                        Confirm as Teammate
+                      </button>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
 
           {/* 2. Become a Teammate Form Content */}
           {/* form of teammate */}
           <div style={contentDisplay(become)}>
+            <div
+              className="msg"
+              style={{
+                display: !register ? "none" : "block",
+                background: "#fff3cd", // soft yellow background
+                color: "#856404", // dark golden text
+                padding: "15px 20px",
+                borderRadius: "8px",
+                border: "1px solid #ffeeba", // subtle border
+                fontSize: "16px",
+                fontWeight: "500",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                marginTop: "15px",
+              }}
+            >
+              <p style={{ margin: 0 }}>
+                Already posted for being a teammate. Feel free to edit it in my
+                posting section!
+              </p>
+            </div>
+
             <form
               style={{ maxWidth: "800px", margin: "0 auto" }}
               onSubmit={(e) => handleSubmit(e)}
             >
               <div id="become-teammate" className="teammate-tab">
-                <div className="form-container" style={{ width: "100%" }}>
+                <div
+                  className="form-container"
+                  style={{
+                    width: "100%",
+                    display: register ? "none" : "block",
+                  }}
+                >
                   <h3
                     style={{
                       textAlign: "center",
