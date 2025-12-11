@@ -133,8 +133,10 @@ export default function Sidebar({ goToFav }) {
           <li>
             <Link
               to="/"
-              className={active == "team" ? "active" : ""}
-              onClick={() => Logout()}
+              className={active == "logout" ? "active" : ""}
+              onClick={() => {
+                setActive("logout");
+                Logout()}}
             >
               <LogoutIcon className="icon" />
               <span>Logout</span>

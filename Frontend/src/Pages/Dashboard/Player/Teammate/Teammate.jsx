@@ -17,12 +17,12 @@ export default function Teammate() {
   const [gender, setGender] = useState("");
   const [available, setAvailable] = useState("");
   const [about, setAbout] = useState("");
-  const [data, setData] = useState({});
-  const [length,setLength]=useState(0);
+  const [data, setData] = useState([]);
+  const [length, setLength] = useState(0);
 
-  useEffect(()=>{
+  useEffect(() => {
     getTeams();
-  },[length]);
+  }, [length]);
 
   const setActiveTab = (activeTab) => {
     setFind(activeTab === "find");
@@ -34,18 +34,19 @@ export default function Teammate() {
     display: isActive ? "block" : "none",
   });
 
-  const getTeams=async ()=>{
+  const getTeams = async () => {
     try {
-      const teams = await axios.get("http://localhost:3000/api/v1/player/find-teammate");
-      setData(teams.data);
+      const teams = await axios.get(
+        "http://localhost:3000/api/v1/player/find-teammate"
+      );
+      setData(teams.data.data);
       setLength(teams.data.length);
+      // console.log(data.map((a)=> a._id));
     } catch (error) {
       setError(error.message);
     }
-  }
-  
-  console.log(data,length);
-  
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -64,7 +65,6 @@ export default function Teammate() {
         },
         { withCredentials: true }
       );
-      
     } catch (error) {
       setError(error.message);
     }
@@ -459,6 +459,27 @@ export default function Teammate() {
                   boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
                 }}
               >
+                {/* {data?.map((value, index) => {
+                  return (
+                    <>
+                      <div
+                      key={index}
+                        style={{
+                          background: "#0d1b2a",
+                          color: "#5efc82",
+                          padding: "15px",
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span>{value.name.split(" ")[0].slice(0,1).toUpperCase()+value.name.slice(1)}</span>
+                        <span>24 yrs</span>
+                      </div>
+                    </>
+                  );
+                })} */}
                 <div
                   style={{
                     background: "#0d1b2a",

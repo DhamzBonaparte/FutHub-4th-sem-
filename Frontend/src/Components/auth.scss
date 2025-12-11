@@ -20,13 +20,13 @@
 
 .all {
   // background: linear-gradient(135deg, #1a2980, #26d0ce);
-  background:#0D1B2A;
+  background: #0d1b2a;
   min-height: 100vh;
   max-height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  position:relative;
+  position: relative;
   padding: 20px;
 }
 
@@ -379,7 +379,6 @@
   }
 }
 
-
 @keyframes popupFadeScale {
   0% {
     opacity: 0;
@@ -417,8 +416,7 @@
   border-radius: 12px;
 
   /* layered shadow for depth */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25),
-              0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15);
 
   /* entry animation */
   animation: popupFadeScale 0.4s ease-out;
@@ -426,11 +424,17 @@
 
 .loading p {
   font-size: 2rem;
-  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   font-weight: 700;
 }
 
 /* optional glowing effect while active */
 .loading.active {
   animation: pulseGlow 1.5s infinite;
+}
+
+.hov:hover {
+  cursor: pointer;
+  background: #1a73e8; /* Google blue shade */
+  color: #ffffff; 
 }

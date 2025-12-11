@@ -3,15 +3,16 @@ import "../auth.scss";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import PersonIcon from "@mui/icons-material/Person";
+import HomeIcon from "@mui/icons-material/Home";
 
 export default function Signup() {
-
   useEffect(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth" 
-        });
-      }, []);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
@@ -217,7 +218,91 @@ export default function Signup() {
                 />
               </div>
 
-              <div className="form-groups">
+              <div style={{ marginBottom: "20px" }}>
+                <label
+                  htmlFor="role"
+                  class="form-label"
+                  style={{
+                    display: "block",
+                    fontWeight: "500",
+                  }}
+                >
+                  Signing up as:
+                </label>
+                {/* //lkj */}
+                <div style={{ display: "flex", gap: "20px" }}>
+                  {/* Owner box */}
+                  <label
+                    htmlFor="role-owner"
+                    style={{
+                      flex: 1,
+                      border: "1px solid #0d1b2a",
+                      borderRadius: "8px",
+                      padding: "20px",
+                      textAlign: "center",
+                      transition: "all 0.3s ease",
+                      color:roles=="owner"?"#193ca6ff":"black"
+                      
+                    }}
+                    className="hov"
+                  >
+                    <input
+                      type="radio"
+                      id="role-owner"
+                      name="role"
+                      value="owner"
+                      style={{ display: "none" }}
+                      required
+                      onChange={(e) => setRole(e.target.value)}
+                    />
+                    <span
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: 600,
+                      }}
+                    >
+                      <HomeIcon className="icon" />
+                      Owner
+                    </span>
+                  </label>
+
+                  {/* Player box */}
+                  <label
+                    htmlFor="role-player"
+                    style={{
+                      flex: 1,
+                      border: "1px solid #0d1b2a",
+                      borderRadius: "8px",
+                      padding: "20px",
+                      textAlign: "center",
+                      transition: "all 0.3s ease",
+                      color:roles=="player"?"#193ca6ff":"black"
+                    }}
+                    className="hov"
+                  >
+                    <input
+                      type="radio"
+                      id="role-player"
+                      name="role"
+                      value="player"
+                      style={{ display: "none" }}
+                      required
+                      onChange={(e) => setRole(e.target.value)}
+                    />
+                    <span
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: 600,
+                      }}
+                    >
+                      <PersonIcon className="icon" />
+                      Player
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              {/* <div className="form-groups">
                 <label htmlFor="role" className="form-label">
                   Signing up as:
                 </label>
@@ -249,7 +334,7 @@ export default function Signup() {
                     <label htmlFor="role-player">Player</label>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className="form-check">
                 <input
