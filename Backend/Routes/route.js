@@ -17,7 +17,8 @@ const {
   searchTeammates,
   checkTeammate,
   getMyTeammatePosting,
-  deleteMyPosting
+  deleteMyPosting,
+  editMyPosting
 } = require("../Controllers/credentials");
 
 router.route("/login").post(getCredentials);
@@ -45,6 +46,12 @@ router
 router.route("/player/search-teammate").post(searchTeammates);
 router.route("/player/check-teammate").get(authorize, checkTeammate);
 
-router.route("/player/my-teammate-listing").get(authorize,getMyTeammatePosting);
-router.route('/player/my-teammate-listing/:id').delete(authorize,deleteMyPosting)
+router
+  .route("/player/my-teammate-listing")
+  .get(authorize, getMyTeammatePosting)
+  .patch(authorize, editMyPosting);
+router
+  .route("/player/my-teammate-listing/:id")
+  .delete(authorize, deleteMyPosting)
+  
 module.exports = router;

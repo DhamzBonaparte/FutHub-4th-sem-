@@ -334,25 +334,61 @@ const getMyTeammatePosting = async (req, res) => {
   try {
     const userId = req.user.id;
     const myList = await teammate.findOne({ userId });
-    if(myList){
-      res.status(200).json({msg:"Listed",data:myList});
-    }else{
-      res.status(200).json({msg:"Not listed yet!"})
+    if (myList) {
+      res.status(200).json({ msg: "Listed", data: myList });
+    } else {
+      res.status(200).json({ msg: "Not listed yet!" });
     }
   } catch (err) {
     res.status(400).json({ msg: err.message });
   }
 };
 
-const deleteMyPosting =async (req,res)=>{
+const deleteMyPosting = async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const userId = req.user.id;
+    const del = await teammate.findOneAndDelete({ _id, userId });
+    res.status(200).json({ msg: "delete", data: del });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+const editMyPosting = async (req, res) => {
   try {
     const userId = req.user.id;
-     const del = await teammate.findOneAndDelete({userId})
-    res.status(200).json({msg:"delete",data:del})
+    const {
+      name,
+      location,
+      age,
+      contact,
+      position,
+      experience,
+      gender,
+      available,
+      about,
+    } = req.body;
+    const upd = await teammate.findOneAndUpdate(
+      { userId},
+      {
+        name,
+        location,
+        age,
+        contact,
+        position,
+        experience,
+        gender,
+        availability: available,
+        about,
+      },
+      { new: true, runValidators: true}
+    );
+    res.status(200).json({ msg: "update", data: upd });
   } catch (err) {
-    res.status(400).json({error:err.message})
+    res.status(400).json({ error: err.message });
   }
-}
+};
 
 module.exports = {
   getCredentials,
@@ -370,5 +406,6 @@ module.exports = {
   searchTeammates,
   checkTeammate,
   getMyTeammatePosting,
-  deleteMyPosting
+  deleteMyPosting,
+  editMyPosting,
 };

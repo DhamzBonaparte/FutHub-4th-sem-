@@ -74,7 +74,6 @@ export default function Teammate() {
           withCredentials: true,
         }
       );
-      console.log(check);
       setRegistered(check.data.registered);
     } catch (error) {
       setError(error.message);
@@ -91,19 +90,47 @@ export default function Teammate() {
     display: isActive ? "block" : "none",
   });
 
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const upd=await axios.patch(
+        `http://localhost:3000/api/v1/player/my-teammate-listing`,
+        {
+          name,
+          location,
+          age,
+          contact,
+          position,
+          experience,
+          gender,
+          available,
+          about,
+        },
+        { withCredentials: true }
+      );
+      await getMyTeammateListings();
+      await getTeams();
+      navigate("/player/find-teammates");
+      setIsEdit(false);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
   const handleDelete = async () => {
     try {
       await axios.delete(
         `http://localhost:3000/api/v1/player/my-teammate-listing/${myData?._id}`,
         { withCredentials: true }
       );
-      getMyTeammateListings();
-      getTeams();
+      await getMyTeammateListings();
+      await getTeams();
       navigate("/player/find-teammates");
     } catch (err) {
       setError(err.message);
     }
   };
+  
 
   const handleSearch = async (e) => {
     setLoading(true);
@@ -128,7 +155,6 @@ export default function Teammate() {
         { withCredentials: true }
       );
       setMyData(myTeam.data.data);
-      console.log(myTeam.data.data);
     } catch (error) {
       setError(error.message);
     }
@@ -147,8 +173,7 @@ export default function Teammate() {
       );
       setData(teams.data.data);
       setLength(teams.data.length);
-      checkTeammate();
-      console.log(data);
+      await checkTeammate();
     } catch (error) {
       setError(error.message);
     } finally {
@@ -237,16 +262,11 @@ export default function Teammate() {
               >
                 Edit Opponent Posting
               </p>
-              {/* bbbb */}
-              <form>
+              <form onSubmit={(e) => handleEdit(e)}>
                 <label>Name:</label>
                 <input
                   type="text"
-                  value={
-                    myData?.name?.slice(0, 1).toUpperCase() +
-                    myData?.name?.slice(1) +
-                    " "
-                  }
+                  value={name}
                   placeholder="Enter Name"
                   style={{
                     width: "100%",
@@ -255,6 +275,7 @@ export default function Teammate() {
                     borderRadius: "6px",
                     border: "1px solid #ccc",
                   }}
+                  onChange={(e) => setName(e.target.value)}
                 />
 
                 <label>Location:</label>
@@ -266,12 +287,13 @@ export default function Teammate() {
                     borderRadius: "6px",
                     border: "1px solid #ccc",
                   }}
-                  defaultValue={myData?.location}
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
                 >
                   <option>Select Location</option>
-                  <option>Kathmandu</option>
-                  <option>Bhaktapur</option>
-                  <option>Lalitpur</option>
+                  <option value="kathmandu">Kathmandu</option>
+                  <option value="bhaktapur">Bhaktapur</option>
+                  <option value="lalitpur">Lalitpur</option>
                 </select>
 
                 <label>Average Age:</label>
@@ -280,7 +302,7 @@ export default function Teammate() {
                   placeholder="Enter average age"
                   min="12"
                   max="65"
-                  value={myData?.age}
+                  value={age}
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -288,13 +310,17 @@ export default function Teammate() {
                     borderRadius: "6px",
                     border: "1px solid #ccc",
                   }}
+                  onChange={(e) => setAge(e.target.value)}
                 />
 
                 <label>Contact:</label>
                 <input
                   type="tel"
                   placeholder="Enter contact number"
-                  value={myData?.contact}
+                  value={contact}
+                  minLength="10"
+                  maxLength="10"
+                  pattern="[0-9]{10}"
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -302,16 +328,14 @@ export default function Teammate() {
                     borderRadius: "6px",
                     border: "1px solid #ccc",
                   }}
+                  onChange={(e) => setContact(e.target.value)}
                 />
 
                 <label>Position:</label>
-                <input
-                  type="text"
-                  value={
-                    myData?.position?.slice(0, 1).toUpperCase() +
-                    myData?.position?.slice(1)
-                  }
-                  placeholder="Enter yor preferred position"
+                <select
+                  id="teammate-position"
+                  required
+                  value={position}
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -319,7 +343,15 @@ export default function Teammate() {
                     borderRadius: "6px",
                     border: "1px solid #ccc",
                   }}
-                />
+                  onChange={(e) => setPosition(e.target.value)}
+                >
+                  <option value="">Select Position</option>
+                  <option value="goalkeeper">Goalkeeper</option>
+                  <option value="defender">Defender</option>
+                  <option value="midfielder">Midfielder</option>
+                  <option value="forward">Forward</option>
+                  <option value="any">Any Position</option>
+                </select>
 
                 <label>Gender:</label>
                 <div
@@ -334,7 +366,9 @@ export default function Teammate() {
                       type="radio"
                       id="male"
                       name="gender"
-                      checked={myData?.gender == "male"}
+                      value="male"
+                      checked={gender === "male"}
+                      onChange={(e) => setGender(e.target.value)}
                     />{" "}
                     <label htmlFor="male" style={{ marginLeft: "5px" }}>
                       Male
@@ -344,8 +378,10 @@ export default function Teammate() {
                     <input
                       type="radio"
                       id="female"
+                      value="female"
                       name="gender"
-                      checked={myData?.gender == "female"}
+                      checked={gender === "female"}
+                      onChange={(e) => setGender(e.target.value)}
                     />{" "}
                     <label htmlFor="female" style={{ marginLeft: "5px" }}>
                       Female
@@ -355,8 +391,10 @@ export default function Teammate() {
                     <input
                       type="radio"
                       id="other"
+                      value="other"
                       name="gender"
-                      checked={myData?.gender == "other"}
+                      checked={gender === "other"}
+                      onChange={(e) => setGender(e.target.value)}
                     />{" "}
                     <label htmlFor="other" style={{ marginLeft: "5px" }}>
                       Other
@@ -375,7 +413,8 @@ export default function Teammate() {
                     borderRadius: "6px",
                     border: "1px solid #ccc",
                   }}
-                  value={myData?.experience}
+                  value={experience}
+                  onChange={(e) => setExperience(e.target.value)}
                 >
                   <option value="">Select Experience</option>
                   <option value="0-1">0-1 Years</option>
@@ -395,7 +434,8 @@ export default function Teammate() {
                     borderRadius: "6px",
                     border: "1px solid #ccc",
                   }}
-                  value={myData?.availability}
+                  value={available}
+                  onChange={(e) => setAvailable(e.target.value)}
                 >
                   <option value="">Select Availability</option>
                   <option value="weekdays">Weekdays Only</option>
@@ -418,7 +458,8 @@ export default function Teammate() {
                       borderRadius: "5px",
                     }}
                     placeholder="About yourself..."
-                    value={myData?.about}
+                    value={about}
+                    onChange={(e) => setAbout(e.target.value)}
                   ></textarea>
                 </label>
 
@@ -439,7 +480,7 @@ export default function Teammate() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setIsEdit(false)} // Added close functionality
+                    onClick={() => setIsEdit(false)} 
                     style={{
                       background: "#e63946",
                       color: "#fff",
@@ -457,9 +498,7 @@ export default function Teammate() {
           </div>
         )}
 
-        {/* Main Content */}
         <div style={{ padding: "20px" }}>
-          {/* Tabs Navigation */}
           <div
             style={{
               display: "flex",
@@ -470,7 +509,6 @@ export default function Teammate() {
               boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
             }}
           >
-            {/* Find Teammates Tab */}
             <div
               style={
                 find
@@ -498,7 +536,6 @@ export default function Teammate() {
               Find Teammates
             </div>
 
-            {/* Become a Teammate Tab */}
             <div
               style={
                 become
@@ -526,7 +563,6 @@ export default function Teammate() {
               Become a Teammate
             </div>
 
-            {/* My Postings Tab */}
             <div
               style={
                 myPosting
@@ -555,9 +591,6 @@ export default function Teammate() {
             </div>
           </div>
 
-          {/* Tab Content Containers */}
-
-          {/* 1. Find Teammates Tab Content */}
           <div style={contentDisplay(find)}>
             <div
               style={{
@@ -569,7 +602,7 @@ export default function Teammate() {
             >
               <input
                 type="text"
-                placeholder="Search location ....."
+                placeholder="Search location"
                 style={{
                   flex: 1,
                   padding: "12px",
@@ -637,11 +670,10 @@ export default function Teammate() {
                         "0 6px 20px rgba(0,0,0,0.1)";
                     }}
                   >
-                    {/* Header */}
                     <div
                       style={{
-                        background: "#1f2937", // slate gray
-                        color: "#f8f9fa", // soft white
+                        background: "#1f2937", 
+                        color: "#f8f9fa", 
                         padding: "15px",
                         fontSize: "20px",
                         fontWeight: "bold",
@@ -653,10 +685,9 @@ export default function Teammate() {
                         {value.name.split(" ")[0].slice(0, 1).toUpperCase() +
                           value.name.slice(1)}
                       </span>
-                      <span>{value.age} years</span>
+                      <span>{value.age} years old</span>
                     </div>
 
-                    {/* Body */}
                     <div style={{ padding: "15px", lineHeight: "1.6" }}>
                       <p>
                         <strong>Location:</strong>{" "}
@@ -690,7 +721,6 @@ export default function Teammate() {
                       </p>
                     </div>
 
-                    {/* Footer */}
                     <div style={{ padding: "0 15px 15px" }}>
                       <button
                         style={{
@@ -713,18 +743,16 @@ export default function Teammate() {
             </div>
           </div>
 
-          {/* 2. Become a Teammate Form Content */}
-          {/* form of teammate */}
           <div style={contentDisplay(become)}>
             <div
               className="msg"
               style={{
                 display: !register ? "none" : "block",
-                background: "#fff3cd", // soft yellow background
-                color: "#856404", // dark golden text
+                background: "#fff3cd", 
+                color: "#856404", 
                 padding: "15px 20px",
                 borderRadius: "8px",
-                border: "1px solid #ffeeba", // subtle border
+                border: "1px solid #ffeeba",
                 fontSize: "16px",
                 fontWeight: "500",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
@@ -957,17 +985,16 @@ export default function Teammate() {
             </form>
           </div>
 
-          {/* 3. My Postings Content */}
           <div style={{ marginTop: "50px", ...contentDisplay(myPosting) }}>
             <div
               className="msg"
               style={{
                 display: register ? "none" : "block",
-                background: "#d4edda", // soft green background
-                color: "#155724", // da
+                background: "#d4edda", 
+                color: "#155724", 
                 padding: "15px 20px",
                 borderRadius: "8px",
-                border: "1px solid #ffeeba", // subtle border
+                border: "1px solid #ffeeba",
                 fontSize: "16px",
                 fontWeight: "500",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
@@ -996,7 +1023,7 @@ export default function Teammate() {
                   "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
               }}
             >
-              {/* Header Section */}
+              
               <div
                 style={{
                   borderBottom: "2px solid #007bff",
@@ -1015,9 +1042,9 @@ export default function Teammate() {
                 >
                   <span style={{ marginRight: "10px", color: "#6c757d" }}>
                     <Person style={{ fontSize: "1.8rem" }} />{" "}
-                    {/* Material Icon: Person */}
+                    
                   </span>
-                  {/* aaaa */}
+                  
                   {myData?.name?.slice(0, 1).toUpperCase() +
                     myData?.name?.slice(1) +
                     " "}
@@ -1034,7 +1061,7 @@ export default function Teammate() {
                 </h3>
               </div>
 
-              {/* Details Grid Section */}
+             
               <div
                 style={{
                   display: "grid",
@@ -1045,15 +1072,15 @@ export default function Teammate() {
                   color: "#343a40",
                 }}
               >
-                {/* Using DetailItem with Material Icons */}
+                
                 <DetailItem
-                  icon={LocationOn} // Material Icon: LocationOn
+                  icon={LocationOn} 
                   label="Location"
                   value={String(myData?.location)}
                 />
 
                 <DetailItem
-                  icon={Work} // Material Icon: Work
+                  icon={Work} 
                   label="Position"
                   value={
                     myData?.position?.slice(0, 1).toUpperCase() +
@@ -1061,42 +1088,38 @@ export default function Teammate() {
                   }
                 />
 
-                {/* Experience item (using a custom p tag because the structure is slightly different) */}
                 <p
                   style={{ margin: "0", display: "flex", alignItems: "center" }}
                 >
                   <span style={{ marginRight: "8px", color: "#17a2b8" }}>
                     <AccessTime style={{ fontSize: "1.1rem" }} />{" "}
-                    {/* Material Icon: AccessTime (Clock) */}
+                    
                   </span>
                   <strong>Experience:</strong>
                   <span style={{ marginLeft: "5px" }}>
-                    {myData?.experience?.slice(0, 1).toUpperCase() +
-                      myData?.experience?.slice(1)}
-                    {myData?.experience?.includes("+") ? " +years" : " years"}
+                    {String(myData?.experience + " years")}
                   </span>
                 </p>
 
                 <DetailItem
-                  icon={Wc} // Material Icon: Wc (Venus/Mars)
+                  icon={Wc} 
                   label="Gender"
                   value={myData?.gender}
                 />
 
                 <DetailItem
-                  icon={EventAvailable} // Material Icon: EventAvailable (Calendar Check)
+                  icon={EventAvailable} 
                   label="Availability"
                   value={myData?.availability}
                 />
 
                 <DetailItem
-                  icon={Male} // Material Icon: Male
+                  icon={Male} 
                   label="Contact"
                   value={myData?.contact}
                 />
               </div>
 
-              {/* About Section */}
               <div
                 style={{
                   margin: "20px 0",
@@ -1115,7 +1138,6 @@ export default function Teammate() {
                 >
                   <span style={{ marginRight: "8px", color: "#ffc107" }}>
                     <Info style={{ fontSize: "1.1rem" }} />{" "}
-                    {/* Material Icon: Info */}
                   </span>
                   About:
                 </strong>
@@ -1131,10 +1153,20 @@ export default function Teammate() {
                 </p>
               </div>
 
-              {/* Action Buttons Section */}
               <div style={{ textAlign: "right", paddingTop: "15px" }}>
                 <button
-                  onClick={() => setIsEdit(true)} // Open the Edit Modal
+                  onClick={() => {               
+                    setIsEdit(true);
+                    setName(myData?.name || "");
+                    setAge(myData?.age || "");
+                    setLocation(myData?.location || "");
+                    setContact(myData?.contact || "");
+                    setPosition(myData?.position || "");
+                    setExperience(myData?.experience || "");
+                    setGender(myData?.gender || "");
+                    setAvailable(myData?.availability || ""); 
+                    setAbout(myData?.about || "");
+                  }} 
                   style={{
                     background: "#007bff",
                     color: "white",
@@ -1145,12 +1177,11 @@ export default function Teammate() {
                     cursor: "pointer",
                     fontWeight: "bold",
                     transition: "background 0.3s ease",
-                    display: "inline-flex", // Allows icon and text to align
+                    display: "inline-flex", 
                     alignItems: "center",
                   }}
                 >
                   <Edit style={{ fontSize: "1.1rem", marginRight: "5px" }} />{" "}
-                  {/* Material Icon: Edit */}
                   Edit Profile
                 </button>
                 <button
@@ -1163,13 +1194,12 @@ export default function Teammate() {
                     cursor: "pointer",
                     fontWeight: "bold",
                     transition: "background 0.3s ease",
-                    display: "inline-flex", // Allows icon and text to align
+                    display: "inline-flex", 
                     alignItems: "center",
                   }}
                   onClick={() => handleDelete()}
                 >
                   <Delete style={{ fontSize: "1.1rem", marginRight: "5px" }} />{" "}
-                  {/* Material Icon: Delete */}
                   Delete Profile
                 </button>
               </div>

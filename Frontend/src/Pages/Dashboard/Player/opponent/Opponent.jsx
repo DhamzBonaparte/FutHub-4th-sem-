@@ -221,7 +221,7 @@ export default function Opponent() {
           zIndex: 1000,
           overflowY: "auto",
           boxSizing: "border-box",
-          padding: "40px 20px", // top 40, sides 20
+          padding: "40px 20px", 
         }}
       >
         <div
@@ -236,13 +236,13 @@ export default function Opponent() {
         >
           <p
             style={{
-              margin: 0, // removes default margin
+              margin: 0, 
               textAlign: "center",
               fontSize: "30px",
               fontWeight: 700,
               color: "#0d1b2a",
               letterSpacing: "1px",
-              padding: "12px 20px", // only bottom padding
+              padding: "12px 20px", 
               borderBottom: "2px solid #5efc82",
               fontFamily: "arial",
             }}

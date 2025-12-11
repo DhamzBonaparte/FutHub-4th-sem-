@@ -301,41 +301,6 @@ export default function Signup() {
                   </label>
                 </div>
               </div>
-
-              {/* <div className="form-groups">
-                <label htmlFor="role" className="form-label">
-                  Signing up as:
-                </label>
-                <div className="form-options" style={{ display: "flex" }}>
-                  <div className="left-owner">
-                    <input
-                      type="radio"
-                      id="role-owner"
-                      name="role"
-                      value="owner"
-                      className="form-input"
-                      style={{ fontSize: "20px" }}
-                      required
-                      onChange={(e) => setRole(e.target.value)}
-                    />
-                    <label htmlFor="role-owner">Owner</label>
-                  </div>
-
-                  <div className="right-player">
-                    <input
-                      type="radio"
-                      id="role-player"
-                      name="role"
-                      value="player"
-                      className="form-input"
-                      required
-                      onChange={(e) => setRole(e.target.value)}
-                    />
-                    <label htmlFor="role-player">Player</label>
-                  </div>
-                </div>
-              </div> */}
-
               <div className="form-check">
                 <input
                   type="checkbox"
