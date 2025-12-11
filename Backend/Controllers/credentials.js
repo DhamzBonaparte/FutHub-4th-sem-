@@ -344,6 +344,16 @@ const getMyTeammatePosting = async (req, res) => {
   }
 };
 
+const deleteMyPosting =async (req,res)=>{
+  try {
+    const userId = req.user.id;
+     const del = await teammate.findOneAndDelete({userId})
+    res.status(200).json({msg:"delete",data:del})
+  } catch (err) {
+    res.status(400).json({error:err.message})
+  }
+}
+
 module.exports = {
   getCredentials,
   setCredentials,
@@ -360,4 +370,5 @@ module.exports = {
   searchTeammates,
   checkTeammate,
   getMyTeammatePosting,
+  deleteMyPosting
 };

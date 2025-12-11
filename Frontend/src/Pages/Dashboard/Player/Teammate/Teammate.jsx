@@ -11,6 +11,7 @@ import Male from "@mui/icons-material/Male";
 import Info from "@mui/icons-material/Info";
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
+import { useNavigate } from "react-router-dom";
 
 const DetailItem = ({ icon: Icon, label, value }) => {
   const strValue = value ? String(value) : "";
@@ -30,6 +31,7 @@ const DetailItem = ({ icon: Icon, label, value }) => {
 };
 
 export default function Teammate() {
+  const navigate = useNavigate();
   const [find, setFind] = useState(true);
   const [become, setBecome] = useState(false);
   const [myPosting, setMyPosting] = useState(false);
@@ -88,6 +90,20 @@ export default function Teammate() {
   const contentDisplay = (isActive) => ({
     display: isActive ? "block" : "none",
   });
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/v1/player/my-teammate-listing/${myData?._id}`,
+        { withCredentials: true }
+      );
+      getMyTeammateListings();
+      getTeams();
+      navigate("/player/find-teammates");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   const handleSearch = async (e) => {
     setLoading(true);
@@ -221,12 +237,17 @@ export default function Teammate() {
               >
                 Edit Opponent Posting
               </p>
-
+              {/* bbbb */}
               <form>
-                <label>Team Name:</label>
+                <label>Name:</label>
                 <input
                   type="text"
-                  placeholder="Enter Team Name"
+                  value={
+                    myData?.name?.slice(0, 1).toUpperCase() +
+                    myData?.name?.slice(1) +
+                    " "
+                  }
+                  placeholder="Enter Name"
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -245,6 +266,7 @@ export default function Teammate() {
                     borderRadius: "6px",
                     border: "1px solid #ccc",
                   }}
+                  defaultValue={myData?.location}
                 >
                   <option>Select Location</option>
                   <option>Kathmandu</option>
@@ -258,6 +280,7 @@ export default function Teammate() {
                   placeholder="Enter average age"
                   min="12"
                   max="65"
+                  value={myData?.age}
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -271,6 +294,7 @@ export default function Teammate() {
                 <input
                   type="tel"
                   placeholder="Enter contact number"
+                  value={myData?.contact}
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -280,10 +304,14 @@ export default function Teammate() {
                   }}
                 />
 
-                <label>Venue:</label>
+                <label>Position:</label>
                 <input
                   type="text"
-                  placeholder="Enter venue"
+                  value={
+                    myData?.position?.slice(0, 1).toUpperCase() +
+                    myData?.position?.slice(1)
+                  }
+                  placeholder="Enter yor preferred position"
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -302,39 +330,44 @@ export default function Teammate() {
                   }}
                 >
                   <div>
-                    <input type="radio" id="male" name="gender" />{" "}
+                    <input
+                      type="radio"
+                      id="male"
+                      name="gender"
+                      checked={myData?.gender == "male"}
+                    />{" "}
                     <label htmlFor="male" style={{ marginLeft: "5px" }}>
                       Male
                     </label>
                   </div>
                   <div>
-                    <input type="radio" id="female" name="gender" />{" "}
+                    <input
+                      type="radio"
+                      id="female"
+                      name="gender"
+                      checked={myData?.gender == "female"}
+                    />{" "}
                     <label htmlFor="female" style={{ marginLeft: "5px" }}>
                       Female
                     </label>
                   </div>
                   <div>
-                    <input type="radio" id="other" name="gender" />{" "}
+                    <input
+                      type="radio"
+                      id="other"
+                      name="gender"
+                      checked={myData?.gender == "other"}
+                    />{" "}
                     <label htmlFor="other" style={{ marginLeft: "5px" }}>
                       Other
                     </label>
                   </div>
                 </div>
 
-                <label>Match Date:</label>
-                <input
-                  type="date"
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    marginBottom: "15px",
-                    borderRadius: "6px",
-                    border: "1px solid #ccc",
-                  }}
-                />
-
-                <label>Level:</label>
+                <label>Experience:</label>
                 <select
+                  id="teammate-experience"
+                  required
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -342,17 +375,19 @@ export default function Teammate() {
                     borderRadius: "6px",
                     border: "1px solid #ccc",
                   }}
+                  value={myData?.experience}
                 >
-                  <option>Select Skill Level</option>
-                  <option>Beginner</option>
-                  <option>Intermediate</option>
-                  <option>Advanced</option>
-                  <option>Professional</option>
+                  <option value="">Select Experience</option>
+                  <option value="0-1">0-1 Years</option>
+                  <option value="1-3">1-3 Years</option>
+                  <option value="3-5">3-5 Years</option>
+                  <option value="5+">5+ Years</option>
                 </select>
 
-                <label>Time From:</label>
-                <input
-                  type="time"
+                <label>Availability:</label>
+                <select
+                  id="teammate-availability"
+                  required
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -360,19 +395,32 @@ export default function Teammate() {
                     borderRadius: "6px",
                     border: "1px solid #ccc",
                   }}
-                />
+                  value={myData?.availability}
+                >
+                  <option value="">Select Availability</option>
+                  <option value="weekdays">Weekdays Only</option>
+                  <option value="weekends">Weekends Only</option>
+                  <option value="both weekdays & weekends">
+                    Both Weekdays & Weekends
+                  </option>
+                  <option value="flexible">Flexible</option>
+                </select>
 
-                <label>Time To:</label>
-                <input
-                  type="time"
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    marginBottom: "20px",
-                    borderRadius: "6px",
-                    border: "1px solid #ccc",
-                  }}
-                />
+                <label htmlFor="about">
+                  About:
+                  <textarea
+                    id="teammate-about"
+                    rows="3"
+                    style={{
+                      width: "227%",
+                      padding: "0.8rem",
+                      border: "1px solid #ddd",
+                      borderRadius: "5px",
+                    }}
+                    placeholder="About yourself..."
+                    value={myData?.about}
+                  ></textarea>
+                </label>
 
                 <div style={{ textAlign: "center" }}>
                   <button
@@ -969,6 +1017,7 @@ export default function Teammate() {
                     <Person style={{ fontSize: "1.8rem" }} />{" "}
                     {/* Material Icon: Person */}
                   </span>
+                  {/* aaaa */}
                   {myData?.name?.slice(0, 1).toUpperCase() +
                     myData?.name?.slice(1) +
                     " "}
@@ -1006,7 +1055,10 @@ export default function Teammate() {
                 <DetailItem
                   icon={Work} // Material Icon: Work
                   label="Position"
-                  value={myData?.position}
+                  value={
+                    myData?.position?.slice(0, 1).toUpperCase() +
+                    myData?.position?.slice(1)
+                  }
                 />
 
                 {/* Experience item (using a custom p tag because the structure is slightly different) */}
@@ -1114,6 +1166,7 @@ export default function Teammate() {
                     display: "inline-flex", // Allows icon and text to align
                     alignItems: "center",
                   }}
+                  onClick={() => handleDelete()}
                 >
                   <Delete style={{ fontSize: "1.1rem", marginRight: "5px" }} />{" "}
                   {/* Material Icon: Delete */}
@@ -1121,77 +1174,6 @@ export default function Teammate() {
                 </button>
               </div>
             </div>
-            {/* <div
-              style={{
-                background: "#fff",
-                padding: "20px",
-                borderRadius: "12px",
-                boxShadow: "0 4px 15px rgba(0,0,0.1)",
-              }}
-            >
-              <h3>
-                {myData?.name?.slice(0, 1).toUpperCase() +
-                  myData?.name?.slice(1) +
-                  " (" +
-                  myData?.age +
-                  " years old)"}
-              </h3>
-              <p>
-                <strong>Location:</strong>{" "}
-                {myData?.location?.slice(0, 1).toUpperCase() +
-                  myData?.location?.slice(1)}{" "}
-                | <strong>Position:</strong>{" "}
-                {myData?.position?.slice(0, 1).toUpperCase() +
-                  myData?.position?.slice(1)}{" "}
-                | <strong>Experience:</strong>
-                {" " +
-                  myData?.experience?.slice(0, 1).toUpperCase() +
-                  myData?.experience?.slice(1)}
-                {myData?.experience?.includes("+") ? "+years" : " years"}
-              </p>
-              <p>
-                <strong>Gender:</strong>{" "}
-                {myData?.gender?.slice(0, 1).toUpperCase() +
-                  myData?.gender?.slice(1)}{" "}
-                | <strong>Availability:</strong>{" "}
-                {myData?.availability?.slice(0, 1).toUpperCase() +
-                  myData?.availability?.slice(1)}{" "}
-                | <strong>Gender:</strong> Male
-              </p>
-              <div style={{ margin: "15px 0" }}>
-                <strong>About:</strong>
-                <p>
-                  {myData?.about?.slice(0, 1).toUpperCase() +
-                  myData?.about?.slice(1)}
-                </p>
-              </div>
-              <div style={{ textAlign: "right" }}>
-                <button
-                  onClick={() => setIsEdit(true)} // Open the Edit Modal
-                  style={{
-                    background: "#1d3557",
-                    color: "white",
-                    padding: "8px 16px",
-                    border: "none",
-                    borderRadius: "6px",
-                    marginRight: "10px",
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  style={{
-                    background: "#e63946",
-                    color: "white",
-                    padding: "8px 16px",
-                    border: "none",
-                    borderRadius: "6px",
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
