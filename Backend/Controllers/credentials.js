@@ -320,13 +320,27 @@ const checkTeammate = async (req, res) => {
   try {
     const userId = req.user.id;
     const check = await teammate.findOne({ userId });
-    if(check){
-      res.status(200).json({ msg: "Already registered",registered:true });
-    }else{
-      res.status(200).json({msg:"Not registered",registered:false})
+    if (check) {
+      res.status(200).json({ msg: "Already registered", registered: true });
+    } else {
+      res.status(200).json({ msg: "Not registered", registered: false });
     }
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+};
+
+const getMyTeammatePosting = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const myList = await teammate.findOne({ userId });
+    if(myList){
+      res.status(200).json({msg:"Listed",data:myList});
+    }else{
+      res.status(200).json({msg:"Not listed yet!"})
+    }
+  } catch (err) {
+    res.status(400).json({ msg: err.message });
   }
 };
 
@@ -345,4 +359,5 @@ module.exports = {
   logout,
   searchTeammates,
   checkTeammate,
+  getMyTeammatePosting,
 };

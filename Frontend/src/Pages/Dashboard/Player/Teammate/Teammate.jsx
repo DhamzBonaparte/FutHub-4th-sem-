@@ -1,6 +1,33 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import Person from "@mui/icons-material/Person";
+import LocationOn from "@mui/icons-material/LocationOn";
+import Work from "@mui/icons-material/Work";
+import AccessTime from "@mui/icons-material/AccessTime";
+import Wc from "@mui/icons-material/Wc";
+import EventAvailable from "@mui/icons-material/EventAvailable";
+import Male from "@mui/icons-material/Male";
+import Info from "@mui/icons-material/Info";
+import Edit from "@mui/icons-material/Edit";
+import Delete from "@mui/icons-material/Delete";
+
+const DetailItem = ({ icon: Icon, label, value }) => {
+  const strValue = value ? String(value) : "";
+  return (
+    <p style={{ margin: "0", display: "flex", alignItems: "center" }}>
+      <span style={{ marginRight: "8px", color: "#17a2b8" }}>
+        <Icon style={{ fontSize: "1.1rem" }} />
+      </span>
+      <strong>{label}:</strong>
+      <span style={{ marginLeft: "5px" }}>
+        {strValue
+          ? strValue.charAt(0).toUpperCase() + strValue.slice(1)
+          : "N/A"}
+      </span>
+    </p>
+  );
+};
 
 export default function Teammate() {
   const [find, setFind] = useState(true);
@@ -22,11 +49,12 @@ export default function Teammate() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [register, setRegistered] = useState(false);
+  const [myData, setMyData] = useState({});
 
-
-  useEffect(()=>{
+  useEffect(() => {
     checkTeammate();
-  },[])
+    getMyTeammateListings();
+  }, []);
 
   useEffect(() => {
     handleSearch();
@@ -38,11 +66,14 @@ export default function Teammate() {
 
   const checkTeammate = async () => {
     try {
-      const check=await axios.get("http://localhost:3000/api/v1/player/check-teammate", {
-        withCredentials: true,
-      });
+      const check = await axios.get(
+        "http://localhost:3000/api/v1/player/check-teammate",
+        {
+          withCredentials: true,
+        }
+      );
       console.log(check);
-      setRegistered(check.data.registered)
+      setRegistered(check.data.registered);
     } catch (error) {
       setError(error.message);
     }
@@ -74,7 +105,18 @@ export default function Teammate() {
     }
   };
 
-  const getMyTeammateListings = async () => {};
+  const getMyTeammateListings = async () => {
+    try {
+      const myTeam = await axios.get(
+        "http://localhost:3000/api/v1/player/my-teammate-listing",
+        { withCredentials: true }
+      );
+      setMyData(myTeam.data.data);
+      console.log(myTeam.data.data);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   const getTeams = async () => {
     window.scrollTo({
@@ -124,7 +166,9 @@ export default function Teammate() {
     }
     setActiveTab("find");
     getTeams();
+    getMyTeammateListings();
   };
+
   return (
     <>
       <div
@@ -828,7 +872,9 @@ export default function Teammate() {
                       <option value="">Select Availability</option>
                       <option value="weekdays">Weekdays Only</option>
                       <option value="weekends">Weekends Only</option>
-                      <option value="both">Both Weekdays & Weekends</option>
+                      <option value="both weekdays & weekends">
+                        Both Weekdays & Weekends
+                      </option>
                       <option value="flexible">Flexible</option>
                     </select>
                   </div>
@@ -866,6 +912,216 @@ export default function Teammate() {
           {/* 3. My Postings Content */}
           <div style={{ marginTop: "50px", ...contentDisplay(myPosting) }}>
             <div
+              className="msg"
+              style={{
+                display: register ? "none" : "block",
+                background: "#d4edda", // soft green background
+                color: "#155724", // da
+                padding: "15px 20px",
+                borderRadius: "8px",
+                border: "1px solid #ffeeba", // subtle border
+                fontSize: "16px",
+                fontWeight: "500",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                marginTop: "15px",
+                textAlign: "center",
+              }}
+            >
+              <p style={{ margin: 0 }}>
+                {!register
+                  ? "Add yourself as a teammate to edit your profile!"
+                  : ""}
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: "#f8f9fa",
+                padding: "30px",
+                borderRadius: "16px",
+                border: "1px solid #dee2e6",
+                maxWidth: "600px",
+                margin: "20px auto",
+                boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
+                display: register ? "block" : "none",
+                fontFamily:
+                  "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+              }}
+            >
+              {/* Header Section */}
+              <div
+                style={{
+                  borderBottom: "2px solid #007bff",
+                  paddingBottom: "15px",
+                  marginBottom: "20px",
+                }}
+              >
+                <h3
+                  style={{
+                    color: "#007bff",
+                    fontSize: "1.8rem",
+                    margin: "0",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ marginRight: "10px", color: "#6c757d" }}>
+                    <Person style={{ fontSize: "1.8rem" }} />{" "}
+                    {/* Material Icon: Person */}
+                  </span>
+                  {myData?.name?.slice(0, 1).toUpperCase() +
+                    myData?.name?.slice(1) +
+                    " "}
+                  <span
+                    style={{
+                      color: "#6c757d",
+                      fontSize: "1.2rem",
+                      fontWeight: "normal",
+                      marginLeft: "8px",
+                    }}
+                  >
+                    ( {myData?.age} years old )
+                  </span>
+                </h3>
+              </div>
+
+              {/* Details Grid Section */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "15px 25px",
+                  marginBottom: "20px",
+                  fontSize: "0.95rem",
+                  color: "#343a40",
+                }}
+              >
+                {/* Using DetailItem with Material Icons */}
+                <DetailItem
+                  icon={LocationOn} // Material Icon: LocationOn
+                  label="Location"
+                  value={String(myData?.location)}
+                />
+
+                <DetailItem
+                  icon={Work} // Material Icon: Work
+                  label="Position"
+                  value={myData?.position}
+                />
+
+                {/* Experience item (using a custom p tag because the structure is slightly different) */}
+                <p
+                  style={{ margin: "0", display: "flex", alignItems: "center" }}
+                >
+                  <span style={{ marginRight: "8px", color: "#17a2b8" }}>
+                    <AccessTime style={{ fontSize: "1.1rem" }} />{" "}
+                    {/* Material Icon: AccessTime (Clock) */}
+                  </span>
+                  <strong>Experience:</strong>
+                  <span style={{ marginLeft: "5px" }}>
+                    {myData?.experience?.slice(0, 1).toUpperCase() +
+                      myData?.experience?.slice(1)}
+                    {myData?.experience?.includes("+") ? " +years" : " years"}
+                  </span>
+                </p>
+
+                <DetailItem
+                  icon={Wc} // Material Icon: Wc (Venus/Mars)
+                  label="Gender"
+                  value={myData?.gender}
+                />
+
+                <DetailItem
+                  icon={EventAvailable} // Material Icon: EventAvailable (Calendar Check)
+                  label="Availability"
+                  value={myData?.availability}
+                />
+
+                <DetailItem
+                  icon={Male} // Material Icon: Male
+                  label="Contact"
+                  value={myData?.contact}
+                />
+              </div>
+
+              {/* About Section */}
+              <div
+                style={{
+                  margin: "20px 0",
+                  padding: "15px",
+                  background: "#e9ecef",
+                  borderRadius: "8px",
+                  borderLeft: "5px solid #ffc107",
+                }}
+              >
+                <strong
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    color: "#343a40",
+                  }}
+                >
+                  <span style={{ marginRight: "8px", color: "#ffc107" }}>
+                    <Info style={{ fontSize: "1.1rem" }} />{" "}
+                    {/* Material Icon: Info */}
+                  </span>
+                  About:
+                </strong>
+                <p
+                  style={{
+                    margin: "0",
+                    lineHeight: "1.6",
+                    whiteSpace: "pre-wrap",
+                  }}
+                >
+                  {myData?.about?.slice(0, 1).toUpperCase() +
+                    myData?.about?.slice(1)}
+                </p>
+              </div>
+
+              {/* Action Buttons Section */}
+              <div style={{ textAlign: "right", paddingTop: "15px" }}>
+                <button
+                  onClick={() => setIsEdit(true)} // Open the Edit Modal
+                  style={{
+                    background: "#007bff",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "8px",
+                    marginRight: "15px",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    transition: "background 0.3s ease",
+                    display: "inline-flex", // Allows icon and text to align
+                    alignItems: "center",
+                  }}
+                >
+                  <Edit style={{ fontSize: "1.1rem", marginRight: "5px" }} />{" "}
+                  {/* Material Icon: Edit */}
+                  Edit Profile
+                </button>
+                <button
+                  style={{
+                    background: "#dc3545",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    transition: "background 0.3s ease",
+                    display: "inline-flex", // Allows icon and text to align
+                    alignItems: "center",
+                  }}
+                >
+                  <Delete style={{ fontSize: "1.1rem", marginRight: "5px" }} />{" "}
+                  {/* Material Icon: Delete */}
+                  Delete Profile
+                </button>
+              </div>
+            </div>
+            {/* <div
               style={{
                 background: "#fff",
                 padding: "20px",
@@ -873,22 +1129,41 @@ export default function Teammate() {
                 boxShadow: "0 4px 15px rgba(0,0,0.1)",
               }}
             >
-              <h3>Phoenix FC • 26 yrs avg</h3>
+              <h3>
+                {myData?.name?.slice(0, 1).toUpperCase() +
+                  myData?.name?.slice(1) +
+                  " (" +
+                  myData?.age +
+                  " years old)"}
+              </h3>
               <p>
-                <strong>Location:</strong> Lalitpur | <strong>Venue:</strong>{" "}
-                ANFA Complex | <strong>Date:</strong> 2025-12-25
+                <strong>Location:</strong>{" "}
+                {myData?.location?.slice(0, 1).toUpperCase() +
+                  myData?.location?.slice(1)}{" "}
+                | <strong>Position:</strong>{" "}
+                {myData?.position?.slice(0, 1).toUpperCase() +
+                  myData?.position?.slice(1)}{" "}
+                | <strong>Experience:</strong>
+                {" " +
+                  myData?.experience?.slice(0, 1).toUpperCase() +
+                  myData?.experience?.slice(1)}
+                {myData?.experience?.includes("+") ? "+years" : " years"}
               </p>
               <p>
-                <strong>Time:</strong> 04:00 PM - 06:00 PM |{" "}
-                <strong>Level:</strong> Advanced | <strong>Gender:</strong> Male
+                <strong>Gender:</strong>{" "}
+                {myData?.gender?.slice(0, 1).toUpperCase() +
+                  myData?.gender?.slice(1)}{" "}
+                | <strong>Availability:</strong>{" "}
+                {myData?.availability?.slice(0, 1).toUpperCase() +
+                  myData?.availability?.slice(1)}{" "}
+                | <strong>Gender:</strong> Male
               </p>
               <div style={{ margin: "15px 0" }}>
-                <strong>Players:</strong>
-                <ul>
-                  <li>Ram Bahadur – 28 yrs</li>
-                  <li>Sita Sharma – 25 yrs</li>
-                  <li>Hari Thapa – 30 yrs</li>
-                </ul>
+                <strong>About:</strong>
+                <p>
+                  {myData?.about?.slice(0, 1).toUpperCase() +
+                  myData?.about?.slice(1)}
+                </p>
               </div>
               <div style={{ textAlign: "right" }}>
                 <button
@@ -916,7 +1191,7 @@ export default function Teammate() {
                   Delete
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
