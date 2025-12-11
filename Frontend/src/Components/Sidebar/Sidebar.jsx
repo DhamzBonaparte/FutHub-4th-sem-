@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Sidebar({ goToFav }) {
   const [data, setData] = useState({});
@@ -35,6 +36,16 @@ export default function Sidebar({ goToFav }) {
       } else {
         setError("Something went wrong. Please try again");
       }
+    }
+  };
+
+  const Logout = async () => {
+    try {
+      axios.post("http://localhost:3000/api/v1/player/logout", {},{
+        withCredentials: true,
+      });
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -117,6 +128,16 @@ export default function Sidebar({ goToFav }) {
             >
               <GroupsIcon className="icon" />
               <span>Teammates</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/"
+              className={active == "team" ? "active" : ""}
+              onClick={() => Logout()}
+            >
+              <LogoutIcon className="icon" />
+              <span>Logout</span>
             </Link>
           </li>
         </ul>

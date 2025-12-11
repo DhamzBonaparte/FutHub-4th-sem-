@@ -238,18 +238,19 @@ export default function Opponent() {
             style={{
               margin: 0, // removes default margin
               textAlign: "center",
-              fontSize: "28px",
+              fontSize: "30px",
               fontWeight: 700,
               color: "#0d1b2a",
               letterSpacing: "1px",
-              paddingBottom: "12px", // only bottom padding
+              padding: "12px 20px", // only bottom padding
               borderBottom: "2px solid #5efc82",
+              fontFamily:"arial"
             }}
           >
             Edit your posting
           </p>
 
-          <form onSubmit={(e) => handleEditSubmit(e)}>
+          <form onSubmit={(e) => handleEditSubmit(e)} style={{padding: "12px 20px"}}>
             <label>Team Name:</label>
             <input
               type="text"

@@ -278,6 +278,19 @@ const getTeammate = async (req, res) => {
   }
 };
 
+const logout = async(req,res)=>{
+  try{  
+    res.clearCookie("token",{
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    })
+    res.status(200).json({ msg: "logout" });
+  }catch(err){
+    res.status(400).json({ msg: err.message });
+  }
+}
+
 module.exports = {
   getCredentials,
   setCredentials,
@@ -290,4 +303,5 @@ module.exports = {
   updateMyOpponents,
   setTeammate,
   getTeammate,
+  logout
 };

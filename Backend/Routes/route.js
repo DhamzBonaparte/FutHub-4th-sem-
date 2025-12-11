@@ -12,6 +12,7 @@ const {
   delMyOpponents,
   updateMyOpponents,
   setTeammate,
+  logout,
   getTeammate
 } = require("../Controllers/credentials");
 
@@ -29,6 +30,8 @@ router
   .route("/player/my-opponent-postings/:id")
   .delete(authorize, delMyOpponents)
   .patch(authorize, updateMyOpponents);
+
+router.route('/player/logout').post(logout);
 
 router.route("/player/find-teammate").post(authorize,setTeammate).get(getTeammate);
 

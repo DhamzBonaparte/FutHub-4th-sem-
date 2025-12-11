@@ -45,6 +45,7 @@ export default function Teammate() {
   }
   
   console.log(data,length);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
