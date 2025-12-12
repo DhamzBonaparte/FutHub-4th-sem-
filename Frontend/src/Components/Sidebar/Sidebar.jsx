@@ -89,25 +89,13 @@ export default function Sidebar({ goToFav }) {
             </Link>
           </li>
           <li>
-            <a
+            <Link
+            to="/player/booking"
               className={active == "book" ? "active" : ""}
               onClick={() => setActive("book")}
             >
               <BookIcon className="icon" />
               <span>Booking</span>
-            </a>
-          </li>
-          <li>
-            <Link
-              to="/player"
-              onClick={() => {
-                goToFav();
-                setActive("fav");
-              }}
-              className={active == "fav" ? "active" : ""}
-            >
-              <FavoriteIcon className="icon" />
-              <span>Favourites</span>
             </Link>
           </li>
           <li>

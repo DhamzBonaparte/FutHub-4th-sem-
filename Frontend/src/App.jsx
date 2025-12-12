@@ -9,6 +9,11 @@ import Opponent from "./Pages/Dashboard/Player/opponent/Opponent";
 import Service from "./Pages/Service/Service";
 import Main from "./Pages/Dashboard/Player/Main/Main";
 import Teammate from "./Pages/Dashboard/Player/Teammate/Teammate";
+import OMain from "./Pages/Dashboard/Owner/Main/OMain";
+import Book from "./Pages/Dashboard/Player/Booking/Book";
+import BookFutsal from "./Pages/Dashboard/Owner/Book/BookFutsal";
+import Review from "./Pages/Dashboard/Owner/Reviews/Review";
+import Futsal from "./Pages/Dashboard/Owner/My Futsal/Futsal";
 
 function App() {
   return (
@@ -17,7 +22,12 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/player" element={<PDashboard />}></Route>
-        <Route path="/owner" element={<ODashboard />}></Route>
+        <Route path="/owner" element={<ODashboard />}>
+          <Route index element={<OMain/>}></Route>
+          <Route path="/owner/book-futsal" element={<BookFutsal/>}></Route>
+          <Route path='/owner/review' element={<Review/>}/>
+          <Route path='/owner/my-futsal' element={<Futsal/>}></Route>
+        </Route>
         <Route path="/terms" element={<TOC />}></Route>
         <Route path="/" element={<Home />}></Route>
         <Route path="/service" element={<Service />}></Route>
@@ -25,6 +35,7 @@ function App() {
           <Route index element={<Main/>}></Route>
           <Route path="/player/find-opponent" element={<Opponent />}></Route>
           <Route path='/player/find-teammates' element={<Teammate/>}/>
+          <Route path='/player/booking' element={<Book/>}></Route>
         </Route>
       </Routes>
     </>
