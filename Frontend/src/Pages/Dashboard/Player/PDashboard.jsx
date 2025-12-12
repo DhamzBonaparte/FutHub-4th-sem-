@@ -18,40 +18,9 @@ export default function PDashboard() {
     });
   }, []);
 
-  useEffect(() => {
-    getAllData();
-  }, []);
-
   function goToFav() {
     fav.current.scrollIntoView({ behavior: "smooth" });
   }
-
-  const getAllData = async () => {
-    try {
-      const res = await axios.get("http://localhost:3000/api/v1/player", {
-        withCredentials: true,
-      });
-      setData(res.data.msg);
-    } catch (err) {
-      if (err.response?.status === 401) {
-        setError("You must Login to view dashboard!");
-        alert("You must Login to view dashboard!");
-
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
-      } else if (err.response?.status === 403) {
-        setError("Session expired. Please login again.");
-        alert("Session expired. Please login again.");
-
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
-      } else {
-        setError("Something went wrong. Please try again");
-      }
-    }
-  };
 
   return (
     <>

@@ -26,6 +26,12 @@ export default function Sidebar({ goToFav }) {
         withCredentials: true,
       });
       setData(res.data.msg);
+      if (res.data.msg.role === "owner") {
+        alert("Login as player to enter!");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      }
     } catch (err) {
       if (err.response?.status === 401) {
         setError("You must Login to view this page!");
@@ -41,9 +47,13 @@ export default function Sidebar({ goToFav }) {
 
   const Logout = async () => {
     try {
-      axios.post("http://localhost:3000/api/v1/player/logout", {},{
-        withCredentials: true,
-      });
+      axios.post(
+        "http://localhost:3000/api/v1/player/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
     } catch (err) {
       setError(err.message);
     }
@@ -57,9 +67,7 @@ export default function Sidebar({ goToFav }) {
       >
         <div className="logo2">
           Fut{" "}
-          <span style={{ color: "lightgreen", margin: "0", padding: "0" }}>
-            Hub
-          </span>
+          <span style={{ color: "green", margin: "0", padding: "0" }}>Hub</span>
         </div>
 
         <div className="user-profile">
@@ -90,7 +98,7 @@ export default function Sidebar({ goToFav }) {
           </li>
           <li>
             <Link
-            to="/player/booking"
+              to="/player/booking"
               className={active == "book" ? "active" : ""}
               onClick={() => setActive("book")}
             >
@@ -124,7 +132,8 @@ export default function Sidebar({ goToFav }) {
               className={active == "logout" ? "active" : ""}
               onClick={() => {
                 setActive("logout");
-                Logout()}}
+                Logout();
+              }}
             >
               <LogoutIcon className="icon" />
               <span>Logout</span>

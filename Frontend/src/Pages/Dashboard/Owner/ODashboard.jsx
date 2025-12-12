@@ -1,9 +1,44 @@
 import OSidebar from "../../../Components/Sidebar/OSidebar";
 import { Outlet } from "react-router-dom";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function ODashboard() {
   const [error, setError] = useState("");
+  const navigate=useNavigate();
+
+  useEffect(()=>{
+    validate();
+  },[])
+
+  const validate = async () => {
+    try {
+      await axios.get("http://localhost:3000/api/v1/owner", {
+        withCredentials: true,
+      });
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.status === 401) {
+        setError(error.message);
+        alert("You must Login to view dashboard!");
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      } else if (error.response?.status === 403) {
+        setError("Session expired. Please login again.");
+        alert("Session expired. Please login again.");
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      } else {
+        setError("Something went wrong. Please try again");
+      }
+    }
+  };
+
   return (
     <>
       <div className="error">

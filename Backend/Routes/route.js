@@ -18,7 +18,8 @@ const {
   checkTeammate,
   getMyTeammatePosting,
   deleteMyPosting,
-  editMyPosting
+  editMyPosting,
+  validateOwner
 } = require("../Controllers/credentials");
 
 router.route("/login").post(getCredentials);
@@ -53,5 +54,8 @@ router
 router
   .route("/player/my-teammate-listing/:id")
   .delete(authorize, deleteMyPosting)
-  
+
+//owner part started
+router.route('/owner').get(authorize,validateOwner)
+
 module.exports = router;
