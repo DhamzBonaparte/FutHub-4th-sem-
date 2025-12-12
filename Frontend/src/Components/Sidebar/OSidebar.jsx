@@ -1,7 +1,7 @@
 import "./Osidebar.css";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
-import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
-import ReviewsIcon from '@mui/icons-material/Reviews';
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
+import ReviewsIcon from "@mui/icons-material/Reviews";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -105,7 +105,7 @@ export default function OSidebar() {
               className={active == "dashboard" ? "active" : ""}
               onClick={() => setActive("dashboard")}
             >
-              <SpaceDashboardIcon className="icon" />
+              <SpaceDashboardIcon style={{marginRight:"15px"}}/>
               <span>Dashboard</span>
             </Link>
           </li>
@@ -116,7 +116,7 @@ export default function OSidebar() {
               className={active == "book" ? "active" : ""}
               onClick={() => setActive("book")}
             >
-              <StorefrontIcon className="icon" />
+              <StorefrontIcon style={{marginRight:"15px"}} />
               <span>My Futsal</span>
             </Link>
           </li>
@@ -127,7 +127,7 @@ export default function OSidebar() {
               className={active == "opponent" ? "active" : ""}
               onClick={() => setActive("opponent")}
             >
-              <BookmarkAddedIcon className="icon" />
+              <BookmarkAddedIcon style={{marginRight:"15px"}}/>
               <span>Bookings</span>
             </Link>
           </li>
@@ -138,7 +138,7 @@ export default function OSidebar() {
               className={active == "team" ? "active" : ""}
               onClick={() => setActive("team")}
             >
-              <ReviewsIcon className="icon" />
+              <ReviewsIcon style={{marginRight:"15px"}} />
               <span>Reviews</span>
             </Link>
           </li>
@@ -152,7 +152,7 @@ export default function OSidebar() {
                 Logout();
               }}
             >
-              <LogoutIcon className="icon" />
+              <LogoutIcon style={{marginRight:"15px"}} />
               <span>Logout</span>
             </Link>
           </li>

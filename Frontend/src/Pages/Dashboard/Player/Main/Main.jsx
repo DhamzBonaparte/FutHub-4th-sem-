@@ -8,6 +8,9 @@ export default function Main() {
   const { error, fav, data } = useOutletContext();
   return (
     <>
+    <div className="header">
+            <div className="dashboard-title">Player Dashboard</div>
+          </div>
       <div id="dashboard" className="dashboard-section">
         <div className="stats-container">
           <div className="stat-card">

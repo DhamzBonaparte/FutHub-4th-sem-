@@ -1,9 +1,7 @@
 import "./PDash.css";
 import Sidebar from "d:/FutHub/Frontend/src/Components/Sidebar/Sidebar.jsx";
 import { Outlet } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useEffect, useRef } from "react";
 
 export default function PDashboard() {
   const fav = useRef("null");
