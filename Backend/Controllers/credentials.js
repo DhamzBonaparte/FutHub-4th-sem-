@@ -391,9 +391,8 @@ const editMyPosting = async (req, res) => {
 };
 
 const validateOwner=(req,res)=>{
-  const userId=req.user.id;
   try {
-    res.status(200).json({msg:"working"})
+    res.status(200).json({msg:"working",data:req.user})
   } catch (error) {
     res.status(400).json({msg:error.message});
   }

@@ -37,7 +37,7 @@ router
   .delete(authorize, delMyOpponents)
   .patch(authorize, updateMyOpponents);
 
-router.route("/player/logout").post(logout);
+router.route("/logout").post(logout);
 
 router
   .route("/player/find-teammate")

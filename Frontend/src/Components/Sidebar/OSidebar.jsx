@@ -1,23 +1,75 @@
 import "./Osidebar.css";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import BookIcon from "@mui/icons-material/Book";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import GroupsIcon from "@mui/icons-material/Groups";
-import { useState, useEffect } from "react";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
+import ReviewsIcon from '@mui/icons-material/Reviews';
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useState, useEffect } from "react";
 
 export default function OSidebar() {
+  const [data, setData] = useState({});
+  const [active, setActive] = useState("dashboard");
+  const navigate = useNavigate();
+  useEffect(() => {
+    validate();
+  }, []);
+
+  const validate = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/v1/owner", {
+        withCredentials: true,
+      });
+      setData(res.data.data);
+      if (res.data.data.role !== "owner") {
+        alert("Login as owner to enter!");
+        setTimeout(() => {
+          navigate("/login");
+        }, 500);
+      }
+      console.log(res.data.data);
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.status === 401) {
+        setError(error.message);
+        alert("You must Login to view dashboard!");
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 500);
+      } else if (error.response?.status === 403) {
+        setError("Session expired. Please login again.");
+        alert("Session expired. Please login again.");
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 500);
+      } else {
+        setError("Something went wrong. Please try again");
+      }
+    }
+  };
+
+  const Logout = async () => {
+    try {
+      axios.post(
+        "http://localhost:3000/api/v1/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
     <>
-      <div
-        className="sidebar"
-        // style={error ? { filter: "blur(10px)" } : { filter: "blur(0px)" }}
-      >
-        <div className="logo2">
+      <div className="sidebar" style={{ background: "#ddb518ff" }}>
+        <div className="logo2" style={{ color: "black" }}>
           Fut{" "}
           <span style={{ color: "#145A32", margin: "0", padding: "0" }}>
             Hub
@@ -25,14 +77,22 @@ export default function OSidebar() {
         </div>
 
         <div className="user-profile">
-          <div className="user-avatar" style={{background:"#145A32"}}>
-            {/* {data?.firstName?.slice(0, 1) || ""} */}
+          <div
+            className="user-avatar"
+            style={{ background: "#145A32", color: "#c0bb2cff" }}
+          >
+            {data?.firstName?.slice(0, 1) || ""}
           </div>
           <div className="user-info">
-            <h3>{/* {data.firstName || ""} {data.lastName || ""} */}</h3>
-            <p>
-              {/* {data?.role?.charAt(0).toUpperCase() || ""}
-              {data?.role?.slice(1) || ""} */}
+            <h3 style={{ color: "black" }}>
+              {data?.firstName?.slice(0, 1).toUpperCase() +
+                data?.firstName?.slice(1)}{" "}
+              {data?.lastName?.slice(0, 1).toUpperCase() +
+                data?.lastName?.slice(1)}
+            </h3>
+            <p style={{ color: "black" }}>
+              {data?.role?.charAt(0).toUpperCase() || ""}
+              {data?.role?.slice(1) || ""}
             </p>
           </div>
         </div>
@@ -41,50 +101,56 @@ export default function OSidebar() {
           <li>
             <Link
               to="/owner"
-              //   className={active == "dashboard" ? "active" : ""}
-              //   onClick={() => setActive("dashboard")}
+              style={{ color: "black" }}
+              className={active == "dashboard" ? "active" : ""}
+              onClick={() => setActive("dashboard")}
             >
-              <DashboardIcon className="icon" />
+              <SpaceDashboardIcon className="icon" />
               <span>Dashboard</span>
             </Link>
           </li>
           <li>
             <Link
               to="/owner/my-futsal"
-              //   className={active == "book" ? "active" : ""}
-              //   onClick={() => setActive("book")}
+              style={{ color: "black" }}
+              className={active == "book" ? "active" : ""}
+              onClick={() => setActive("book")}
             >
-              <BookIcon className="icon" />
+              <StorefrontIcon className="icon" />
               <span>My Futsal</span>
             </Link>
           </li>
           <li>
             <Link
               to="/owner/book-futsal"
-              //   className={active == "opponent" ? "active" : ""}
-              //   onClick={() => setActive("opponent")}
+              style={{ color: "black" }}
+              className={active == "opponent" ? "active" : ""}
+              onClick={() => setActive("opponent")}
             >
-              <PersonAddIcon className="icon" />
+              <BookmarkAddedIcon className="icon" />
               <span>Bookings</span>
             </Link>
           </li>
           <li>
             <Link
               to="/owner/review"
-              //   className={active == "team" ? "active" : ""}
-              //   onClick={() => setActive("team")}
+              style={{ color: "black" }}
+              className={active == "team" ? "active" : ""}
+              onClick={() => setActive("team")}
             >
-              <GroupsIcon className="icon" />
+              <ReviewsIcon className="icon" />
               <span>Reviews</span>
             </Link>
           </li>
           <li>
             <Link
               to="/"
-              //   className={active == "logout" ? "active" : ""}
-              //   onClick={() => {
-              //     setActive("logout");
-              //     Logout()}}
+              style={{ color: "black" }}
+              className={active == "logout" ? "active" : ""}
+              onClick={() => {
+                setActive("logout");
+                Logout();
+              }}
             >
               <LogoutIcon className="icon" />
               <span>Logout</span>

@@ -6,9 +6,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function PDashboard() {
-  const [data, setData] = useState({});
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
   const fav = useRef("null");
 
   useEffect(() => {
@@ -24,23 +21,9 @@ export default function PDashboard() {
 
   return (
     <>
-      <div className="error">
-        <h3
-          style={{
-            textAlign: "center",
-            padding: "10px",
-            display: error ? "block" : "none",
-          }}
-        >
-          {error}
-        </h3>
-      </div>
       <Sidebar goToFav={goToFav}></Sidebar>
-      <div
-        className="main-content"
-        style={error ? { filter: "blur(10px)" } : { filter: "blur(0px)" }}
-      >
-        <Outlet context={{ error, fav, data }} />
+      <div className="main-content">
+        <Outlet context={{ fav }} />
       </div>
     </>
   );

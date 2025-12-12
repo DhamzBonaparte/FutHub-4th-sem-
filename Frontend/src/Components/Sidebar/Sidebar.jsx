@@ -13,7 +13,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 export default function Sidebar({ goToFav }) {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState("dashboard");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,11 +26,11 @@ export default function Sidebar({ goToFav }) {
         withCredentials: true,
       });
       setData(res.data.msg);
-      if (res.data.msg.role === "owner") {
+      if (res.data.msg.role !== "player") {
         alert("Login as player to enter!");
         setTimeout(() => {
           navigate("/login");
-        }, 1000);
+        }, 500);
       }
     } catch (err) {
       if (err.response?.status === 401) {
@@ -48,7 +48,7 @@ export default function Sidebar({ goToFav }) {
   const Logout = async () => {
     try {
       axios.post(
-        "http://localhost:3000/api/v1/player/logout",
+        "http://localhost:3000/api/v1/logout",
         {},
         {
           withCredentials: true,
@@ -76,7 +76,10 @@ export default function Sidebar({ goToFav }) {
           </div>
           <div className="user-info">
             <h3>
-              {data.firstName || ""} {data.lastName || ""}
+              {data?.firstName?.slice(0, 1).toUpperCase() +
+                data?.firstName?.slice(1)}{" "}
+              {data?.lastName?.slice(0, 1).toUpperCase() +
+                data?.lastName?.slice(1)}{" "}
             </h3>
             <p>
               {data?.role?.charAt(0).toUpperCase() || ""}
