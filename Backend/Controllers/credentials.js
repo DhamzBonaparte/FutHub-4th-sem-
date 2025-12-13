@@ -4,8 +4,9 @@ const mail = require("nodemailer");
 const oppponent = require("../Model/opponent");
 const jwt = require("jsonwebtoken");
 const opponent = require("../Model/opponent");
+const futsals = require('../Model/futsal')
 const teammate = require("../Model/teammate");
-const multer = require('multer');
+
 require("dotenv").config();
 
 // for login
@@ -371,7 +372,7 @@ const editMyPosting = async (req, res) => {
       about,
     } = req.body;
     const upd = await teammate.findOneAndUpdate(
-      { userId},
+      { userId },
       {
         name,
         location,
@@ -383,7 +384,7 @@ const editMyPosting = async (req, res) => {
         availability: available,
         about,
       },
-      { new: true, runValidators: true}
+      { new: true, runValidators: true }
     );
     res.status(200).json({ msg: "update", data: upd });
   } catch (err) {
@@ -391,21 +392,77 @@ const editMyPosting = async (req, res) => {
   }
 };
 
-const validateOwner=(req,res)=>{
+const validateOwner = (req, res) => {
   try {
-    res.status(200).json({msg:"working",data:req.user})
+    res.status(200).json({ msg: "working", data: req.user });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+};
+
+const upload = async (req, res) => {
+  const imagePaths = req.files.map((file) => `/uploads/${file.filename}`);
+  const userId = req.user.id;
+  const {
+    images,
+    owner,
+    futsal,
+    location,
+    email,
+    contact,
+    address,
+    artificialTurf,
+    floodlights,
+    changingRooms,
+    showers,
+    parking,
+    cafeteria,
+    firstAid,
+    equipmentRental,
+    price,
+    capacity,
+    about,
+  } = req.body;
+
+  try {
+    const fut = await futsals.create({
+    userId,
+    images: imagePaths, 
+    owner,
+    futsal,
+    location,
+    email,
+    contact,
+    address,
+    artificialTurf: artificialTurf === "false" ? false : true,
+    floodlights: floodlights === "false" ? false : true,
+    changingRooms: changingRooms === "false" ? false : true,
+    showers: showers === "false" ? false : true,
+    parking: parking === "false" ? false : true,
+    cafeteria: cafeteria === "false" ? false : true,
+    firstAid: firstAid === "false" ? false : true,
+    equipmentRental: equipmentRental === "false" ? false : true,
+    price,
+    capacity,
+    about, 
+  });
+  res.status(200).json({msg:"made",data:fut,user:req.user});
+  } catch (error) {
+    res.status(400).json({msg:error.message});
+  }
+};
+
+const checkOwner=async(req,res)=>{
+  try {
+    const userId = req.user.id;
+    const own = await futsals.findOne({userId})
+    res.status(200).json({msg:"completed",data:own, user:req.user});
   } catch (error) {
     res.status(400).json({msg:error.message});
   }
 }
 
-const upload=(req,res)=>{
-  console.log(req.body.owner);
-  console.log(req.files);
-  res.status(200).json({msg:"sent form"})
-}
-
-module.exports = { 
+module.exports = {
   getCredentials,
   setCredentials,
   playerData,
@@ -424,5 +481,6 @@ module.exports = {
   deleteMyPosting,
   editMyPosting,
   validateOwner,
-  upload
+  upload,
+  checkOwner
 };

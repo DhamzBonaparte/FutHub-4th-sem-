@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [showMsg, setShowMsg] = useState(false);
@@ -22,6 +23,10 @@ export default function Register() {
   const [price, setPrice] = useState("");
   const [capacity, setCapacity] = useState("");
   const [about, setAbout] = useState("");
+  const navigate = useNavigate();
+  useEffect(() => {
+    checkOwner();
+  }, []);
 
   const formData = new FormData();
 
@@ -56,23 +61,56 @@ export default function Register() {
     setImages(previews);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      axios.post("http://localhost:3000/api/v1/upload", formData, {
-        withCredentials: true,
-      });
+      const fut = await axios.post(
+        "http://localhost:3000/api/v1/upload",
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(fut);
     } catch (error) {
       console.log(error.message);
     }
   };
+
+  const checkOwner = async () => {
+    try {
+      const check = await axios.get(
+        "http://localhost:3000/api/v1/owner/check-owner",
+        { withCredentials: true }
+      );
+      console.log(check.data);
+
+      if (check.data.data) {
+        setShowMsg(true);
+      }
+
+      if (check.data.user.role !== "owner") {
+        alert("Login as owner to register!");
+        setTimeout(() => {
+          navigate("/login");
+        });
+      }
+    } catch (err) {
+      if (err.response?.status === 400) {
+        alert("Email Already Used!");
+      }else{
+        alert("Something went wrong");
+      }
+    }
+  };
+
   return (
     <>
       <div
         className="registration-form"
         id="registrationForm"
         style={{
-          display: !showMsg?"flex":"none",
+          display: !showMsg ? "flex" : "none",
           justifyContent: "center",
           alignItems: "center",
           minHeight: "100vh",
@@ -603,7 +641,8 @@ export default function Register() {
                 marginTop: "1rem",
               }}
               className="submit-btn"
-              onClick={(e) => {handleSubmit(e);
+              onClick={(e) => {
+                handleSubmit(e);
                 setShowMsg(true);
               }}
             >

@@ -38,13 +38,6 @@ export default function OMain() {
         <div className="dashboard" id="dashboard">
           <div className="header" >
             <div className="dashboard-title">Owner Dashboard</div>
-            <button
-              className="add-venue-btn"
-              id="addVenueBtn"
-              style={{ color: "white", background: "#009624" }}
-            >
-              Add Venue
-            </button>
           </div>
 
           <div id="dashboard" className="dashboard-section" >

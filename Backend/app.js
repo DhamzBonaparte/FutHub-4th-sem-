@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const path = require('path');
 const connect = require("./Database/db");
 const credentials = require("./Routes/route");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
