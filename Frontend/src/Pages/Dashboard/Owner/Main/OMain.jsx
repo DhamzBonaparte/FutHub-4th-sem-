@@ -11,6 +11,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useState } from "react";
 
 export default function OMain() {
   const data = [
@@ -33,9 +34,9 @@ export default function OMain() {
   const COLORS = ["#145A32", "#2C3E50", "#F39C12", "#8E44AD"];
   return (
     <>
-      <div class="content">
+      <div className="content">
         <div className="dashboard" id="dashboard">
-          <div className="header">
+          <div className="header" >
             <div className="dashboard-title">Owner Dashboard</div>
             <button
               className="add-venue-btn"
@@ -46,7 +47,7 @@ export default function OMain() {
             </button>
           </div>
 
-          <div id="dashboard" className="dashboard-section">
+          <div id="dashboard" className="dashboard-section" >
             <div className="content">
               <div id="dashboardHome">
                 <div className="stats-container">
@@ -197,7 +198,7 @@ export default function OMain() {
                           cy="50%"
                           outerRadius="70%"
                           label
-                        //   isAnimationActive={isAnimationActive}
+                          //   isAnimationActive={isAnimationActive}
                         >
                           {bookingData.map((_, index) => (
                             <Cell
@@ -217,6 +218,8 @@ export default function OMain() {
           </div>
         </div>
       </div>
+
+      
     </>
   );
 }

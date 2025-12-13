@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 
 export default function OSidebar() {
   const [data, setData] = useState({});
+  const [error,setError]=useState("");
   const [active, setActive] = useState("dashboard");
   const navigate = useNavigate();
   useEffect(() => {
@@ -25,9 +26,7 @@ export default function OSidebar() {
       setData(res.data.data);
       if (res.data.data.role !== "owner") {
         alert("Login as owner to enter!");
-        setTimeout(() => {
-          navigate("/login");
-        }, 500);
+        navigate("/login");
       }
       console.log(res.data.data);
     } catch (error) {
@@ -35,14 +34,10 @@ export default function OSidebar() {
       if (error?.response?.status === 401) {
         setError(error.message);
         alert("You must Login to view dashboard!");
-
-        setTimeout(() => {
-          navigate("/login");
-        }, 500);
+        navigate("/login");
       } else if (error.response?.status === 403) {
         setError("Session expired. Please login again.");
         alert("Session expired. Please login again.");
-
         setTimeout(() => {
           navigate("/login");
         }, 500);
@@ -105,7 +100,7 @@ export default function OSidebar() {
               className={active == "dashboard" ? "active" : ""}
               onClick={() => setActive("dashboard")}
             >
-              <SpaceDashboardIcon style={{marginRight:"15px"}}/>
+              <SpaceDashboardIcon style={{ marginRight: "15px" }} />
               <span>Dashboard</span>
             </Link>
           </li>
@@ -116,7 +111,7 @@ export default function OSidebar() {
               className={active == "book" ? "active" : ""}
               onClick={() => setActive("book")}
             >
-              <StorefrontIcon style={{marginRight:"15px"}} />
+              <StorefrontIcon style={{ marginRight: "15px" }} />
               <span>My Futsal</span>
             </Link>
           </li>
@@ -127,7 +122,7 @@ export default function OSidebar() {
               className={active == "opponent" ? "active" : ""}
               onClick={() => setActive("opponent")}
             >
-              <BookmarkAddedIcon style={{marginRight:"15px"}}/>
+              <BookmarkAddedIcon style={{ marginRight: "15px" }} />
               <span>Bookings</span>
             </Link>
           </li>
@@ -138,7 +133,7 @@ export default function OSidebar() {
               className={active == "team" ? "active" : ""}
               onClick={() => setActive("team")}
             >
-              <ReviewsIcon style={{marginRight:"15px"}} />
+              <ReviewsIcon style={{ marginRight: "15px" }} />
               <span>Reviews</span>
             </Link>
           </li>
@@ -152,7 +147,7 @@ export default function OSidebar() {
                 Logout();
               }}
             >
-              <LogoutIcon style={{marginRight:"15px"}} />
+              <LogoutIcon style={{ marginRight: "15px" }} />
               <span>Logout</span>
             </Link>
           </li>

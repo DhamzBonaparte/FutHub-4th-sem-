@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const path = require("path");
 const authorize = require("../Middleware/authMiddleware");
 const {
   getCredentials,
@@ -19,8 +21,20 @@ const {
   getMyTeammatePosting,
   deleteMyPosting,
   editMyPosting,
-  validateOwner
+  validateOwner,
+  upload,
 } = require("../Controllers/credentials");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "..", "uploads"));
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const place = multer({ storage });
 
 router.route("/login").post(getCredentials);
 router.route("/signup").post(setCredentials);
@@ -53,9 +67,11 @@ router
   .patch(authorize, editMyPosting);
 router
   .route("/player/my-teammate-listing/:id")
-  .delete(authorize, deleteMyPosting)
+  .delete(authorize, deleteMyPosting);
 
 //owner part started
-router.route('/owner').get(authorize,validateOwner)
+router.route("/owner").get(authorize, validateOwner);
+
+router.route("/upload").post(place.array("futsalPic"), upload);
 
 module.exports = router;

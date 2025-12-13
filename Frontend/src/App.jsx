@@ -14,6 +14,7 @@ import Book from "./Pages/Dashboard/Player/Booking/Book";
 import BookFutsal from "./Pages/Dashboard/Owner/Book/BookFutsal";
 import Review from "./Pages/Dashboard/Owner/Reviews/Review";
 import Futsal from "./Pages/Dashboard/Owner/My Futsal/Futsal";
+import Register from "./Pages/Register/Register";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/player" element={<PDashboard />}></Route>
+        <Route path='/register' element={<Register/>}></Route>
         <Route path="/owner" element={<ODashboard />}>
           <Route index element={<OMain/>}></Route>
           <Route path="/owner/book-futsal" element={<BookFutsal/>}></Route>

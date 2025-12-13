@@ -35,6 +35,7 @@ export default function Login() {
 
       if( login.data.data.role==="owner"){
         navigate("/owner");
+        // navigate('/register');
       }
 
     } catch (err) {

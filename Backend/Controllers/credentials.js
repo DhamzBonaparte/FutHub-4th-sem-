@@ -5,6 +5,7 @@ const oppponent = require("../Model/opponent");
 const jwt = require("jsonwebtoken");
 const opponent = require("../Model/opponent");
 const teammate = require("../Model/teammate");
+const multer = require('multer');
 require("dotenv").config();
 
 // for login
@@ -398,7 +399,13 @@ const validateOwner=(req,res)=>{
   }
 }
 
-module.exports = {
+const upload=(req,res)=>{
+  console.log(req.body.owner);
+  console.log(req.files);
+  res.status(200).json({msg:"sent form"})
+}
+
+module.exports = { 
   getCredentials,
   setCredentials,
   playerData,
@@ -416,5 +423,6 @@ module.exports = {
   getMyTeammatePosting,
   deleteMyPosting,
   editMyPosting,
-  validateOwner
+  validateOwner,
+  upload
 };
