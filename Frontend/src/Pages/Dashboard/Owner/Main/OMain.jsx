@@ -11,9 +11,17 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function OMain() {
+
+  useEffect(()=>{
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    })
+  },[])
+
   const data = [
     { name: "Jan", revenue: 4000 },
     { name: "Feb", revenue: 3000 },

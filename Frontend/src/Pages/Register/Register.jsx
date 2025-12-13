@@ -98,7 +98,7 @@ export default function Register() {
     } catch (err) {
       if (err.response?.status === 400) {
         alert("Email Already Used!");
-      }else{
+      } else {
         alert("Something went wrong");
       }
     }
@@ -272,6 +272,9 @@ export default function Register() {
                   onChange={(e) => setContact(e.target.value)}
                   type="tel"
                   id="contactNumber"
+                  minLength={10}
+                  maxLength={10}
+                  pattern="\d{10}"
                   required
                   placeholder="Enter your phone number"
                 />
